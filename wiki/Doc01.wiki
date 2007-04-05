@@ -1,0 +1,609 @@
+nova.js
+
+Framework javascript
+Note :
+Connect & Disconnect from John Resig (http://ejohn.org/projects/flexible-javascript-events/)
+Convert froms domNode in url encoded string from Dojo tookit (http://dojotoolkit.org)
+getElementsByAnything from Matthew Pennell (http://www.javascriptsearch.com/guides/Advanced/articles/0607ABetterDollarFunction.html)
+UTF-8 <=> UTF-16 convertion from Masanao Izumo (iz@onicos.co.jp)
+JavaScript to PHP serialize / unserialize class from Ma Bingyao (andot@ujn.edu.cn / http://www.coolcode.cn/?p=171)
+
+Defined in nova.js
+
+Constructor Summary
+	nova()
+          Nova's object
+	nova.clone(<Object> what, <bool> rec)
+          clone a JS object
+	nova.config()
+          Nova's config namespace
+	nova.html()
+          Nova's html namespace
+	nova.variable()
+          Nova's variable namespace
+	nova.variable.array()
+          Array subnamespace
+	nova.variable.array.object()
+          Object subnamespace
+	nova.topic()
+          Nova's topic namespace
+	nova.debug()
+          Nova's debug namespace
+	nova.io()
+          Nova's IN/OUT namespace
+	nova.form()
+          Nova's forms namespace
+Bool, Function	nova.form.validation(<String> methode)
+          Validation's form subnamespace
+
+Ajouter une contrainte a un champs (le 3eme parametre pointe sur une fonction)
+Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
+Applique la classe .constraint
+nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
+
+Forcer la selection complete du contenu
+nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
+
+Verifie que le contenu est bien un nombre
+Applique la classe .isnum
+nova.form.validation.connect(document.getElementById('mdp'), 'isnum');
+
+Verifie que le contenu est bien un nombre entier
+Applique la classe .isint
+nova.form.validation.connect(document.getElementById('mdp'), 'isint');
+
+Verifie que le contenu est bien du type alphabetique
+Applique la classe .isalpha
+nova.form.validation.connect(document.getElementById('mdp'), 'isalpha');
+
+Verifie que le contenu est bien du type alphanumérique
+Applique la classe .isalphanum
+nova.form.validation.connect(document.getElementById('mdp'), 'isalphanum');
+
+Verifie que le contenu est bien du type email
+Applique la classe .ismail
+nova.form.validation.connect(document.getElementById('eml'), 'ismail')
+
+Rendre un champs obligatoire
+Applique la classe .mendatory
+nova.form.validation.connect(document.getElementById('mdp'), 'mendatory');
+
+Verifier la complexité d'un mot de passe
+Applique un style qui modifie la couleur de fond de l'input
+nova.form.validation.connect(document.getElementById('mdp'), 'complexity');
+
+Vérifier qu'un champs est la copie d'un autre (le 3eme argument designe un objet)
+Applique la classe .copyof
+nova.form.validation.connect(document.getElementById('mdpverif'), 'copyof',document.getElementById('mdp'));
+
+Vérifier qu'un champs correspond bien a une expression réguliere
+Applique la classe .matchregexp
+nova.form.validation.connect(document.getElementById('mdpverif'), 'matchregexp',/[a-zA-Z]/);
+
+Verifier qu'un formulaire est valide (le 3eme parametre est facultatif et point sur une fonction)
+Le parametre de la fonction (3eme arguments) est un tableau qui contient les champs en erreur
+nova.form.validation.connect(document.getElementById('adduser'), 'validate',function() {alert("erreur !")});
+
+Rafraichi tous les evenements connecté a un objet
+document.getElementById('mdpverif').refresh();
+
+Pour Deconnecter un evenement d'un objet, utiliser la même syntaxe que pour le connecter mais avec le mot disconnect.
+nova.form.validation.disconnect(document.getElementById('adduser'), 'validate',function() {alert("erreur !")});
+
+------------------------------------------------------
+Exemple :
+<code>
+<style type="text/css">input.mendatory,input.constraint,input.copyof,input.isnum,input.isint,input.isalpha,input.isalphanum,input.matchregexp {background-color:red;}</style>
+<form method="post" action="" id="adduser">
+<fieldset>
+<legend>Inscription</legend>
+<label> Pseudo : </label><input type="text" name="pseudo" id="pseudo" /><br />
+<label> Mot de passe : </label><input type="password" name="mdp" id="mdp" /><br />
+<label> Confirmation : </label><input type="password" name="mdpverif" id="mdpverif" /><br />
+<input type="submit" value="ok" />
+
+<input type="button" value="disconnect" onclick="test();" />
+<input type="button" value="refresh" onclick="test2();" />
+</fieldset>
+</form>
+<script type="text/javascript">
+nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
+nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
+
+nova.form.validation.connect(document.getElementById('mdp'), 'selectall');
+nova.form.validation.connect(document.getElementById('mdp'), 'mendatory');
+nova.form.validation.connect(document.getElementById('mdp'), 'complexity');
+
+nova.form.validation.connect(document.getElementById('mdpverif'), 'selectall');
+nova.form.validation.connect(document.getElementById('mdpverif'), 'copyof',document.getElementById('mdp'));
+
+nova.form.validation.connect(document.getElementById('adduser'), 'validate',function() {console.log(arguments[0].length);for (i=0;i!=arguments[0].length;i++) {console.log("erreur :"+arguments[0][i]);}});
+
+function test() {
+nova.form.validation.disconnect(document.getElementById('pseudo'), 'constraint');
+nova.form.validation.disconnect(document.getElementById('mdp'), 'selectall');
+nova.form.validation.disconnect(document.getElementById('mdp'), 'mendatory');
+nova.form.validation.disconnect(document.getElementById('mdp'), 'complexity');
+}
+function test2() {
+document.getElementById('mdp').value="plop";
+document.getElementById('mdp').refresh();
+}
+
+</script>
+</code>
+ 
+Details
+nova
+
+    Nova's object
+
+nova.connect
+
+    Attach [type] event on [obj]
+
+    Parameters:
+        Object obj - the object
+        String type - the type of connection ("click,"keyup",etc...)
+        function methode - the function to connect 
+
+nova.disconnect
+
+    Dettach [type] event from [obj]
+
+    Parameters:
+        Object obj - the object
+        String type - the type of connection ("click,"keyup",etc...)
+        function methode - the function to disconnect 
+
+nova.clone
+
+    clone a JS object
+
+    Parameters:
+        Object what - the object you want to clone
+        bool rec - toggle recursivity 
+
+nova.clone.setTimeOut
+
+    like classical setTimeOut but preserv context
+
+    Parameters:
+        Function fn - the function you want to delay
+        Object delay - the delay
+        Object _this - the context you want to have in this 
+
+nova.config
+
+    Nova's config namespace
+
+nova.config.debug
+
+    toggle debug mode
+
+    Parameters:
+        Bool bool - put debug on true or false 
+
+nova.html
+
+    Nova's html namespace
+
+nova.html.addClass
+
+    Add a class on object
+
+    Parameters:
+        Object obj - your object
+        String classN - the class you want to add 
+
+nova.html.hasClass
+
+    Check if an object has (or not) a class
+
+    Parameters:
+        Object obj - your object
+        String classN - the class you want to check
+    Returns:
+        Bool true if class exist 
+
+nova.html.removeClass
+
+    Remove a class on object
+
+    Parameters:
+        Object obj - your object
+        String classN - the class you want to remove 
+
+nova.html.setClass
+
+    Replace all class by another on object
+
+    Parameters:
+        Object obj - your object
+        String classN - the classes you want to set 
+
+nova.html.toggleClass
+
+    toggle a class on object
+
+    Parameters:
+        Object obj - your object
+        String classN - the class you want to toggle 
+
+nova.html.getElementsByAnything
+
+    get Dom elements by anything (name,tagname,id,class,selector,....)
+    Can have much than one parameters
+
+    Parameters:
+        String mixed - Selectors (#myid, div>ul>li, .myclass, ...)
+    Returns:
+        Array || Object An array with all matching objects or just one objects (if no more) 
+
+nova.html.getDomOffset
+
+    Return the Dom offset for an object
+
+    Parameters:
+        Object Obj - your object
+        String Prop - the offset you want to know (left,top,height,width...)
+    Returns:
+        Int The dom offset 
+
+nova.html.viewportSize
+
+    Return an obejct with the viewport size
+
+    Returns:
+        Object like {width:xxx, height:yyy} 
+
+nova.html.centerObjectOnViewport
+
+    Place an object on viewport's center
+
+    Parameters:
+        Object obj - you dom object 
+
+nova.variable
+
+    Nova's variable namespace
+
+nova.variable.inArray
+
+    Return false if [valeur] isn't in [array] else return index
+
+    Parameters:
+        Array array - your array to check
+        String value - the value to search
+    Returns:
+        False || Int dont forget use ===false to prevent 0 index 
+
+nova.variable.isArray
+
+    Check if [v] is an Array
+
+    Parameters:
+        Mixed v - your variable
+    Returns:
+        bool true or false 
+
+nova.variable.isFunction
+
+    Check if [v] is a function
+
+    Parameters:
+        Mixed v - your variable
+    Returns:
+        bool true or false 
+
+nova.variable.isSet
+
+    Check if arguments[0] is defined
+
+    Parameters:
+        Mixed mixed - your variable
+    Returns:
+        bool true or false 
+
+nova.variable.isString
+
+    Check if [v] is a String
+
+    Parameters:
+        Mixed v - your variable
+    Returns:
+        bool true or false 
+
+nova.variable.isObject
+
+    Check if [v] is an Object
+
+    Parameters:
+        Mixed v - your variable
+    Returns:
+        bool true or false 
+
+nova.variable.utf16to8
+
+    Convert data from utf16 to utf8
+
+    Parameters:
+        String str - your utf16 string
+    Returns:
+        String new utf8 string 
+
+nova.variable.utf8to16
+
+    Convert data from utf8 to utf16
+
+    Parameters:
+        String str - your utf8 string
+    Returns:
+        String new utf16 string 
+
+nova.variable.serialize
+
+    This class is designed to convert javascript variables to php with a php serialize
+    compatible way.
+
+    Parameters:
+        Mixed o - what you want to serialize
+    Returns:
+        string the serialized string 
+
+nova.variable.unserialize
+
+    This class is designed to convert php variables to javascript with a php unserialize
+    compatible way.
+
+    Parameters:
+        String ss - what you want to unserialize
+    Returns:
+        Mixed 
+
+nova.variable.array
+
+    Array subnamespace
+
+nova.variable.array.insert
+
+    Insert [value] at [i] position in [array]
+
+    Parameters:
+        Array array - your array
+        Int i - the insert index
+        Mixed value - what you want to insert
+    Returns:
+        Array the new array 
+
+nova.variable.array.object
+
+    Object subnamespace
+
+nova.variable.array.object.toArray
+
+    Convert a simple object in Array object
+
+    Parameters:
+        Object obj - your object
+        Bool preserveKey - set at true if you want to conserve properties name
+    Returns:
+        Array 
+
+nova.topic
+
+    Nova's topic namespace
+
+nova.topic.subscribe
+
+    Defined a new topic
+
+    Parameters:
+        String name - name of the new topic
+        Function action - function to do when topic is published 
+
+nova.topic.unsubscribe
+
+    Remove a topic
+
+    Parameters:
+        String name - the name of the topic you want to delete 
+
+nova.topic.publish
+
+    Publish a new event on specified topic.
+    Give [_this] for context use
+
+    Parameters:
+        String name - the name of the topic you want to publish
+        Object _this - the context you want to pass to you topic
+    Returns:
+        Bool 
+
+nova.debug
+
+    Nova's debug namespace
+
+nova.debug.var_dump
+
+    Show a dump of [v] in firebug
+
+    Parameters:
+        Mixed v - the dumped variable 
+
+nova.debug.show
+
+    Show a debug message
+
+    Parameters:
+        Mixed whant - to want to see in firebug 
+
+nova.debug.raiseError
+
+    Raise a debug message
+
+    Parameters:
+        String msg - your error message
+    Returns:
+        Bool always false 
+
+nova.io
+
+    Nova's IN/OUT namespace
+
+nova.io.send
+
+    Send an XHR request
+
+    <code>
+    args {
+    file:"page.htm",
+    method:"POST" || "GET",
+    queryString:"var1=a&var2=b",
+    formNode:document.getElementById("test"),
+    onLoad:function () {},
+    onError:function () {}
+    }
+    </code>
+
+    Parameters:
+        Object args - see exemple
+    Returns:
+        Bool false if browser doesn't support XHR 
+
+nova.form
+
+    Nova's forms namespace
+
+nova.form.encode
+
+    Convert froms domNode in url encoded string
+
+    Parameters:
+        Object formNode - Dom form object
+    Returns:
+        String URI string 
+
+nova.form.validation
+
+    Validation's form subnamespace
+
+    Ajouter une contrainte a un champs (le 3eme parametre pointe sur une fonction)
+    Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
+    Applique la classe .constraint
+    nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
+
+    Forcer la selection complete du contenu
+    nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
+
+    Verifie que le contenu est bien un nombre
+    Applique la classe .isnum
+    nova.form.validation.connect(document.getElementById('mdp'), 'isnum');
+
+    Verifie que le contenu est bien un nombre entier
+    Applique la classe .isint
+    nova.form.validation.connect(document.getElementById('mdp'), 'isint');
+
+    Verifie que le contenu est bien du type alphabetique
+    Applique la classe .isalpha
+    nova.form.validation.connect(document.getElementById('mdp'), 'isalpha');
+
+    Verifie que le contenu est bien du type alphanumérique
+    Applique la classe .isalphanum
+    nova.form.validation.connect(document.getElementById('mdp'), 'isalphanum');
+
+    Verifie que le contenu est bien du type email
+    Applique la classe .ismail
+    nova.form.validation.connect(document.getElementById('eml'), 'ismail')
+
+    Rendre un champs obligatoire
+    Applique la classe .mendatory
+    nova.form.validation.connect(document.getElementById('mdp'), 'mendatory');
+
+    Verifier la complexité d'un mot de passe
+    Applique un style qui modifie la couleur de fond de l'input
+    nova.form.validation.connect(document.getElementById('mdp'), 'complexity');
+
+    Vérifier qu'un champs est la copie d'un autre (le 3eme argument designe un objet)
+    Applique la classe .copyof
+    nova.form.validation.connect(document.getElementById('mdpverif'), 'copyof',document.getElementById('mdp'));
+
+    Vérifier qu'un champs correspond bien a une expression réguliere
+    Applique la classe .matchregexp
+    nova.form.validation.connect(document.getElementById('mdpverif'), 'matchregexp',/[a-zA-Z]/);
+
+    Verifier qu'un formulaire est valide (le 3eme parametre est facultatif et point sur une fonction)
+    Le parametre de la fonction (3eme arguments) est un tableau qui contient les champs en erreur
+    nova.form.validation.connect(document.getElementById('adduser'), 'validate',function() {alert("erreur !")});
+
+    Rafraichi tous les evenements connecté a un objet
+    document.getElementById('mdpverif').refresh();
+
+    Pour Deconnecter un evenement d'un objet, utiliser la même syntaxe que pour le connecter mais avec le mot disconnect.
+    nova.form.validation.disconnect(document.getElementById('adduser'), 'validate',function() {alert("erreur !")});
+
+    ------------------------------------------------------
+    Exemple :
+    <code>
+    <style type="text/css">input.mendatory,input.constraint,input.copyof,input.isnum,input.isint,input.isalpha,input.isalphanum,input.matchregexp {background-color:red;}</style>
+    <form method="post" action="" id="adduser">
+    <fieldset>
+    <legend>Inscription</legend>
+    <label> Pseudo : </label><input type="text" name="pseudo" id="pseudo" /><br />
+    <label> Mot de passe : </label><input type="password" name="mdp" id="mdp" /><br />
+    <label> Confirmation : </label><input type="password" name="mdpverif" id="mdpverif" /><br />
+    <input type="submit" value="ok" />
+
+    <input type="button" value="disconnect" onclick="test();" />
+    <input type="button" value="refresh" onclick="test2();" />
+    </fieldset>
+    </form>
+    <script type="text/javascript">
+    nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
+    nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
+
+    nova.form.validation.connect(document.getElementById('mdp'), 'selectall');
+    nova.form.validation.connect(document.getElementById('mdp'), 'mendatory');
+    nova.form.validation.connect(document.getElementById('mdp'), 'complexity');
+
+    nova.form.validation.connect(document.getElementById('mdpverif'), 'selectall');
+    nova.form.validation.connect(document.getElementById('mdpverif'), 'copyof',document.getElementById('mdp'));
+
+    nova.form.validation.connect(document.getElementById('adduser'), 'validate',function() {console.log(arguments[0].length);for (i=0;i!=arguments[0].length;i++) {console.log("erreur :"+arguments[0][i]);}});
+
+    function test() {
+    nova.form.validation.disconnect(document.getElementById('pseudo'), 'constraint');
+    nova.form.validation.disconnect(document.getElementById('mdp'), 'selectall');
+    nova.form.validation.disconnect(document.getElementById('mdp'), 'mendatory');
+    nova.form.validation.disconnect(document.getElementById('mdp'), 'complexity');
+    }
+    function test2() {
+    document.getElementById('mdp').value="plop";
+    document.getElementById('mdp').refresh();
+    }
+
+    </script>
+    </code>
+
+    Parameters:
+        String methode 
+    Returns:
+        Bool 
+        Function 
+
+nova.form.validation.connect
+
+    Connect a validation method on [obj]
+
+    Parameters:
+        Object obj - the object to validate
+        String methode - the validation method 
+
+nova.form.validation.disconnect
+
+    disconnect a validation method from [obj]
+
+    Parameters:
+        Object obj - the object to validate
+        String methode - the validation method 
+
