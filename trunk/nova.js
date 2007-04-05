@@ -3,7 +3,7 @@
  * 
  * @author iDo (ido@woow-fr.com)
  * @license Paternité - Pas d'Utilisation Commerciale - Partage des Conditions Initiales à l'Identique 2.5 (http://creativecommons.org/licenses/by-nc-sa/2.5/deed.fr_CA)
- * @version 0.1
+ * @version 01
  * @fileoverview Framework javascript
  * Note 		: 
  *	 	Connect & Disconnect from John Resig (http://ejohn.org/projects/flexible-javascript-events/)
