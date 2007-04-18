@@ -79,6 +79,7 @@ var nova = new Object({
 			fn.apply(_this, args); 
 		}, delay);
 	},
+	
 });
 
 /**
@@ -208,11 +209,54 @@ nova.html = {
 	getDomOffset:function (Obj,Prop) {
 		var iVal = 0;
 		while (Obj && Obj.tagName != 'BODY') {
-			eval('iVal += Obj.' + Prop + ';');
+			eval('iVal += Obj.offset' + Prop.substring(0,1).toUpperCase() + Prop.substring(1,Prop.length) + ';');
 			Obj = Obj.offsetParent;
 		}
 		return iVal;
 	},
+	/**
+	 * Get the mouse position from the event
+	 * 
+	 * @param {Object} e An Event object
+	 * @return {Object} x and y proprerties
+	 */
+	getMousePos:function(e) {
+		if (!e) var e = window.event;
+		if (e.pageX || e.pageY)
+			return {x:e.pageX,y:e.pageY};
+		else if (e.clientX || e.clientY)
+			return {x:(e.clientX + document.body.scrollLeft),y:(e.clientY + document.body.scrollTop)};
+	},
+	/**
+	 * Move a node in other node
+	 * 
+	 * @param {Object} node the node you want to move
+	 * @param {Object} newParent the parent of your node
+	 * @return {Object} the node
+	 */
+	moveNodeTo:function(node,newParent) {
+		var n=this.removeNode(node,false);
+		newParent.appendChild(n);
+		return n;
+	},
+	/**
+	 * Completly remove a node from DOM
+	 * 
+	 * @param {Object} node the node to remove
+	 * @param {Bool} completlyRemove if true, destroy de reference
+	 * @return {Object || null} the removed node or null
+	 */
+	removeNode : function(node,completlyRemove){
+		if(node && node.parentNode){
+			var n= node.parentNode.removeChild(node);
+			if (completlyRemove)
+				delete n;
+			else
+				return n;
+			return null;
+		}
+	},
+	
 	/**
 	 * Return an obejct with the viewport size
 	 * 
@@ -770,6 +814,157 @@ nova.topic = {
 		args.shift();
 		this.evts[name].apply(_this,args);
 		return true;
+	},
+};
+/**
+ * Nova's Drang'n Drop namespace
+ * @constructor
+ */
+nova.dnd = {
+	/*The object you drag*/ 
+	_objDnd:null,
+	_objParams: {},
+	_dropZone:[],
+	_nodeUnderMouse:null,
+	/**
+	 * Initialize dnd on objects
+	 * @param {array} objects an array with object you want to drag
+	 * @param {string} constraint (optional) "x" or "y" to disallow move on the specified axis
+	 */
+	connectDragObject:function(objects,constraint) {
+		for(var i in objects) {
+			nova.connect(objects[i],"mousedown",this.dragStart);
+			nova.connect(objects[i],"mouseup",this.dragEnd);
+			nova.connect(objects[i],"mousemove",this.dragMove);
+			
+			this._objParams.constraint=(constraint!=null)?constraint.toLowerCase():"";
+			
+			objects[i].dnd=this;
+			nova.html.addClass(objects[i],"drag");
+			
+			objects[i].initStyle= {position:objects[i].style.position,
+									zIndex:objects[i].style.zIndex,
+									height:objects[i].style.height,
+									width:objects[i].style.width
+									};
+		}
+	},
+	/**
+	 * initialize dnd drop zone
+	 * @param {Object} objects an array with object you want to drag in
+	 */
+	connectDropObject:function(objects) {
+		for(var i in objects) {
+			objects[i].dnd=this;
+			nova.html.addClass(objects[i],"drop");
+			this._dropZone.push(objects[i]);
+		}
+	},
+	/**
+	 * When you click down an object
+	 * 
+	 * @param {Object} e the Events object fired by browser
+	 */
+	dragStart:function(e) {
+		this.dnd._objDnd=this;
+
+		this.dnd._objParams.mousePos = nova.html.getMousePos(e);
+		this.dnd._objParams.objectPos = {x:nova.html.getDomOffset(this,"left"),
+										y:nova.html.getDomOffset(this,"top"),
+										h:nova.html.getDomOffset(this,"height"),
+										w:nova.html.getDomOffset(this,"width")
+										};
+		
+		this.dnd._objParams.style= {position:this.style.position,
+									zIndex:this.style.zIndex,
+									height:this.style.height,
+									width:this.style.width
+									};
+		
+		this.style.position="absolute";
+		this.style.zIndex=200;
+		this.style.height=this.dnd._objParams.objectPos.h+"px";
+		this.style.width=this.dnd._objParams.objectPos.w+"px";
+		
+		document.dnd=this.dnd;
+		nova.connect(document,"mousemove",this.dnd.dragMove);
+		nova.connect(document,"mouseup",this.dnd.dragEnd);
+		
+	},
+	/**
+	 * When you click up an object
+	 * 
+	 * @param {Object} e the Events object fired by browser
+	 */
+	dragEnd:function(e) {
+		var node=this.dnd._getNodeUnderMouse(e);
+		this.dnd._objDnd.style.height=this.initStyle.height;
+		this.dnd._objDnd.style.width=this.initStyle.width;
+		
+		if (node==false)
+			this.dnd._objDnd.style.position=this.initStyle.position;
+		else {
+			//this.dnd._objDnd.style.position="relative";
+			//this.dnd._objDnd.style.top=nova.html.getDomOffset(this.dnd._objDnd,"top")-nova.html.getDomOffset(node,"top");
+			//this.dnd._objDnd.style.left=nova.html.getDomOffset(this.dnd._objDnd,"left")-nova.html.getDomOffset(node,"left");
+			var n=nova.html.moveNodeTo(this,node);
+			nova.html.removeClass(node,"dropOk");
+		}
+		this.dnd._objDnd.style.zIndex=this.initStyle.zIndex;
+		
+		this.dnd._objDnd=null;
+		this.dnd._objParams={constraint:this.dnd._objParams.constraint};
+		
+		nova.disconnect(document,"mousemove",this.dnd.dragMove);
+		nova.disconnect(document,"mouseup",this.dnd.dragEnd);
+		document.dnd=null;
+	},
+	/**
+	 * When you move an object after a click down
+	 * 
+	 * @param {Object} e the Events object fired by browser
+	 */
+	dragMove:function(e) {
+		if (this.dnd._objDnd==null)
+			return false;
+		
+		var mouse=nova.html.getMousePos(e);
+		var delta = {x:(this.dnd._objParams.mousePos.x - this.dnd._objParams.objectPos.x),y:(this.dnd._objParams.mousePos.y - this.dnd._objParams.objectPos.y)};
+		if (this.dnd._objParams.constraint!="x")
+			this.dnd._objDnd.style.left = mouse.x - delta.x+"px";
+		if (this.dnd._objParams.constraint!="y")
+			this.dnd._objDnd.style.top = mouse.y - delta.y+"px";
+
+		var node=this.dnd._getNodeUnderMouse(e);
+		
+		if (this.dnd._nodeUnderMouse!=null && this.dnd._nodeUnderMouse!=false && node!=this.dnd._nodeUnderMouse)
+			nova.html.removeClass(this.dnd._nodeUnderMouse,"dropOk");
+		
+		if (node!==false && node!=this.dnd._nodeUnderMouse)
+			nova.html.addClass(node,"dropOk");
+			
+		this.dnd._nodeUnderMouse=node;
+	},
+	/**
+	 * Get the element under the mouse
+	 * 
+	 * @param {Object} e the events fired by browser
+	 * @return {Object || false} object under mouse (false if no dropzone was under mouse)
+	 * @private
+	 */
+	_getNodeUnderMouse: function(e){
+		var mouse=nova.html.getMousePos(e);
+		for (var i = 0; i < this._dropZone.length; i++) {
+				var objPos={top:nova.html.getDomOffset(this._dropZone[i],"top"),
+							left:nova.html.getDomOffset(this._dropZone[i],"left"),
+							width:nova.html.getDomOffset(this._dropZone[i],"width"),
+							height:nova.html.getDomOffset(this._dropZone[i],"height")
+							}
+				
+				if (mouse.x >= objPos.left && mouse.x <= (objPos.left+objPos.width) &&
+					mouse.y >= objPos.top && mouse.y <= (objPos.top+objPos.height)) { return this._dropZone[i]; }
+		}
+		return false;
 	},
 };
 /**
