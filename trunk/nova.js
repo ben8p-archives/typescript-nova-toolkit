@@ -2,8 +2,8 @@
  * Nova's object
  * 
  * @author iDo (ido@woow-fr.com)
- * @license Paternité - Pas d'Utilisation Commerciale - Partage des Conditions Initiales à l'Identique 2.5 (http://creativecommons.org/licenses/by-nc-sa/2.5/deed.fr_CA)
- * @version 01
+ * @license Paternité - Pas d'Utilisation Commerciale - Partage des Conditions Initiales à l'Identique 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr_CA)
+ * @version 07_07
  * @fileoverview Framework javascript
  * Note 		: 
  *	 	Connect & Disconnect from John Resig (http://ejohn.org/projects/flexible-javascript-events/)
@@ -11,6 +11,9 @@
  * 		getElementsByAnything from Matthew Pennell (http://www.javascriptsearch.com/guides/Advanced/articles/0607ABetterDollarFunction.html)
  * 		UTF-8 <=> UTF-16 convertion from Masanao Izumo (iz@onicos.co.jp)
  * 		JavaScript to PHP serialize / unserialize class from Ma Bingyao (andot@ujn.edu.cn / http://www.coolcode.cn/?p=171)
+ * 		Shortcut adding from Binny V A (http://www.openjs.com/scripts/events/keyboard_shortcuts/)
+ * 		Tooltip positioning from scriptaculous (http://www.illustate.com/playground/scriptaculous/tooltip/)
+ * 		Sortable TABLE from Stuart Langridge (http://www.kryogenix.org/code/browser/sorttable/)
  */
 
 /**
@@ -18,7 +21,7 @@
  * @constructor
  */
 var nova = new Object({
-	version:01,
+	version:"07_07",
 	/**
 	 * Attach [type] event on [obj]
 	 *  
@@ -28,9 +31,10 @@ var nova = new Object({
 	 */
 	connect : function (obj,type,methode) {
 		if ( obj.attachEvent ) {
-			obj['e'+type+methode] = methode;
-			obj[type+methode] = function(){obj['e'+type+methode]( window.event );}
-			obj.attachEvent( 'on'+type, obj[type+methode] );
+			var strFn=methode.toString();
+			obj['e'+type+strFn] = methode;
+			obj[type+strFn] = function(){obj['e'+type+strFn]( window.event );}
+			obj.attachEvent( 'on'+type, obj[type+strFn] );
 		} else
 			obj.addEventListener(type, methode, false );
  	
@@ -44,8 +48,9 @@ var nova = new Object({
 	 */
 	disconnect : function (obj,type,methode) {
 		if ( obj.detachEvent ) {
-			obj.detachEvent( 'on'+type, obj[type+methode] );
-			obj[type+methode] = null;
+			var strFn=methode.toString();
+			obj.detachEvent( 'on'+type, obj[type+strFn] );
+			obj[type+strFn] = null;
 		} else
 			obj.removeEventListener( type, methode, false );
 	},
@@ -58,9 +63,13 @@ var nova = new Object({
 	 */
 	clone:function (what,rec) {
 	    for (var i in what) {
-	       if ((rec) && (typeof what[i]=="object"))
-	           this[i] = new objClone(what[i],true);
-	       else
+		   if ((rec) && (typeof what[i]=="object")) {
+	       	if (nova.variable.isSet(what[i]) && nova.variable.isSet(what[i].ownerDocument))
+	       		//Maybe a DOM object
+	       		this[i]=what[i].cloneNode(true);
+	       	else
+	           this[i] = new nova.clone(what[i],true);
+	       } else
 	           this[i] = what[i];
 	    }
 	},
@@ -69,26 +78,44 @@ var nova = new Object({
 	 * @param {Function} fn the function you want to delay
 	 * @param {Object} delay the delay
 	 * @param {Object} _this the context you want to have in this
+	 * 
+	 * @return {handle} handle to the timeout method
 	 */
 	setTimeOut:function(fn, delay,_this) {
 		args=nova.variable.object.toArray(arguments,false);
 		args.shift();
 		args.shift();
 		args.shift();	
-		window.setTimeout(function () { 
+		return window.setTimeout(function () { 
 			fn.apply(_this, args); 
 		}, delay);
 	},
+	/**
+	 * like classical setInterval but preserv context
+	 * @param {Function} fn the function you want to delay
+	 * @param {Object} delay the delay
+	 * @param {Object} _this the context you want to have in this
+	 * 
+	 * @return {handle} handle to the interval method
+	 */
+	setInterval:function(fn, delay,_this) {
+		args=nova.variable.object.toArray(arguments,false);
+		args.shift();
+		args.shift();
+		args.shift();	
+		return window.setInterval(function () { 
+			fn.apply(_this, args); 
+		}, delay);
+	}	
 	
 });
-
 /**
  * Nova's config namespace
  * @constructor
  */
 nova.config = {
 	isDebug:true,	
-	firebug:(console && console.log)?true:false,
+	firebug:(typeof console !="undefined" && typeof console.log !="undefined")?true:false,
 	/**
 	 * toggle debug mode
 	 * 
@@ -97,9 +124,553 @@ nova.config = {
 	debug:function(bool) {
 		nova.config.isDebug=bool;
 	}
-	
-},
+};
+/**
+ * nova's browser namespace
+ * @constructor
+ */
+nova.browser = {
+	isIE : (document.all) ?true : false,
+	isFirefox:(navigator.userAgent.toLowerCase().indexOf("firefox")!=1)?true:false
+};
 
+/**
+ * Nova's effect namespace
+ * @constructor
+ */
+nova.effects = {
+	_queueList:[],
+	_defaultDuration:250,
+	_queuInProgress:false,
+	/**
+	 * Add function/method in the queue list
+	 * @param {Function} fn effect function
+	 * @param {Object} obj the object to effect
+	 * @param {Object} object with a least 1 property  : {duration: 00} (duration the duration of the effect is in ms)
+	 */
+	addToQueue:function(fn,obj,params) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		nova.effects._queueList.push({
+			fn:fn,
+			obj:obj,
+			params: params
+		});
+	},
+	/**
+	 * Launch the queue. It stop when all queued effect are displayed
+	 */
+	queueNext:function() {
+
+		if (nova.effects._queuInProgress && !nova.variable.isSet(arguments[0]))
+			return;
+		queue=nova.effects._queueList.shift();
+		if (nova.variable.isSet(queue)) {
+			queue.fromQueue=true;
+			nova.effects._queuInProgress=true;
+			args=[queue.obj,queue.params,queue.fromQueue];
+			queue.fn.apply(queue,args);
+		} else {
+			nova.effects._queuInProgress=false;
+		}
+	},
+	
+	/**
+	 * FadeIn effect on obj
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 3 properties : {duration: 00, from : 00, to: 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */
+	fadeIn:function(obj,params,fromQueue) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		params.fadeIn = true;
+		if (!nova.variable.isSet(params.from))
+			params.from=0;
+		if (!nova.variable.isSet(params.to))
+			params.to=1;
+			
+		nova.effects._fade(obj,params,fromQueue);
+	},
+	/**
+	 * FadeOut effect on obj
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 3 properties : {duration: 00, from : 00, to: 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */
+	fadeOut:function(obj,params,fromQueue) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		params.fadeIn = false;
+		if (!nova.variable.isSet(params.from))
+			params.from=1;
+		if (!nova.variable.isSet(params.to))
+			params.to=0;
+			
+		nova.effects._fade(obj,params,fromQueue);
+	},
+	/**
+	 * @private
+	 * Fade effect
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 4 properties : {duration: 00, fadeIn: true, from : 00, to : 00} (the duration of the effect is in ms)
+	 * @param {Bool} true if the effect is lauch by queue list
+	 */
+	_fade:function(obj,params,fromQueue) {
+		pas = 10;
+		_this={
+			obj:obj,
+			pas:pas,
+			fromQueue:fromQueue,
+			params: params,
+			effectInProgress:null
+		};
+		
+		params.duration=params.duration / ((Math.abs(params.from - params.to)*100) / pas);
+
+		_this.effectInProgress = nova.setInterval(function() {
+			obj=this.obj;
+			if (typeof this.fadeValue=="undefined") {
+				this.fadeValue=this.params.from;
+			}
+			obj.style.display="";
+			nova.html.setOpacity(obj,this.fadeValue );
+			
+			if (this.params.fadeIn)
+				this.fadeValue+=(this.pas/100);
+			else
+				this.fadeValue-=(this.pas/100);
+
+			if ((this.params.fadeIn && this.fadeValue>=params.to) || (!this.params.fadeIn && this.fadeValue<=params.to)) {
+				clearInterval(this.effectInProgress);
+				
+				if (!this.params.fadeIn && params.to == 0)
+					obj.style.display="none";
+				else if (this.params.fadeIn && params.to == 1) {
+					nova.html.setOpacity(obj,1);
+				}
+				
+				if (fromQueue)
+					nova.effects.queueNext(true);
+			}
+				
+		},params.duration,_this);
+	},
+	/**
+	 * Move an object 
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 3 properties : {left : 00, top: 00, duration: 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */	
+	moveTo:function(obj,params,fromQueue) {
+		pas=5;
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		
+		params.top=parseInt(params.top);
+		params.left=parseInt(params.left);
+		
+		var lEcart = Math.abs(nova.dom.getDomOffset(obj,"left") -params.left);
+		var tEcart = Math.abs(nova.dom.getDomOffset(obj,"top") -params.top);
+		var ecart=(lEcart>tEcart)?lEcart:tEcart;
+			
+		_this={
+			obj:obj,
+			pas:pas,
+			fromQueue:fromQueue,
+			effectInProgress:null,
+			params: params
+		};
+		params.duration=params.duration/(ecart / pas);
+		_this.effectInProgress = nova.setInterval(function() {
+
+			obj=this.obj;
+			
+			if (nova.dom.getDomOffset(obj,"left")<this.params.left)
+				obj.style.left=nova.dom.getDomOffset(obj,"left")+this.pas+"px";
+			if (nova.dom.getDomOffset(obj,"left")>this.params.left)
+				obj.style.left=nova.dom.getDomOffset(obj,"left")-this.pas+"px";
+			
+			
+			if (nova.dom.getDomOffset(obj,"top")<this.params.top)
+				obj.style.top=nova.dom.getDomOffset(obj,"top")+this.pas+"px";
+			if (nova.dom.getDomOffset(obj,"top")>this.params.top)
+				obj.style.top=nova.dom.getDomOffset(obj,"top")-this.pas+"px";
+			
+		
+			if (nova.dom.getDomOffset(obj,"left")==this.params.left && nova.dom.getDomOffset(obj,"top")==this.params.top) {
+				clearInterval(this.effectInProgress);
+				if (fromQueue)
+					nova.effects.queueNext(true);
+			}
+		},params.duration,_this);
+	},
+	/**
+	 * Resize an object 
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 3 properties : {width : 00, height: 00, duration: 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */	
+	resize:function(obj,params,fromQueue) {
+		pas=5;
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+			
+		var hEcart = Math.abs(obj.offsetHeight -params.height);
+		var wEcart = Math.abs(obj.offsetWidth -params.width);
+		var ecart=(hEcart>wEcart)?hEcart:wEcart;
+		
+			
+		_this={
+			obj:obj,
+			pas:pas,
+			fromQueue:fromQueue,
+			effectInProgress:null,
+			params: params
+		};
+		params.duration=params.duration/(ecart / pas);
+		_this.effectInProgress = nova.setInterval(function() {
+
+			obj=this.obj;
+			if (obj.offsetHeight<this.params.height)
+				obj.style.height=obj.offsetHeight+this.pas+"px";
+			if (obj.offsetWidth<this.params.width)
+				obj.style.width=obj.offsetWidth+this.pas+"px";
+		
+			if (obj.offsetHeight>=this.params.height && obj.offsetWidth>=this.params.width) {
+				clearInterval(this.effectInProgress);
+				if (fromQueue)
+					nova.effects.queueNext(true);
+			}
+		},params.duration,_this);
+	},
+	/**
+	 * slideUp effect on obj
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 1 properties : {duration: 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */
+	slideUp : function(obj,params,fromQueue) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		params.slideUp = true;
+		nova.effects._slide(obj,params,fromQueue);
+	},
+	/**
+	 * slideDown effect on obj
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 1 or properties : {duration: 00, height : 00} (the duration of the effect is in ms)
+	 * @param {Bool} fromQueue true if lauch from queue
+	 */
+	slideDown : function(obj,params,fromQueue) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+		params.slideUp = false;
+		nova.effects._slide(obj,params,fromQueue);
+	},	
+	/**
+	 * @private
+	 * Slide effect
+	 * @param {Object} obj the object to fade
+	 * @param {Object} params object with 2 properties : {duration: 00, slideUp: true} (the duration of the effect is in ms)
+	 * @param {Bool} true if the effect is lauch by queue list
+	 */
+	_slide : function(obj,params,fromQueue) {
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.duration))
+			params.duration=nova.effects._defaultDuration;
+			
+		var pas=5;
+		
+		params.originalSize=(obj.offsetHeight>0)?obj.offsetHeight:obj.originalSize;
+		
+		if (params.originalSize == null || typeof params.originalSize == "undefined") {
+			if (params.height == null || typeof params.height == "undefined")
+				return nova.debug.raiseError("you must precise the height");
+			params.originalSize = params.height;
+		}
+		obj.originalSize=params.originalSize;
+			
+		_this={
+			obj:obj,
+			pas:pas,
+			fromQueue:fromQueue,
+			effectInProgress:null,
+			params: params
+		};
+		params.duration=params.duration/(params.originalSize / pas);
+					console.log(params.duration);
+	
+		_this.effectInProgress = nova.setInterval(function() {
+			obj=this.obj;
+			
+			if (typeof this.slideValue=="undefined") {
+				if (this.params.slideUp)
+					this.slideValue=0;
+				else
+					this.slideValue=this.params.originalSize;
+			}
+			
+			obj.style.height=this.slideValue+"px";
+			
+			if (params.slideUp) {
+				if (this.slideValue==0)
+					obj.style.display="";
+				this.slideValue+=pas;		
+			} else
+				this.slideValue-=pas;
+							
+			if ((obj.offsetHeight>=this.params.originalSize && params.slideUp) || (obj.offsetHeight<=0 && !params.slideUp)) {
+				clearInterval(this.effectInProgress);
+				if (!params.slideUp)
+					obj.style.display="none";
+				if (fromQueue)
+					nova.effects.queueNext(true);
+			}
+		},params.duration,_this);
+	}
+};
+/**
+ * Nova's slider namespace
+ * @constructor
+ */
+nova.slider= {
+	/**
+	 * Connect a slide on ul obj
+	 * 
+	 * 
+	 * props exemple :
+	 * {
+	 * className : "myCSSStyle",
+	 * }
+	 * 
+	 * @param {Object} obj the ul obj to connect slide
+	 * @param {Object} props all props (see exemple)
+	 */
+	connect : function(obj,props) {
+		if (!obj.tagName || obj.tagName.toLowerCase() != "ul")
+			return nova.debug.raiseError("you can connect slider only on UL element");
+		
+		var lis=obj.getElementsByTagName("li");
+		if (lis.length<2)
+			return nova.debug.raiseError("you need at least 2 li");
+		
+		for (var i=0;i<lis.length;i++)
+			nova.connect(lis[i],"mousemove",nova.slider._move);
+		
+	    obj.slider=document.createElement('div');
+		obj.slider.props=props;
+		if (nova.variable.isSet(props.className))
+			nova.html.setClass(obj.slider,props.className);
+		var _pos = nova.slider._getCoordonate(lis[0]);
+		nova.html.setStyle(obj.slider,{position: 'absolute',left: _pos.left,top:_pos.top})
+
+	    document.body.appendChild(obj.slider);
+	},
+	/**
+	 * Disconnect a slide from ul obj
+	 * @param {Object} obj the ul obj to disconnect slide
+	 */
+	disconnect : function(obj) {
+		if (!obj.tagName || obj.tagName.toLowerCase() != "ul")
+			return nova.debug.raiseError("you can disconnect slider only on UL element");
+		
+		var lis=obj.getElementsByTagName("li");		
+		for (var i in lis)
+			nova.disconnect(lis[i],"mousemove",nova.slider._move);
+		
+		nova.dom.removeNode(obj.slider);
+		delete obj.slider;
+	},
+	/**
+	 * @private
+	 * get new coordonate of slider object with li current position
+	 * @param {Object} obj li object
+	 * @return {Object}
+	 */
+	_getCoordonate :  function(obj) {
+		return {left: nova.dom.getDomOffset(obj,"left")+"px",top:(nova.dom.getDomOffset(obj,"top") + obj.offsetHeight)+"px"};
+	},
+	/**
+	 * @private
+	 * move the slider to the new pos
+	 * @param {Object} evt events object
+	 */
+	_move: function(evt) {
+		var _pos = nova.slider._getCoordonate(this);
+		nova.effects.moveTo(this.parentNode.slider,{left: _pos.left,top: _pos.top})
+	}
+	
+};
+/**
+ * Nova's string namespace
+ * @constructor
+ */
+nova.string = {
+	/**
+	 * revert htmlEncode
+	 * @param {String} str string to encode
+	 * @return {String}
+	 */
+	htmlDecode : function(str) {
+		var entities=str.match(/\&\#([0-9]+);/g);
+		var num="";
+		var reg = null;
+		var decoded=str;
+		for (var i in entities) {
+			num=entities[i].replace(/\&|\#|\;/g,"");
+			reg=new RegExp(entities[i],"g");
+			decoded=decoded.replace(reg,String.fromCharCode(num));
+		}
+		return decoded;
+	},
+	/**
+	 * encode a string in html format
+	 * @param {String} str string to encode
+	 * @return {String}
+	 */
+	htmlEncode : function (str) {
+		var encoded="";
+		var tmp="";
+		for (var i =0; i<str.length;i++) {
+		    tmp=str.substr(i,1);
+		    encoded+=(String.charCodeAt(tmp)<32 || String.charCodeAt(tmp) >125)?"&#"+String.charCodeAt(tmp)+";":tmp;
+		}
+	},
+	/**
+	 * trim space before and after a string
+	 * @param {String} str the str to strim
+	 * @return {string}
+	 */
+	trim : function(str) {
+		return str.replace(/^\s+|\s+$/g, "");
+	}
+};
+/**
+ * Nova's lighbox namespace
+ * To add a custom style on the dock window, create the css class #lightbox_dock { }
+ * To add a custom style on the picture window, create the css class #lightbox_image { }
+ * To add a loading picture, place a backgroundImage centered in #lightbox_dock
+ * @constructor
+ */
+nova.lightbox = {
+	_modal:null,
+	/**
+	 * init the lightbox
+	 * @param {Object | Array} obj an object or an array of object to apply lightbox
+	 */
+	init:function(obj) {
+		var clk= function () {
+				try {
+					nova.lightbox._show(this);
+				} catch (e) {}
+				arguments[0].cancelBubble = true;
+				arguments[0].returnValue = false;
+				if (arguments[0].stopPropagation) {
+					arguments[0].stopPropagation();
+					arguments[0].preventDefault();
+				}
+				return false;
+			};
+		if (nova.variable.isObject(obj)) {
+			nova.connect(obj,"click",clk);
+		} else {
+			for(i=0;i<obj.length;i++) {
+				nova.connect(obj[i],"click",clk);
+			}
+		}
+	},
+	/**
+	 * @private
+	 * show the box
+	 * @param {Object} _this object with to to img
+	 */
+	_show:function(_this) {
+		nova.dom.hideNotZindexedElements();
+		vps=nova.dom.getViewportSize();
+		
+		document.getElementsByTagName("body")[0].style.overflowX="hidden";
+		document.getElementsByTagName("body")[0].style.overflowY="hidden";
+		
+			
+		modal=document.createElement("div");
+		modal.style.height=vps.height+"px";
+		modal.style.width=vps.width+"px";
+		modal.style.position="absolute";
+		modal.id="lightbox_dock";
+		modal.style.left=0;
+		modal.style.top=0;
+		modal.style.zIndex=9999;
+		modal.onclick=function() {
+			nova.lightbox._hide(this);
+		}
+		document.getElementsByTagName("body")[0].appendChild(modal);
+		
+		nova.lightbox._modal=document.createElement("img");
+		nova.lightbox._modal.style.display="none";
+		nova.lightbox._modal.id="lightbox_image";
+		nova.lightbox._modal.src=_this.href;
+		nova.lightbox._modal.style.zIndex=10000;
+		nova.lightbox._modal.style.position="absolute";
+		nova.lightbox._modal.modalBack=modal;
+		nova.lightbox._modal.onclick=function() {
+			nova.lightbox._hide(this.modalBack);
+		}
+		document.getElementsByTagName("body")[0].appendChild(nova.lightbox._modal);
+		
+		nova.lightbox._showImg(_this.href);
+	},
+	/**
+	 * @private
+	 * Create img after showing the box
+	 * @param {String} src link to image
+	 */
+	_showImg:function(src) {
+		preload = new Image();
+		
+		// once image is preloaded, resize image container
+		preload.onload=function(){
+			size={width:preload.width, height:preload.height};
+			vps=nova.dom.getViewportSize();
+			if (size.height>vps.height)
+				size.height=vps.height-10;
+			if (size.width>vps.width)
+				size.width=vps.width-10;
+
+			nova.lightbox._modal.style.top=((vps.height-size.height)/2) + "px";
+			nova.lightbox._modal.style.left=((vps.width-size.width)/2) + "px";
+			nova.effects.addToQueue(nova.effects.fadeIn,nova.lightbox._modal,{duration:250});
+			nova.effects.queueNext();
+			preload.onload=function(){}; 
+		}
+		preload.src = src;
+	},
+	/**
+	 * @private
+	 * hide the box and the img
+	 * @param {Object} _this object with to to img
+	 */
+	_hide:function(_this) {
+		nova.dom.removeNode(_this,true);
+		nova.dom.removeNode(nova.lightbox._modal,true);
+		nova.dom.showNotZindexedElements();
+	}
+};
 /**
  * Nova's html namespace
  * @constructor
@@ -148,6 +719,29 @@ nova.html = {
 		obj.className=classN;
 	},
 	/**
+	 * Replace all style by another on object
+	 * 
+	 * @param {Object} obj your object
+	 * @param {Object} style style description
+	 */
+	setStyle: function (obj,sstyle) {
+		for (var i in sstyle)
+			obj.style[i]=sstyle[i];
+	},
+	/**
+	 * Set the opacity of obj
+	 * @param {Object} obj the obj to set
+	 * @param {Object} opacity the opacity value (between 0 and 1)
+	 */
+	setOpacity : function (obj, valOpacity) {
+		if (nova.browser.isIE) {
+			obj.style.zoom = "1";
+			obj.style.filter="alpha(opacity="+(valOpacity * 100)+")";
+		} else
+			obj.style.MozOpacity=valOpacity;
+		obj.style.opacity=valOpacity;
+	},
+	/**
 	 * toggle a class on object
 	 * 
 	 * @param {Object} obj your object
@@ -158,7 +752,13 @@ nova.html = {
 			this.removeClass(obj,classN);
 		else
 			this.addClass(obj,classN);
-	},
+	}
+};
+/**
+ * Nova's DOM namespace
+ * @constructor
+ */
+nova.dom = {
 	/**
 	 * get Dom elements by anything (name,tagname,id,class,selector,....)
 	 * Can have much than one parameters
@@ -228,6 +828,54 @@ nova.html = {
 			return {x:(e.clientX + document.body.scrollLeft),y:(e.clientY + document.body.scrollTop)};
 	},
 	/**
+	 * Hide Some elements wich not affected by Zindex (in IE)
+	 * 
+	 */
+	hideNotZindexedElements:function() {
+		var objs = document.getElementsByTagName("select");
+		for (i = 0; i != objs.length; i++) {
+			objs[i].oldVisibility=objs[i].style.visibility;
+			objs[i].style.visibility = "hidden";
+		}
+		var objs = document.getElementsByTagName("object");
+		for (i = 0; i != objs.length; i++) {
+			objs[i].oldVisibility=objs[i].style.visibility;
+			objs[i].style.visibility = "hidden";
+		}
+		var objs = document.getElementsByTagName("embed");
+		for (i = 0; i != objs.length; i++) {
+			objs[i].oldVisibility=objs[i].style.visibility;
+			objs[i].style.visibility = "hidden";
+		}
+	},
+	/**
+	 * Show Some elements wich not affected by Zindex (in IE)
+	 * 
+	 */
+	showNotZindexedElements:function() {
+		var objs = document.getElementsByTagName("select");
+		for (i = 0; i != objs.length; i++) {
+			if (nova.variable.isSet(objs[i].oldVisibility)) {
+				objs[i].style.visibility = objs[i].oldVisibility;
+				delete objs[i].oldVisibility;
+			}
+		}
+		var objs = document.getElementsByTagName("object");
+		for (i = 0; i != objs.length; i++) {
+			if (nova.variable.isSet(objs[i].oldVisibility)) {
+				objs[i].style.visibility = objs[i].oldVisibility;
+				delete objs[i].oldVisibility;
+			}
+		}
+		var objs = document.getElementsByTagName("embed");
+		for (i = 0; i != objs.length; i++) {
+			if (nova.variable.isSet(objs[i].oldVisibility)) {
+				objs[i].style.visibility = objs[i].oldVisibility;
+				delete objs[i].oldVisibility;
+			}
+		}
+	},	
+	/**
 	 * Move a node in other node
 	 * 
 	 * @param {Object} node the node you want to move
@@ -262,7 +910,7 @@ nova.html = {
 	 * 
 	 * @return {Object} like {width:xxx, height:yyy}
 	 */
-	viewportSize:function () {
+	getViewportSize:function () {
 		if( typeof( window.innerWidth ) == 'number' )
 			return {width : window.innerWidth,height : window.innerHeight };
 		else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) )
@@ -271,16 +919,66 @@ nova.html = {
 			return {width : document.body.clientWidth,height : document.body.clientHeight };
 	},
 	/**
+	* Get the position of the document scroolbar
+	* @return {Object} like {left:xxx, top:yyy}
+	*/
+	getDocumentScrollPosition : function () {
+		return {left:document.documentElement.scrollLeft,top:document.documentElement.scrollTop};
+	},
+	/**
+	 * Get the previous node in the DOM tree
+	 * @param {Object} obj start object
+	 * @return {null|DomObject}
+	 */
+	getPreviousNode : function (obj) {
+		if (obj.previousSibling == null) return null;
+		var prev=obj.previousSibling;
+		while (prev.nodeType!=1 && prev.previousSibling != null)
+			prev=prev.previousSibling;
+		if (prev.nodeType!=1) return null;			
+		return prev;
+	},
+	/**
+	 * Get the next node in the DOM tree
+	 * @param {Object} obj start object
+	 * @return {null|DomObject}
+	 */
+	getNextNode : function (obj) {
+		if (obj.nextSibling == null) return null;
+		var next=obj.nextSibling;
+		while (next.nodeType!=1 && next.nextSibling != null)
+			next=next.nextSibling;
+		if (next.nodeType!=1) return null;
+		return next;
+	},
+	/**
+	 * get the parent of an object
+	 * @param {Object} el starting object
+	 * @param {String} pTagName filter parent tag
+	 * @return {Object}
+	 */
+	getParentNode : function (obj, tag) {
+		if (obj == null) return null;
+		else if (obj.nodeType == 1 && (obj.tagName.toLowerCase() == tag.toLowerCase() || tag == ""))
+			return obj;
+		else
+			return nova.dom.getParentNode(obj.parentNode, tag);
+	},
+	
+	/**
 	 * Place an object on viewport's center
 	 * 
 	 * @param {Object} obj you dom object
 	 */
 	centerObjectOnViewport : function (obj) {
-		vpSize=nova.html.viewportSize();
-		objSize= {width:obj.offsetWidth,height:obj.offsetHeight};
 		obj.style.position="absolute";
-		obj.style.left=(vpSize.width-(vpSize.width/2)-(objSize.width/2))+"px";
-		obj.style.top=(vpSize.height-(vpSize.height/2)-(objSize.height/2))+"px";
+		vpSize=nova.dom.getViewportSize();
+		obj.style.zoom = "1";
+		objSize= {width:obj.offsetWidth,height:obj.offsetHeight};
+		docScrollPos=nova.dom.getDocumentScrollPosition();
+		obj.style.left=(docScrollPos.left+vpSize.width-(vpSize.width/2)-(objSize.width/2))+"px";
+		obj.style.top=(docScrollPos.top+vpSize.height-(vpSize.height/2)-(objSize.height/2))+"px";
+
 	}
 };
 /**
@@ -742,7 +1440,7 @@ nova.variable = {
 				a[i]=value;
 				return a.concat(b);
 			}
-		},
+		}
 	},
 	/**
 	 * Object subnamespace
@@ -768,8 +1466,8 @@ nova.variable = {
 				for (i=0;i<obj.length;i++)
 					r[i]=(nova.variable.isObject(obj[i]))?new nova.clone(obj[i],true):obj[i];
 			return r;
-		},
-	},
+		}
+	}
 };
 
 /**
@@ -814,7 +1512,7 @@ nova.topic = {
 		args.shift();
 		this.evts[name].apply(_this,args);
 		return true;
-	},
+	}
 };
 /**
  * Nova's Drang'n Drop namespace
@@ -833,20 +1531,22 @@ nova.dnd = {
 	 */
 	connectDragObject:function(objects,constraint) {
 		for(var i in objects) {
-			nova.connect(objects[i],"mousedown",this.dragStart);
-			nova.connect(objects[i],"mouseup",this.dragEnd);
-			nova.connect(objects[i],"mousemove",this.dragMove);
-			
-			this._objParams.constraint=(constraint!=null)?constraint.toLowerCase():"";
-			
-			objects[i].dnd=this;
-			nova.html.addClass(objects[i],"drag");
-			
-			objects[i].initStyle= {position:objects[i].style.position,
-									zIndex:objects[i].style.zIndex,
-									height:objects[i].style.height,
-									width:objects[i].style.width
-									};
+			if (objects[i] != null && objects[i].nodeType != null) {
+				nova.connect(objects[i],"mousedown",this.dragStart);
+				nova.connect(objects[i],"mouseup",this.dragEnd);
+				nova.connect(objects[i],"mousemove",this.dragMove);
+				
+				this._objParams.constraint=(constraint!=null)?constraint.toLowerCase():"";
+				
+				objects[i].dnd=this;
+				nova.html.addClass(objects[i],"drag");
+				
+				objects[i].initStyle= {position:objects[i].style.position,
+										zIndex:objects[i].style.zIndex,
+										height:objects[i].style.height,
+										width:objects[i].style.width
+										};
+			}
 		}
 	},
 	/**
@@ -855,9 +1555,11 @@ nova.dnd = {
 	 */
 	connectDropObject:function(objects) {
 		for(var i in objects) {
-			objects[i].dnd=this;
-			nova.html.addClass(objects[i],"drop");
-			this._dropZone.push(objects[i]);
+			if (objects[i] != null && objects[i].nodeType != null) {
+				objects[i].dnd=this;
+				nova.html.addClass(objects[i],"drop");
+				this._dropZone.push(objects[i]);
+			}
 		}
 	},
 	/**
@@ -868,11 +1570,11 @@ nova.dnd = {
 	dragStart:function(e) {
 		this.dnd._objDnd=this;
 
-		this.dnd._objParams.mousePos = nova.html.getMousePos(e);
-		this.dnd._objParams.objectPos = {x:nova.html.getDomOffset(this,"left"),
-										y:nova.html.getDomOffset(this,"top"),
-										h:nova.html.getDomOffset(this,"height"),
-										w:nova.html.getDomOffset(this,"width")
+		this.dnd._objParams.mousePos = nova.dom.getMousePos(e);
+		this.dnd._objParams.objectPos = {x:nova.dom.getDomOffset(this,"left"),
+										y:nova.dom.getDomOffset(this,"top"),
+										h:nova.dom.getDomOffset(this,"height"),
+										w:nova.dom.getDomOffset(this,"width")
 										};
 		
 		this.dnd._objParams.style= {position:this.style.position,
@@ -905,9 +1607,9 @@ nova.dnd = {
 			this.dnd._objDnd.style.position=this.initStyle.position;
 		else {
 			//this.dnd._objDnd.style.position="relative";
-			//this.dnd._objDnd.style.top=nova.html.getDomOffset(this.dnd._objDnd,"top")-nova.html.getDomOffset(node,"top");
-			//this.dnd._objDnd.style.left=nova.html.getDomOffset(this.dnd._objDnd,"left")-nova.html.getDomOffset(node,"left");
-			var n=nova.html.moveNodeTo(this,node);
+			//this.dnd._objDnd.style.top=nova.dom.getDomOffset(this.dnd._objDnd,"top")-nova.dom.getDomOffset(node,"top");
+			//this.dnd._objDnd.style.left=nova.dom.getDomOffset(this.dnd._objDnd,"left")-nova.dom.getDomOffset(node,"left");
+			var n=nova.dom.moveNodeTo(this,node);
 			nova.html.removeClass(node,"dropOk");
 		}
 		this.dnd._objDnd.style.zIndex=this.initStyle.zIndex;
@@ -928,7 +1630,7 @@ nova.dnd = {
 		if (this.dnd._objDnd==null)
 			return false;
 		
-		var mouse=nova.html.getMousePos(e);
+		var mouse=nova.dom.getMousePos(e);
 		var delta = {x:(this.dnd._objParams.mousePos.x - this.dnd._objParams.objectPos.x),y:(this.dnd._objParams.mousePos.y - this.dnd._objParams.objectPos.y)};
 		if (this.dnd._objParams.constraint!="x")
 			this.dnd._objDnd.style.left = mouse.x - delta.x+"px";
@@ -953,19 +1655,19 @@ nova.dnd = {
 	 * @private
 	 */
 	_getNodeUnderMouse: function(e){
-		var mouse=nova.html.getMousePos(e);
+		var mouse=nova.dom.getMousePos(e);
 		for (var i = 0; i < this._dropZone.length; i++) {
-				var objPos={top:nova.html.getDomOffset(this._dropZone[i],"top"),
-							left:nova.html.getDomOffset(this._dropZone[i],"left"),
-							width:nova.html.getDomOffset(this._dropZone[i],"width"),
-							height:nova.html.getDomOffset(this._dropZone[i],"height")
+				var objPos={top:nova.dom.getDomOffset(this._dropZone[i],"top"),
+							left:nova.dom.getDomOffset(this._dropZone[i],"left"),
+							width:nova.dom.getDomOffset(this._dropZone[i],"width"),
+							height:nova.dom.getDomOffset(this._dropZone[i],"height")
 							}
 				
 				if (mouse.x >= objPos.left && mouse.x <= (objPos.left+objPos.width) &&
 					mouse.y >= objPos.top && mouse.y <= (objPos.top+objPos.height)) { return this._dropZone[i]; }
 		}
 		return false;
-	},
+	}
 };
 /**
  * Nova's debug namespace
@@ -1072,6 +1774,557 @@ nova.io = {
 		xhr_object.send(args.queryString);
 		return true;
 	},
+	/**
+	 * Update an HTML object with a result of an XHR request
+	 * 
+	 * <code>
+	 *  args {
+	 * 		file:"page.htm",
+	 * 		method:"POST" || "GET",
+	 * 		queryString:"var1=a&var2=b",
+	 * 		formNode:document.getElementById("test"),
+	 * 		onError:function () {}
+	 * }
+	 * </code>
+	 *
+	 * @param {Object} an HTML object to update
+	 * @param {Object} args see exemple
+	 * @return {Bool} false if browser doesn't support XHR 
+	 */
+	update:function(obj,args) {
+		args.update=obj;
+		args.onLoad =function () {
+			arguments[1].update.innerHTML =arguments[0];
+		};
+		return nova.io.send(args);
+	}
+};
+/**
+ * Nova's tooltip object
+ * @constructor
+ */
+nova.tooltip = {
+	/**
+	 * Add a tooltip on obj
+	 * 
+	 * props exemple :
+	 * {
+	 * content:"hello",
+	 * className : "myCSSStyle",
+	 * offsetX:2,
+	 * offsetY:5
+	 * }
+	 * 
+	 * @param {Object} obj the obj to add tooltip
+	 * @param {Object} props all props (see exemple)
+	 */
+	connect : function(obj,props) {
+	    
+	    obj.tooltips=document.createElement('div');
+		obj.tooltips.props=props;
+		if (nova.variable.isSet(props.className))
+			nova.html.setClass(obj.tooltips,props.className);			
+		nova.html.setStyle(obj.tooltips,{position: 'absolute',display: 'none'})
+	    
+		if (nova.variable.isSet(props.content)) {
+			var tip = document.createElement('div');
+			nova.html.setClass(tip,'content');
+			tip.innerHTML = props.content
+		}
+	    obj.tooltips.appendChild(tip);
+	    document.body.appendChild(obj.tooltips);
+		nova.connect(obj,"mousemove",nova.tooltip._show);
+		nova.connect(obj,"mouseout",nova.tooltip._hide);
+	    	
+	},
+	/**
+	 * Disconnect a tooltip from obj
+	 * @param {Object} obj the obj to disconnect tooltip's
+	 */
+	disconnect : function(obj) {
+		nova.dom.removeNode(obj.tooltips);
+		delete obj.tooltips;
+		nova.disconnect(obj,"mousemove",nova.tooltip._show);
+		nova.disconnect(obj,"mouseout",nova.tooltip._hide);
+	},
+	/**
+	 * Show a tooltip
+	 * @private
+	 * @param {Object} evt
+	 */
+	_show : function(evt) {
+		nova.tooltip._positionTip(evt, this.tooltips);
+		if (this.tooltips.style.display=="none"){
+			nova.effects.fadeIn(this.tooltips,{duration:250});
+		}
+	},
+	/**
+	 * Hide a tooltip
+	 * @private
+	 */
+	_hide : function() {
+		nova.effects.fadeOut(this.tooltips,{duration:250});
+	},
+	/**
+	 * Put the tooltips in the good place !
+	 * @private
+	 * @param {Object} event
+	 * @param {Object} obj
+	 */
+	_positionTip: function(event,obj){
+	    var offsets = {x: obj.props.offsetX,y: obj.props.offsetY};
+	    var mouse = nova.dom.getMousePos(event);
+	    var page = nova.dom.getViewportSize();
+	    var tip = {x: mouse.x + obj.props.offsetX + obj.offsetWidth,
+	    			y : mouse.y + obj.props.offsetY + obj.offsetHeight
+				};
+	
+	    // inverse x or y to keep tooltip within viewport
+	    if(tip.x>page.x) {offsets.x = 0-(obj.offsetWidth  + obj.props.offsetX); }
+	    if(tip.y>page.y) {offsets.y = 0-(obj.offsetHeight + obj.props.offsetY); }
+	
+	    nova.html.setStyle(obj,{ left: (mouse.x + offsets.x) + 'px',
+	      						top: (mouse.y + offsets.y) + 'px'}
+						);
+  }
+}
+
+/**
+ * Nova's shortcut object
+ * @constructor
+ */
+nova.shortcut = {
+	/**
+	 * Add a new key shortcut
+	 * Parameter are like that :
+	 * {'type':'keydown','propagate':false,'target':document,'callback':function() {}}
+	 * parameter type : the event witch lauche the shortcut function
+	 * parameter propagate : if true, events wont be stoped after your function and an other function can trappe him
+	 * parameter target : the object wich have the shortcut (default : document, if target is a string, we try to found the object with nova.dom.getElementsByAnything)
+	 * parameter callback : the function the shortcut will launch 
+	 * 
+	 * @param {String} shortcut the key shortcut (like CTRL + F1)
+	 * @param {Object} opt shortcut parameter (see exemple)
+	 */
+	add : function (shortcut,opt) {
+		//Provide a set of default options
+		var default_options = {
+			'type':'keydown',
+			'propagate':false,
+			'target':document,
+			'callback':function() {}
+		};
+		
+		if(!opt) opt = default_options;
+		else {
+			for(var dfo in default_options) {
+				if(typeof opt[dfo] == 'undefined') opt[dfo] = default_options[dfo];
+			}
+		}
+	
+		var ele = opt.target
+		if(typeof opt.target == 'string') ele = nova.dom.getElementsByAnything(opt.target);
+		if (!nova.variable.isSet(ele.shortcut))
+			ele.shortcut=[];
+			
+		ele.shortcut[shortcut.toLowerCase()]=opt;	
+		nova.connect(ele,opt['type'],this._onCallShorcut);
+		
+	},
+	/**
+	 * Remove a shortcut
+	 * Parameter are like that :
+	 * {'type':'keydown','target':document,'callback':function() {}}
+	 * parameter type : the event witch lauche the shortcut function
+	 * parameter target : the object wich have the shortcut (default : document, if target is a string, we try to found the object with nova.dom.getElementsByAnything) 
+	 * 
+	 * @param {String} shortcut the key shortcut (like CTRL + F1)
+	 * @param {Object} opt shortcut parameter (see exemple)
+	 */
+	remove:function(shortcut,opt) {
+		var default_options = {
+			'type':'keydown',
+			'target':document
+		};
+		
+		if(!opt) opt = default_options;
+		else {
+			for(var dfo in default_options) {
+				if(typeof opt[dfo] == 'undefined') opt[dfo] = default_options[dfo];
+			}
+		}
+
+		var ele = opt.target
+
+		nova.disconnect(ele,opt['type'],this._onCallShorcut);		
+		if(typeof opt.target == 'string') ele = nova.dom.getElementsByAnything(opt.target);
+		delete ele.shortcut[shortcut.toLowerCase()];
+	},
+	/**
+	 * Launched when a shortcut is fired
+	 * 
+	 * @param {Object} e the events
+	 * @private
+	 */
+	_onCallShorcut:function(e) {
+		e = e || window.event;
+
+		//Find Which key is pressed
+		if (e.keyCode) code = e.keyCode;
+		else if (e.which) code = e.which;
+		var character = String.fromCharCode(code).toLowerCase();
+
+		//Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
+		var kp = 0;
+		
+		//Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
+		var shift_nums = {
+			"`":"~",
+			"1":"!",
+			"2":"@",
+			"3":"#",
+			"4":"$",
+			"5":"%",
+			"6":"^",
+			"7":"&",
+			"8":"*",
+			"9":"(",
+			"0":")",
+			"-":"_",
+			"=":"+",
+			";":":",
+			"'":"\"",
+			",":"<",
+			".":">",
+			"/":"?",
+			"\\":"|"
+		}
+		//Special Keys - and their codes
+		var special_keys = {
+			'esc':27,
+			'escape':27,
+			'tab':9,
+			'space':32,
+			'return':13,
+			'enter':13,
+			'backspace':8,
+
+			'scrolllock':145,
+			'scroll_lock':145,
+			'scroll':145,
+			'capslock':20,
+			'caps_lock':20,
+			'caps':20,
+			'numlock':144,
+			'num_lock':144,
+			'num':144,
+			
+			'pause':19,
+			'break':19,
+			
+			'insert':45,
+			'home':36,
+			'delete':46,
+			'end':35,
+			
+			'pageup':33,
+			'page_up':33,
+			'pu':33,
+
+			'pagedown':34,
+			'page_down':34,
+			'pd':34,
+
+			'left':37,
+			'up':38,
+			'right':39,
+			'down':40,
+
+			'f1':112,
+			'f2':113,
+			'f3':114,
+			'f4':115,
+			'f5':116,
+			'f6':117,
+			'f7':118,
+			'f8':119,
+			'f9':120,
+			'f10':121,
+			'f11':122,
+			'f12':123
+		}
+		var allKeys = this.shortcut;
+
+		for(var oneKey in allKeys) {
+			keys=oneKey.split("+");
+			kp=0;
+			for(var i=0; k=keys[i],i<keys.length; i++) {
+
+				//Modifiers
+				if(k == 'ctrl' || k == 'control') {
+					if(e.ctrlKey) kp++;
+	
+				} else if(k ==  'shift') {
+					if(e.shiftKey) kp++;
+	
+				} else if(k == 'alt') {
+						if(e.altKey) kp++;
+	
+				} else if(k.length > 1) { //If it is a special key
+					if(special_keys[k] == code) kp++;
+	
+				} else { //The special keys did not match
+					if(character == k) kp++;
+					else {
+						if(shift_nums[character] && e.shiftKey) { //Stupid Shift key bug created by using lowercase
+							character = shift_nums[character]; 
+							if(character == k) kp++;
+						}
+					}
+				}
+			}
+	
+			if(kp == keys.length) {
+				
+				allKeys[oneKey].callback(e);
+	
+				if(!allKeys[oneKey].propagate) { //Stop the event
+					//e.cancelBubble is supported by IE - this will kill the bubbling process.
+					e.cancelBubble = true;
+					e.returnValue = false;
+					//e.stopPropagation works only in Firefox.
+					if (e.stopPropagation) {
+						e.stopPropagation();
+						e.preventDefault();
+					}
+					return false;
+				}
+			}
+		}
+		
+	}
+};
+/**
+ * Nova's tabel namespace
+ * @constructor
+ */
+nova.table= {
+	/**
+	 * @constructor
+	 */
+	sortable : {
+		/**
+		 * Make a TABLE sortable
+		 * props exemple :
+		 * props = {sortedAscClassName:"ascSorted",sortedDescClassName:"descSorted", ignoreSortOnClass:"plip"}
+		 * 
+		 * @param {Object} obj the table to make sortable
+		 * @param {Object} props properties (see exemple)
+		 */
+		init : function (obj,props) {
+			if (typeof props!="object")
+				props={sortedAscClassName:"asc",sortedDescClassName:"desc",ignoreSortOnClass:"unsorted"},
+			
+			nova.table.sortable.SORT_COLUMN_INDEX=null;
+			
+			obj.props=props;
+			
+	 		if (!obj.tagName || obj.tagName.toLowerCase()!="table")
+				return nova.debug.raiseError("you can sort only table element");
+				
+			nova.table.sortable._makeSortable(obj);
+ 		},
+		/**
+		 * @private
+		 * connect events on header
+		 * @param {Object} table table dom object
+		 */
+		_makeSortable : function (table) {
+		    if (table.rows && table.rows.length > 0) {
+		        var firstRow = table.rows[0];
+		    }
+		    if (!firstRow) return;
+ 
+		    // We have a first row: assume it's the header, and make its contents clickable links
+		    for (var i=0;i<firstRow.cells.length;i++) {
+		        var cell = firstRow.cells[i];
+				nova.connect(cell,"click",nova.table.sortable._resortTable);
+		    }
+		},
+		/**
+		 * @private
+		 * get text content of a node
+		 * @param {Object} el dom element
+		 * @return {String}
+		 */
+		_getInnerText : function (el) {
+			if (typeof el == "string") return el;
+			if (typeof el == "undefined") { return el };
+			if (el.innerText) return el.innerText;	//Not needed but it is faster
+			var str = "";
+			var cs = el.childNodes;
+			var l = cs.length;
+			for (var i = 0; i < l; i++) {
+				switch (cs[i].nodeType) {
+					case 1: //ELEMENT_NODE
+						str += nova.table.sortable._getInnerText(cs[i]);
+						break;
+					case 3:	//TEXT_NODE
+						str += cs[i].nodeValue;
+						break;
+				}
+			}
+			return str;
+		},
+ 		/**
+ 		 * @private
+ 		 * sort the array
+ 		 * @param {Object} evt events object
+ 		 */
+		_resortTable: function (evt) {
+		    // get the span
+			var td=this;
+		    var column = td.cellIndex;
+			var table;
+		    var tTable = table = nova.dom.getParentNode(td,'table');
+			var startline=1;
+			var tbody=table.getElementsByTagName("tbody");
+			if (tbody.length>1) {
+				startline = 0;
+				table = tbody[0];
+			}
+		    // Work out a type for the column
+		    if (table.rows.length <= 1) return;
+		    var itm =  nova.table.sortable._getInnerText(table.rows[1].cells[column]);
+		    sortfn =  nova.table.sortable._sort_caseinsensitive;
+		    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn =  nova.table.sortable._sort_date;
+		    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn =  nova.table.sortable._sort_date;
+		    if (itm.match(/^[£$]/)) sortfn =  nova.table.sortable._sort_currency;
+		    if (itm.match(/^[\d\.]+$/)) sortfn =  nova.table.sortable._sort_numeric;
+		    nova.table.sortable.SORT_COLUMN_INDEX = column;
+		    var firstRow = new Array();
+		    var newRows = new Array();
+		    for (i=0;i<table.rows[0].length;i++) { firstRow[i] = table.rows[0][i]; }
+		    for (j=startline;j<table.rows.length;j++) { newRows[j-startline] = table.rows[j]; }
+		 
+		    newRows.sort(sortfn);
+		 
+ 			var firstRow = tTable.rows[0];
+			var cell=null;
+		    for (var i=0;i<firstRow.cells.length;i++) {
+		        cell = firstRow.cells[i];
+				nova.html.removeClass(cell,tTable.props.sortedAscClassName);
+				nova.html.removeClass(cell,tTable.props.sortedDescClassName);
+		    }		 
+		 
+		    if (td.getAttribute("sortdir") == 'down') {
+		        newRows.reverse();
+		        td.setAttribute('sortdir','up');
+				nova.html.removeClass(td,tTable.props.sortedAscClassName);
+				nova.html.addClass(td,tTable.props.sortedDescClassName);
+		    } else {
+		        td.setAttribute('sortdir','down');
+				nova.html.removeClass(td,tTable.props.sortedDescClassName);
+				nova.html.addClass(td,tTable.props.sortedAscClassName);
+		    }
+		 
+		    // We appendChild rows that already exist to the tbody, so it moves them rather than creating new ones
+		    // don't do sortbottom rows
+		    for (i=0;i<newRows.length;i++) { 
+				if (!nova.html.hasClass(newRows[i],tTable.props.ignoreSortOnClass))
+					table.tBodies[0].appendChild(newRows[i]);
+			}
+		    // do sortbottom rows only
+		    for (i=0;i<newRows.length;i++) { 
+				if (nova.html.hasClass(newRows[i],tTable.props.ignoreSortOnClass)) 
+					table.tBodies[0].appendChild(newRows[i]);
+			}			
+		},
+ 		/**
+ 		 * @private
+ 		 * sort method
+ 		 * @param {Object} a
+ 		 * @param {Object} b
+ 		 * @return {Bool}
+ 		 */
+		_sort_date : function (a,b) {
+		    // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX
+		    var aa = nova.table.sortable._getInnerText(a.cells[nova.table.sortable.SORT_COLUMN_INDEX]);
+		    var bb = nova.table.sortable._getInnerText(b.cells[nova.table.sortable.SORT_COLUMN_INDEX]);
+		    if (aa.length == 10) {
+		        var dt1 = aa.substr(6,4)+aa.substr(3,2)+aa.substr(0,2);
+		    } else {
+		        var yr = aa.substr(6,2);
+		        if (parseInt(yr) < 50) { yr = '20'+yr; } else { yr = '19'+yr; }
+		        var dt1 = yr+aa.substr(3,2)+aa.substr(0,2);
+		    }
+		    if (bb.length == 10) {
+		        var dt2 = bb.substr(6,4)+bb.substr(3,2)+bb.substr(0,2);
+		    } else {
+		        var yr = bb.substr(6,2);
+		        if (parseInt(yr) < 50) { yr = '20'+yr; } else { yr = '19'+yr; }
+		        var dt2 = yr+bb.substr(3,2)+bb.substr(0,2);
+		    }
+		    if (dt1==dt2) return 0;
+		    if (dt1<dt2) return -1;
+		    return 1;
+		},
+ 		/**
+ 		 * @private
+ 		 * sort method
+ 		 * @param {Object} a
+ 		 * @param {Object} b
+ 		 * @return {Bool}
+ 		 */
+		_sort_currency : function(a,b) { 
+		    var aa = nova.table.sortable._getInnerText(a.cells[nova.table.sortable.SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
+		    var bb = nova.table.sortable._getInnerText(b.cells[nova.table.sortable.SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
+		    return parseFloat(aa) - parseFloat(bb);
+		},
+ 		/**
+ 		 * @private
+ 		 * sort method
+ 		 * @param {Object} a
+ 		 * @param {Object} b
+ 		 * @return {Bool}
+ 		 */
+		_sort_numeric : function(a,b) { 
+		 
+		    var aa = parseFloat(nova.table.sortable._getInnerText(a.cells[nova.table.sortable.SORT_COLUMN_INDEX]));
+		    if (isNaN(aa)) aa = 0;
+		    var bb = parseFloat(nova.table.sortable._getInnerText(b.cells[nova.table.sortable.SORT_COLUMN_INDEX])); 
+		    if (isNaN(bb)) bb = 0;
+		    return aa-bb;
+		},
+		/**
+ 		 * @private
+ 		 * sort method
+ 		 * @param {Object} a
+ 		 * @param {Object} b
+ 		 * @return {Bool}
+ 		 */
+		_sort_caseinsensitive : function (a,b) {
+		    var aa = nova.table.sortable._getInnerText(a.cells[nova.table.sortable.SORT_COLUMN_INDEX]).toLowerCase();
+		    var bb = nova.table.sortable._getInnerText(b.cells[nova.table.sortable.SORT_COLUMN_INDEX]).toLowerCase();
+		    if (aa==bb) return 0;
+		    if (aa<bb) return -1;
+		    return 1;
+		},
+		/**
+ 		 * @private
+ 		 * sort method
+ 		 * @param {Object} a
+ 		 * @param {Object} b
+ 		 * @return {Bool}
+ 		 */
+		_sort_default : function (a,b) {
+		    var aa = ts_getInnerText(a.cells[nova.table.sortable.SORT_COLUMN_INDEX]);
+		    var bb = ts_getInnerText(b.cells[nova.table.sortable.SORT_COLUMN_INDEX]);
+		    if (aa==bb) return 0;
+		    if (aa<bb) return -1;
+		    return 1;
+		}
+	}
 };
 
 /**
@@ -1132,6 +2385,10 @@ nova.form= {
 	 * Applique la classe .constraint
 	 *  nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
 	 *  
+	 *  Verifier certaines chose avant la validation :
+	 * Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
+	 *  nova.form.validation.connect(document.getElementById('forms'), 'beforevalidate',function() { if (arguments[0].length==3) return true; else return false;});
+	 *
 	 * Forcer la selection complete du contenu
 	 * 	nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
 	 * 
@@ -1249,7 +2506,6 @@ nova.form= {
 		check:function () {
 			var score=0;
 			var match;
-			
 			_this=this;
 			if (arguments[0].fromRefresh)
 				_this=arguments[0];
@@ -1283,7 +2539,6 @@ nova.form= {
 			if (score>5) score=5;
 			
 			_this.style.backgroundColor='rgb('+Math.round(255-((score*255)/5))+','+Math.round((score*255)/5)+',0)';
-	 
 		},
 		/**
 		 * @private
@@ -1302,12 +2557,16 @@ nova.form= {
 				return;
 			}			
 			
+			var oldState=_this.inErrors['isNum'];
+			
 			_this.inErrors['isNum']=false;
 			_this.className=_this.className.replace(/ *isnum/,'');
 			if (isNaN(_this.value)) {
 				_this.className+=' isnum';
 				_this.inErrors['isNum']=true;
 			}	
+			if (_this.inErrors['isNum'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["isNum",_this.inErrors['isNum']]);			
 		},
 		/**
 		 * @private
@@ -1325,14 +2584,16 @@ nova.form= {
 				_this.className=_this.className.replace(/ *isint/,'');
 				return;
 			}
-				
+			var oldState=_this.inErrors['isInt'];
 			_this.inErrors['isInt']=false;
 			_this.className=_this.className.replace(/ *isint/,'');
 			var matc=_this.value.match(/^[0-9]+$/);
 			if ((_this.value!="") && (matc==null)) {
 				_this.className+=' isint';
 				_this.inErrors['isInt']=true;
-			}	
+			}
+			if (_this.inErrors['isInt'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["isInt",_this.inErrors['isInt']]);
 		},
 		/**
 		 * @private
@@ -1350,7 +2611,7 @@ nova.form= {
 				_this.className=_this.className.replace(/ *ismail/,'');
 				return;
 			}
-				
+			var oldState=_this.inErrors['isMail'];	
 			_this.inErrors['isMail']=false;
 			_this.className=_this.className.replace(/ *ismail/,'');
 			var matc=_this.value.match(/^.+\@.+\..+$/);
@@ -1358,6 +2619,8 @@ nova.form= {
 				_this.className+=' ismail';
 				_this.inErrors['isMail']=true;
 			}
+			if (_this.inErrors['isMail'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["isMail",_this.inErrors['isMail']]);
 		},
 		/**
 		 * @private
@@ -1375,14 +2638,16 @@ nova.form= {
 				_this.className=_this.className.replace(/ *isalpha/,'');
 				return;
 			}	
-				
+			var oldState=_this.inErrors['isAlpha'];	
 			_this.inErrors['isAlpha']=false;
 			_this.className=_this.className.replace(/ *isalpha/,'');
 			var matc=_this.value.match(/^[a-z]+$/i);
 			if ((_this.value!="") && (matc==null)) {
 				_this.className+=' isalpha';
 				_this.inErrors['isAlpha']=true;
-			}	
+			}
+			if (_this.inErrors['isAlpha'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["isAlpha",_this.inErrors['isAlpha']]);
 		},
 		/**
 		 * @private
@@ -1400,14 +2665,16 @@ nova.form= {
 				_this.className=_this.className.replace(/ *isalphanum/,'');
 				return;
 			}
-				
+			var oldState=_this.inErrors['isAlphanum'];	
 			_this.inErrors['isAlphanum']=false;
 			_this.className=_this.className.replace(/ *isalphanum/,'');
 			var matc=_this.value.match(/^[a-z0-9]+$/i);
 			if ((_this.value!="") && (matc==null)) {
 				_this.className+=' isalphanum';
 				_this.inErrors['isAlphanum']=true;
-			}	
+			}
+			if (_this.inErrors['isAlphanum'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["isAlphanum",_this.inErrors['isAlphanum']]);
 		},
 		/**
 		 * @private
@@ -1425,14 +2692,16 @@ nova.form= {
 				_this.className=_this.className.replace(/ *matchregexp/,'');
 				return;
 			}
-				
+			var oldState=_this.inErrors['matchRegexp'];	
 			_this.inErrors['matchRegexp']=false;
 			_this.className=_this.className.replace(/ *matchregexp/,'');
 			var matc=_this.value.match(_this.matchregexp);
 			if ((_this.value!="") && (matc==null)) {
 				_this.className+=' matchregexp';
 				_this.inErrors['matchRegexp']=true;
-			}	
+			}
+			if (_this.inErrors['matchRegexp'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["matchRegexp",_this.inErrors['matchRegexp']]);
 		},
 		/**
 		 * @private
@@ -1450,13 +2719,15 @@ nova.form= {
 				_this.inErrors['mendatory']=false;
 				return;
 			}	
-			
+			var oldState=_this.inErrors['mendatory'];
 			_this.inErrors['mendatory']=false;
 			if (_this.value=='') {
 				_this.className+=' mendatory';
 				_this.inErrors['mendatory']=true;
 			} else 
 				_this.className=_this.className.replace(/ *mendatory/,'');
+			if (_this.inErrors['mendatory'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["mendatory",_this.inErrors['mendatory']]);
 		},
 		/**
 		 * @private
@@ -1490,17 +2761,19 @@ nova.form= {
 			} else if (arguments[0].fromDisconnect) {
 				_this=arguments[0];
 				_this.inErrors['copyOf']=false;
-				_this.className=_this.className.replace(/ *copyOf/,'');
+				_this.className=_this.className.replace(/ *copyof/,'');
 				_this.parentPointer.disconnect(_this.copyof,"copyOfUpdate",_this);
 				return;
 			}	
-	
+			var oldState=_this.inErrors['copyOf'];
 			_this.inErrors['copyOf']=false;
-			_this.className=_this.className.replace(/ *copyOf/,'');
+			_this.className=_this.className.replace(/ *copyof/,'');
 			if ((_this.value!=_this.copyof.value) || (_this.value=='')) {
-				_this.className+=' copyOf';
+				_this.className+=' copyof';
 				_this.inErrors['copyOf']=true;
 			}
+			if (_this.inErrors['copyOf'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["copyOf",_this.inErrors['copyOf']]);
 		},
 		/**
 		 * @private
@@ -1524,6 +2797,26 @@ nova.form= {
 			_this.copyOfUpdate.fromRefresh=true;
 			fn(_this.copyOfUpdate);
 			oO.fromRefresh=false;
+		},
+		/**
+		 * @private
+		 * Check some other thing before validate the forms
+		*/
+		beforevalidate : function () {
+			_this=this;
+		
+			if ((arguments[0].fromConnect) || (arguments[0].fromRefresh)) {
+				_this=arguments[0];
+			} else if (arguments[0].fromDisconnect) {
+				_this=arguments[0];
+				_this.inErrors['beforevalidate']=false;
+				return;
+			}	
+	
+			_this.inErrors['beforevalidate']=false;
+			if (!_this.beforevalidate(_this.value)) {
+				_this.inErrors['beforevalidate']=true;
+			}
 		},
 		/**
 		 * @private
@@ -1553,7 +2846,7 @@ nova.form= {
 			var elm=_this.parentPointer.elements;
 	
 			for (i in elm) {
-				if (elm[i]==_this) continue;
+				//if (elm[i]==_this) continue;
 				for (j in elm[i].inErrors) {
 					if (elm[i].inErrors[j]) {
 						_this.inErrors['validate']=true;
@@ -1563,8 +2856,13 @@ nova.form= {
 				}	
 			}
 			if (_this.inErrors['validate']) {
-				if (arguments[0] && arguments[0].preventDefault)
+				if (arguments[0] && arguments[0].preventDefault) {
 					arguments[0].preventDefault(); // DOM style
+					arguments[0].stopPropagation();
+				} else {
+					event.returnValue = false;
+				    event.cancelBubble = true;
+				}
 				if (_this.validate)
 					_this.validate(_this.Errors);
 	  			return false; // IE style
@@ -1586,13 +2884,15 @@ nova.form= {
 				_this.className=_this.className.replace(/ *constraint/,'');
 				return;
 			}	
-	
+			var oldState=_this.inErrors['Constraint'];
 			_this.inErrors['Constraint']=false;
 			_this.className=_this.className.replace(/ *constraint/,'');
 			if (!_this.constraint(_this.value)) {
 				_this.className+=' constraint';
 				_this.inErrors['Constraint']=true;
 			}
+			if (_this.inErrors['Constraint'] != oldState && nova.variable.isSet(_this.checkErrorCallback) && nova.variable.isFunction(_this.checkErrorCallback))
+				_this.checkErrorCallback.apply(_this,["Constraint",_this.inErrors['Constraint']]);
 		},
 		/**
 		 * @private
@@ -1628,6 +2928,9 @@ nova.form= {
 				case 'selectall':
 					this.type="click";
 					return this.selectAll;
+				case 'beforevalidate':
+					this.type="submit";
+					return this.beforevalidate;					
 				case 'validate':
 					this.type="submit";
 					return this.validate;				
@@ -1661,6 +2964,18 @@ nova.form= {
 			}
 		},
 		/**
+		 * execute a callback function when a field is in error
+		 * The callback method got 2 args :
+		 *    The verification in progress (ex: isInt, isMail...)
+		 *    The status (ex : true is there is an error, false elsewhere)
+		 * Note : in the callback method, "this" is the input object
+		 * @param {Object} obj the object to add phrase
+		 * @param {Object} method the callback to execute when a field is in error
+		 */
+		onCheckDoCallback:function(obj, method) {
+			obj.checkErrorCallback=method;
+		},
+		/**
 		 * Connect a validation method on [obj]
 		 * 
 		 * @param {Object} obj the object to validate
@@ -1670,21 +2985,22 @@ nova.form= {
 			
 			//La methode a lancer
 			fn=this._whatAdd(methode);
-			
 			//John Resig : http://ejohn.org/projects/flexible-javascript-events/
+			var typ=this.type.toString();
+			var fnStr=fn.toString();
 			if ( obj.attachEvent ) {
-				obj['e'+this.type+fn] = fn;
-				obj[this.type+fn] = function(){obj['e'+this.type+fn]( window.event );}
-				obj.attachEvent( 'on'+this.type, obj[this.type+fn] );
+				obj['e'+typ+fnStr] = fn;
+				obj[typ+fnStr] = function(){obj['e'+typ+fnStr]( window.event );};
+				obj.attachEvent( 'on'+typ, obj[typ+fnStr] );
 			} else
-				obj.addEventListener( this.type, fn, false );
+				obj.addEventListener( typ, fn, false );
 	 
 	 		//colle aussi sur le blur
 			if (this.type=="keyup") {
 				if ( obj.attachEvent ) {
-					obj['e'+'blur'+fn] = fn;
-					obj['blur'+fn] = function(){obj['e'+'blur'+fn]( window.event );}
-					obj.attachEvent( 'on'+'blur', obj['blur'+fn] );
+					obj['e'+'blur'+fnStr] = fn;
+					obj['blur'+fnStr] = function(){obj['e'+'blur'+fnStr]( window.event );};
+					obj.attachEvent( 'on'+'blur', obj['blur'+fnStr] );
 				} else
 					obj.addEventListener( 'blur', fn, false );
 	 
@@ -1735,17 +3051,19 @@ nova.form= {
 			fn=this._whatAdd(methode);
 			
 			//John Resig : http://ejohn.org/projects/flexible-javascript-events/
+			var typ=this.type.toString();
+			var fnStr=fn.toString();
 			if ( obj.detachEvent ) {
-				obj.detachEvent( 'on'+this.type, obj[this.type+fn] );
-				obj[this.type+fn] = null;
+				obj.detachEvent( 'on'+typ, obj[typ+fnStr] );
+				obj[typ+fnStr] = null;
 			} else
-				obj.removeEventListener( this.type, fn, false );
+				obj.removeEventListener( typ, fn, false );
 			
 			//colle aussi sur le blur
 			if (this.type=="keyup") {
 				if ( obj.detachEvent ) {
-					obj['blur'+fn] = null;
-					obj.detachEvent( 'on'+'blur', obj['blur'+fn] );
+					obj['blur'+fnStr] = null;
+					obj.detachEvent( 'on'+'blur', obj['blur'+fnStr] );
 				} else
 					obj.removeEventListener( 'blur', fn, false );
 	 
@@ -1781,7 +3099,49 @@ nova.form= {
 				}
 			}	
 		}
-	},
+	}
+};
+nova.prototypes = {
+	array : function() {
+		/**
+		 * like in_array in php
+		 * @param {Object} valeur
+		 * @return {Integer} -1 if not found, else return key
+		 */
+		if (!Array.prototype.inArray) {
+			Array.prototype.inArray = function(valeur) {
+				for (var i in this) { if (this[i] == valeur) return i;}
+				return -1;
+			}
+		}
+		/**
+		 * insert a value at position
+		 * @param {Object} i
+		 * @param {Object} value
+		 */
+		if (!Array.prototype.insert) {
+			Array.prototype.insert=function(i,value){
+				if(i>=0){
+					var a=this.slice(),b=a.splice(i);
+					a[i]=value;
+					return a.concat(b);
+				}
+			}
+		}
+		/**
+		 * Clone an array
+		 */
+		if (!Array.prototype.clone) {
+			Array.prototype.clone=function() {
+				var dest=[];
+		  		for (var props in this)
+		    		dest[props] = this[props];
+		  		return dest;
+			}
+		}
+	}
 	
 };
-
+	
+for (var i in nova.prototypes)
+	nova.prototypes[i]();
