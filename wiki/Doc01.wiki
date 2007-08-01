@@ -7,6 +7,9 @@ Convert froms domNode in url encoded string from Dojo tookit (http://dojotoolkit
 getElementsByAnything from Matthew Pennell (http://www.javascriptsearch.com/guides/Advanced/articles/0607ABetterDollarFunction.html)
 UTF-8 <=> UTF-16 convertion from Masanao Izumo (iz@onicos.co.jp)
 JavaScript to PHP serialize / unserialize class from Ma Bingyao (andot@ujn.edu.cn / http://www.coolcode.cn/?p=171)
+Shortcut adding from Binny V A (http://www.openjs.com/scripts/events/keyboard_shortcuts/)
+Tooltip positioning from scriptaculous (http://www.illustate.com/playground/scriptaculous/tooltip/)
+Sortable TABLE from Stuart Langridge (http://www.kryogenix.org/code/browser/sorttable/)
 
 Defined in nova.js
 
@@ -17,8 +20,23 @@ Constructor Summary
           clone a JS object
 	nova.config()
           Nova's config namespace
+	nova.browser()
+          nova's browser namespace
+	nova.effects()
+          Nova's effect namespace
+	nova.slider()
+          Nova's slider namespace
+	nova.string()
+          Nova's string namespace
+	nova.lightbox()
+          Nova's lighbox namespace
+To add a custom style on the dock window, create the css class #lightbox_dock { }
+To add a custom style on the picture window, create the css class #lightbox_image { }
+To add a loading picture, place a backgroundImage centered in #lightbox_dock
 	nova.html()
           Nova's html namespace
+	nova.dom()
+          Nova's DOM namespace
 	nova.variable()
           Nova's variable namespace
 	nova.variable.array()
@@ -27,10 +45,18 @@ Constructor Summary
           Object subnamespace
 	nova.topic()
           Nova's topic namespace
+	nova.dnd()
+          Nova's Drang'n Drop namespace
 	nova.debug()
           Nova's debug namespace
 	nova.io()
           Nova's IN/OUT namespace
+	nova.tooltip()
+          Nova's tooltip object
+	nova.shortcut()
+          Nova's shortcut object
+	nova.table()
+          Nova's tabel namespace
 	nova.form()
           Nova's forms namespace
 Bool, Function	nova.form.validation(<String> methode)
@@ -41,6 +67,9 @@ Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
 Applique la classe .constraint
 nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
 
+Verifier certaines chose avant la validation :
+Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
+nova.form.validation.connect(document.getElementById('forms'), 'beforevalidate',function() { if (arguments[0].length==3) return true; else return false;});
 Forcer la selection complete du contenu
 nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
 
@@ -171,7 +200,20 @@ nova.clone.setTimeOut
     Parameters:
         Function fn - the function you want to delay
         Object delay - the delay
-        Object _this - the context you want to have in this 
+        Object _this - the context you want to have in this
+    Returns:
+        handle handle to the timeout method 
+
+nova.clone.setInterval
+
+    like classical setInterval but preserv context
+
+    Parameters:
+        Function fn - the function you want to delay
+        Object delay - the delay
+        Object _this - the context you want to have in this
+    Returns:
+        handle handle to the interval method 
 
 nova.config
 
@@ -183,6 +225,164 @@ nova.config.debug
 
     Parameters:
         Bool bool - put debug on true or false 
+
+nova.browser
+
+    nova's browser namespace
+
+nova.effects
+
+    Nova's effect namespace
+
+nova.effects.addToQueue
+
+    Add function/method in the queue list
+
+    Parameters:
+        Function fn - effect function
+        Object obj - the object to effect
+        Object object - with a least 1 property : {duration: 00} (duration the duration of the effect is in ms) 
+
+nova.effects.queueNext
+
+    Launch the queue. It stop when all queued effect are displayed
+
+nova.effects.fadeIn
+
+    FadeIn effect on obj
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 3 properties : {duration: 00, from : 00, to: 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue 
+
+nova.effects.fadeOut
+
+    FadeOut effect on obj
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 3 properties : {duration: 00, from : 00, to: 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue
+        Object obj - the object to fade
+        Object params - object with 4 properties : {duration: 00, fadeIn: true, from : 00, to : 00} (the duration of the effect is in ms)
+        Bool true - if the effect is lauch by queue list 
+
+nova.effects.moveTo
+
+    Move an object
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 3 properties : {left : 00, top: 00, duration: 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue 
+
+nova.effects.resize
+
+    Resize an object
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 3 properties : {width : 00, height: 00, duration: 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue 
+
+nova.effects.slideUp
+
+    slideUp effect on obj
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 1 properties : {duration: 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue 
+
+nova.effects.slideDown
+
+    slideDown effect on obj
+
+    Parameters:
+        Object obj - the object to fade
+        Object params - object with 1 or properties : {duration: 00, height : 00} (the duration of the effect is in ms)
+        Bool fromQueue - true if lauch from queue
+        Object obj - the object to fade
+        Object params - object with 2 properties : {duration: 00, slideUp: true} (the duration of the effect is in ms)
+        Bool true - if the effect is lauch by queue list 
+
+nova.slider
+
+    Nova's slider namespace
+
+nova.slider.connect
+
+    Connect a slide on ul obj
+
+
+    props exemple :
+    {
+    className : "myCSSStyle",
+    }
+
+    Parameters:
+        Object obj - the ul obj to connect slide
+        Object props - all props (see exemple) 
+
+nova.slider.disconnect
+
+    Disconnect a slide from ul obj
+
+    Parameters:
+        Object obj - the ul obj to disconnect slide
+        Object obj - li object
+        Object evt - events object
+    Returns:
+        Object 
+
+nova.string
+
+    Nova's string namespace
+
+nova.string.htmlDecode
+
+    revert htmlEncode
+
+    Parameters:
+        String str - string to encode
+    Returns:
+        String 
+
+nova.string.htmlEncode
+
+    encode a string in html format
+
+    Parameters:
+        String str - string to encode
+    Returns:
+        String 
+
+nova.string.trim
+
+    trim space before and after a string
+
+    Parameters:
+        String str - the str to strim
+    Returns:
+        string 
+
+nova.lightbox
+
+    Nova's lighbox namespace
+    To add a custom style on the dock window, create the css class #lightbox_dock { }
+    To add a custom style on the picture window, create the css class #lightbox_image { }
+    To add a loading picture, place a backgroundImage centered in #lightbox_dock
+
+nova.lightbox.init
+
+    init the lightbox
+
+    Parameters:
+        Object | Array obj - an object or an array of object to apply lightbox
+        Object _this - object with to to img
+        String src - link to image
+        Object _this - object with to to img 
 
 nova.html
 
@@ -222,6 +422,22 @@ nova.html.setClass
         Object obj - your object
         String classN - the classes you want to set 
 
+nova.html.setStyle
+
+    Replace all style by another on object
+
+    Parameters:
+        Object obj - your object
+        Object style - style description 
+
+nova.html.setOpacity
+
+    Set the opacity of obj
+
+    Parameters:
+        Object obj - the obj to set
+        Object opacity - the opacity value (between 0 and 1) 
+
 nova.html.toggleClass
 
     toggle a class on object
@@ -230,7 +446,11 @@ nova.html.toggleClass
         Object obj - your object
         String classN - the class you want to toggle 
 
-nova.html.getElementsByAnything
+nova.dom
+
+    Nova's DOM namespace
+
+nova.dom.getElementsByAnything
 
     get Dom elements by anything (name,tagname,id,class,selector,....)
     Can have much than one parameters
@@ -240,7 +460,7 @@ nova.html.getElementsByAnything
     Returns:
         Array || Object An array with all matching objects or just one objects (if no more) 
 
-nova.html.getDomOffset
+nova.dom.getDomOffset
 
     Return the Dom offset for an object
 
@@ -250,14 +470,86 @@ nova.html.getDomOffset
     Returns:
         Int The dom offset 
 
-nova.html.viewportSize
+nova.dom.getMousePos
+
+    Get the mouse position from the event
+
+    Parameters:
+        Object e - An Event object
+    Returns:
+        Object x and y proprerties 
+
+nova.dom.hideNotZindexedElements
+
+    Hide Some elements wich not affected by Zindex (in IE)
+
+nova.dom.showNotZindexedElements
+
+    Show Some elements wich not affected by Zindex (in IE)
+
+nova.dom.moveNodeTo
+
+    Move a node in other node
+
+    Parameters:
+        Object node - the node you want to move
+        Object newParent - the parent of your node
+    Returns:
+        Object the node 
+
+nova.dom.removeNode
+
+    Completly remove a node from DOM
+
+    Parameters:
+        Object node - the node to remove
+        Bool completlyRemove - if true, destroy de reference
+    Returns:
+        Object || null the removed node or null 
+
+nova.dom.getViewportSize
 
     Return an obejct with the viewport size
 
     Returns:
         Object like {width:xxx, height:yyy} 
 
-nova.html.centerObjectOnViewport
+nova.dom.getDocumentScrollPosition
+
+    Get the position of the document scroolbar
+
+    Returns:
+        Object like {left:xxx, top:yyy} 
+
+nova.dom.getPreviousNode
+
+    Get the previous node in the DOM tree
+
+    Parameters:
+        Object obj - start object
+    Returns:
+        null|DomObject 
+
+nova.dom.getNextNode
+
+    Get the next node in the DOM tree
+
+    Parameters:
+        Object obj - start object
+    Returns:
+        null|DomObject 
+
+nova.dom.getParentNode
+
+    get the parent of an object
+
+    Parameters:
+        Object el - starting object
+        String pTagName - filter parent tag
+    Returns:
+        Object 
+
+nova.dom.centerObjectOnViewport
 
     Place an object on viewport's center
 
@@ -420,6 +712,56 @@ nova.topic.publish
     Returns:
         Bool 
 
+nova.dnd
+
+    Nova's Drang'n Drop namespace
+
+nova.dnd.connectDragObject
+
+    Initialize dnd on objects
+
+    Parameters:
+        array objects - an array with object you want to drag
+        string constraint - (optional) "x" or "y" to disallow move on the specified axis 
+
+nova.dnd.connectDropObject
+
+    initialize dnd drop zone
+
+    Parameters:
+        Object objects - an array with object you want to drag in 
+
+nova.dnd.dragStart
+
+    When you click down an object
+
+    Parameters:
+        Object e - the Events object fired by browser 
+
+nova.dnd.dragEnd
+
+    When you click up an object
+
+    Parameters:
+        Object e - the Events object fired by browser 
+
+nova.dnd.dragMove
+
+    When you move an object after a click down
+
+    Parameters:
+        Object e - the Events object fired by browser 
+
+private
+nova.dnd._getNodeUnderMouse
+
+    Get the element under the mouse
+
+    Parameters:
+        Object e - the events fired by browser
+    Returns:
+        Object || false object under mouse (false if no dropzone was under mouse) 
+
 nova.debug
 
     Nova's debug namespace
@@ -471,6 +813,117 @@ nova.io.send
     Returns:
         Bool false if browser doesn't support XHR 
 
+nova.io.update
+
+    Update an HTML object with a result of an XHR request
+
+    <code>
+    args {
+    file:"page.htm",
+    method:"POST" || "GET",
+    queryString:"var1=a&var2=b",
+    formNode:document.getElementById("test"),
+    onError:function () {}
+    }
+    </code>
+
+    Parameters:
+        Object an - HTML object to update
+        Object args - see exemple
+    Returns:
+        Bool false if browser doesn't support XHR 
+
+nova.tooltip
+
+    Nova's tooltip object
+
+nova.tooltip.connect
+
+    Add a tooltip on obj
+
+    props exemple :
+    {
+    content:"hello",
+    className : "myCSSStyle",
+    offsetX:2,
+    offsetY:5
+    }
+
+    Parameters:
+        Object obj - the obj to add tooltip
+        Object props - all props (see exemple) 
+
+nova.tooltip.disconnect
+
+    Disconnect a tooltip from obj
+
+    Parameters:
+        Object obj - the obj to disconnect tooltip's 
+
+private
+nova.tooltip._show
+
+    Show a tooltip
+
+    Parameters:
+        Object evt 
+
+private
+nova.tooltip._hide
+
+    Hide a tooltip
+
+private
+nova.tooltip._positionTip
+
+    Put the tooltips in the good place !
+
+    Parameters:
+        Object event 
+        Object obj 
+
+nova.shortcut
+
+    Nova's shortcut object
+
+nova.shortcut.add
+
+    Add a new key shortcut
+    Parameter are like that :
+    {'type':'keydown','propagate':false,'target':document,'callback':function() {}}
+    parameter type : the event witch lauche the shortcut function
+    parameter propagate : if true, events wont be stoped after your function and an other function can trappe him
+    parameter target : the object wich have the shortcut (default : document, if target is a string, we try to found the object with nova.dom.getElementsByAnything)
+    parameter callback : the function the shortcut will launch
+
+    Parameters:
+        String shortcut - the key shortcut (like CTRL + F1)
+        Object opt - shortcut parameter (see exemple) 
+
+nova.shortcut.remove
+
+    Remove a shortcut
+    Parameter are like that :
+    {'type':'keydown','target':document,'callback':function() {}}
+    parameter type : the event witch lauche the shortcut function
+    parameter target : the object wich have the shortcut (default : document, if target is a string, we try to found the object with nova.dom.getElementsByAnything)
+
+    Parameters:
+        String shortcut - the key shortcut (like CTRL + F1)
+        Object opt - shortcut parameter (see exemple) 
+
+private
+nova.shortcut._onCallShorcut
+
+    Launched when a shortcut is fired
+
+    Parameters:
+        Object e - the events 
+
+nova.table
+
+    Nova's tabel namespace
+
 nova.form
 
     Nova's forms namespace
@@ -493,6 +946,9 @@ nova.form.validation
     Applique la classe .constraint
     nova.form.validation.connect(document.getElementById('pseudo'), 'constraint',function() { if (arguments[0].length==3) return true; else return false;});
 
+    Verifier certaines chose avant la validation :
+    Le parametre de la fonction (3eme arguments) est le contenu du champs désigné
+    nova.form.validation.connect(document.getElementById('forms'), 'beforevalidate',function() { if (arguments[0].length==3) return true; else return false;});
     Forcer la selection complete du contenu
     nova.form.validation.connect(document.getElementById('pseudo'), 'selectall');
 
@@ -591,6 +1047,18 @@ nova.form.validation
         Bool 
         Function 
 
+nova.form.validation.onCheckDoCallback
+
+    execute a callback function when a field is in error
+    The callback method got 2 args :
+    The verification in progress (ex: isInt, isMail...)
+    The status (ex : true is there is an error, false elsewhere)
+    Note : in the callback method, "this" is the input object
+
+    Parameters:
+        Object obj - the object to add phrase
+        Object method - the callback to execute when a field is in error 
+
 nova.form.validation.connect
 
     Connect a validation method on [obj]
@@ -605,5 +1073,13 @@ nova.form.validation.disconnect
 
     Parameters:
         Object obj - the object to validate
-        String methode - the validation method 
+        String methode - the validation method
+        Object valeur 
+        Object i 
+        Object value 
+    Returns:
+        Integer -1 if not found, else return key 
 
+Make a TABLE sortable
+    props exemple :
+    props = {sortedAscClassName:"ascSorted",sortedDescClassName:"descSorted", ignoreSortOnClass:"plip"}
