@@ -3,7 +3,7 @@
  * 
  * @author iDo (ido@woow-fr.com)
  * @license Paternité - Pas d'Utilisation Commerciale - Partage des Conditions Initiales à l'Identique 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr_CA)
- * @version 07_07
+ * @version 07_08
  * @fileoverview Framework javascript
  * Note 		: 
  *	 	Connect & Disconnect from John Resig (http://ejohn.org/projects/flexible-javascript-events/)
@@ -21,7 +21,7 @@
  * @constructor
  */
 var nova = new Object({
-	version:"07_07",
+	version:"07_08",
 	/**
 	 * Attach [type] event on [obj]
 	 *  
@@ -82,10 +82,6 @@ var nova = new Object({
 	 * @return {handle} handle to the timeout method
 	 */
 	setTimeOut:function(fn, delay,_this) {
-		args=nova.variable.object.toArray(arguments,false);
-		args.shift();
-		args.shift();
-		args.shift();	
 		return window.setTimeout(function () { 
 			fn.apply(_this, args); 
 		}, delay);
@@ -99,10 +95,6 @@ var nova = new Object({
 	 * @return {handle} handle to the interval method
 	 */
 	setInterval:function(fn, delay,_this) {
-		args=nova.variable.object.toArray(arguments,false);
-		args.shift();
-		args.shift();
-		args.shift();	
 		return window.setInterval(function () { 
 			fn.apply(_this, args); 
 		}, delay);
@@ -139,9 +131,10 @@ nova.browser = {
  * @constructor
  */
 nova.effects = {
-	_queueList:[],
+	_queueList:{'default':[]},
 	_defaultDuration:250,
-	_queuInProgress:false,
+	_queuInProgress:{'default':false},
+	
 	/**
 	 * Add function/method in the queue list
 	 * @param {Function} fn effect function
@@ -153,7 +146,13 @@ nova.effects = {
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
-		nova.effects._queueList.push({
+		if (params.scope == null || typeof params.scope == "undefined")
+			params.scope = "default";
+		
+		if (typeof nova.effects._queueList[params.scope] != "object")
+			nova.effects._queueList[params.scope]=[];
+		
+		nova.effects._queueList[params.scope].push({
 			fn:fn,
 			obj:obj,
 			params: params
@@ -161,19 +160,24 @@ nova.effects = {
 	},
 	/**
 	 * Launch the queue. It stop when all queued effect are displayed
+	 * @param {String} scope the scope of the queue
 	 */
-	queueNext:function() {
-
-		if (nova.effects._queuInProgress && !nova.variable.isSet(arguments[0]))
+	queueNext:function(scope) {
+		if (scope == null || typeof scope == "undefined")
+			scope='default';
+		if (nova.effects._queuInProgress[scope] == null || typeof nova.effects._queuInProgress[scope] == "undefined")
+			nova.effects._queuInProgress[scope] = false;
+		
+		if (nova.effects._queuInProgress[scope] && !nova.variable.isSet(arguments[1]))
 			return;
-		queue=nova.effects._queueList.shift();
+		queue=nova.effects._queueList[scope].shift();
 		if (nova.variable.isSet(queue)) {
 			queue.fromQueue=true;
-			nova.effects._queuInProgress=true;
+			nova.effects._queuInProgress[scope]=true;
 			args=[queue.obj,queue.params,queue.fromQueue];
 			queue.fn.apply(queue,args);
 		} else {
-			nova.effects._queuInProgress=false;
+			nova.effects._queuInProgress[scope]=false;
 		}
 	},
 	
@@ -193,6 +197,8 @@ nova.effects = {
 			params.from=0;
 		if (!nova.variable.isSet(params.to))
 			params.to=1;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 			
 		nova.effects._fade(obj,params,fromQueue);
 	},
@@ -212,6 +218,8 @@ nova.effects = {
 			params.from=1;
 		if (!nova.variable.isSet(params.to))
 			params.to=0;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 			
 		nova.effects._fade(obj,params,fromQueue);
 	},
@@ -224,17 +232,21 @@ nova.effects = {
 	 */
 	_fade:function(obj,params,fromQueue) {
 		pas = 10;
+		
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
+		
 		_this={
 			obj:obj,
 			pas:pas,
 			fromQueue:fromQueue,
 			params: params,
-			effectInProgress:null
+			effectInProgress:{}
 		};
 		
 		params.duration=params.duration / ((Math.abs(params.from - params.to)*100) / pas);
 
-		_this.effectInProgress = nova.setInterval(function() {
+		_this.effectInProgress[params.scope] = nova.setInterval(function() {
 			obj=this.obj;
 			if (typeof this.fadeValue=="undefined") {
 				this.fadeValue=this.params.from;
@@ -248,16 +260,16 @@ nova.effects = {
 				this.fadeValue-=(this.pas/100);
 
 			if ((this.params.fadeIn && this.fadeValue>=params.to) || (!this.params.fadeIn && this.fadeValue<=params.to)) {
-				clearInterval(this.effectInProgress);
+				clearInterval(this.effectInProgress[this.params.scope]);
 				
-				if (!this.params.fadeIn && params.to == 0)
+				if (!this.params.fadeIn && this.params.to == 0)
 					obj.style.display="none";
-				else if (this.params.fadeIn && params.to == 1) {
+				else if (this.params.fadeIn && this.params.to == 1) {
 					nova.html.setOpacity(obj,1);
 				}
 				
 				if (fromQueue)
-					nova.effects.queueNext(true);
+					nova.effects.queueNext(this.params.scope,true);
 			}
 				
 		},params.duration,_this);
@@ -270,10 +282,13 @@ nova.effects = {
 	 */	
 	moveTo:function(obj,params,fromQueue) {
 		pas=5;
+	
 		if (!nova.variable.isSet(params))
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 		
 		params.top=parseInt(params.top);
 		params.left=parseInt(params.left);
@@ -286,11 +301,11 @@ nova.effects = {
 			obj:obj,
 			pas:pas,
 			fromQueue:fromQueue,
-			effectInProgress:null,
+			effectInProgress:{},
 			params: params
 		};
 		params.duration=params.duration/(ecart / pas);
-		_this.effectInProgress = nova.setInterval(function() {
+		_this.effectInProgress[params.scope] = nova.setInterval(function() {
 
 			obj=this.obj;
 			
@@ -307,9 +322,9 @@ nova.effects = {
 			
 		
 			if (nova.dom.getDomOffset(obj,"left")==this.params.left && nova.dom.getDomOffset(obj,"top")==this.params.top) {
-				clearInterval(this.effectInProgress);
+				clearInterval(this.effectInProgress[this.params.scope]);
 				if (fromQueue)
-					nova.effects.queueNext(true);
+					nova.effects.queueNext(this.params.scope,true);
 			}
 		},params.duration,_this);
 	},
@@ -325,6 +340,8 @@ nova.effects = {
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 			
 		var hEcart = Math.abs(obj.offsetHeight -params.height);
 		var wEcart = Math.abs(obj.offsetWidth -params.width);
@@ -335,11 +352,11 @@ nova.effects = {
 			obj:obj,
 			pas:pas,
 			fromQueue:fromQueue,
-			effectInProgress:null,
+			effectInProgress:{},
 			params: params
 		};
 		params.duration=params.duration/(ecart / pas);
-		_this.effectInProgress = nova.setInterval(function() {
+		_this.effectInProgress[params.scope] = nova.setInterval(function() {
 
 			obj=this.obj;
 			if (obj.offsetHeight<this.params.height)
@@ -348,9 +365,9 @@ nova.effects = {
 				obj.style.width=obj.offsetWidth+this.pas+"px";
 		
 			if (obj.offsetHeight>=this.params.height && obj.offsetWidth>=this.params.width) {
-				clearInterval(this.effectInProgress);
+				clearInterval(this.effectInProgress[this.params.scope]);
 				if (fromQueue)
-					nova.effects.queueNext(true);
+					nova.effects.queueNext(this.params.scope,true);
 			}
 		},params.duration,_this);
 	},
@@ -365,6 +382,8 @@ nova.effects = {
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 		params.slideUp = true;
 		nova.effects._slide(obj,params,fromQueue);
 	},
@@ -379,6 +398,8 @@ nova.effects = {
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 		params.slideUp = false;
 		nova.effects._slide(obj,params,fromQueue);
 	},	
@@ -394,6 +415,8 @@ nova.effects = {
 			params={};
 		if (!nova.variable.isSet(params.duration))
 			params.duration=nova.effects._defaultDuration;
+		if (!nova.variable.isSet(params.scope))
+			params.scope = "default";
 			
 		var pas=5;
 		
@@ -410,13 +433,12 @@ nova.effects = {
 			obj:obj,
 			pas:pas,
 			fromQueue:fromQueue,
-			effectInProgress:null,
+			effectInProgress:{},
 			params: params
 		};
 		params.duration=params.duration/(params.originalSize / pas);
-					console.log(params.duration);
 	
-		_this.effectInProgress = nova.setInterval(function() {
+		_this.effectInProgress[params.scope] = nova.setInterval(function() {
 			obj=this.obj;
 			
 			if (typeof this.slideValue=="undefined") {
@@ -436,11 +458,11 @@ nova.effects = {
 				this.slideValue-=pas;
 							
 			if ((obj.offsetHeight>=this.params.originalSize && params.slideUp) || (obj.offsetHeight<=0 && !params.slideUp)) {
-				clearInterval(this.effectInProgress);
+				clearInterval(this.effectInProgress[this.params.scope]);
 				if (!params.slideUp)
 					obj.style.display="none";
 				if (fromQueue)
-					nova.effects.queueNext(true);
+					nova.effects.queueNext(this.params.scope,true);
 			}
 		},params.duration,_this);
 	}
@@ -562,6 +584,96 @@ nova.string = {
 	}
 };
 /**
+ * Nova's slideshow namespace
+ * @constructor
+ */
+nova.slideshow = {
+	/**
+	 * init a slideshow on obj
+	 * @description
+	 * A slideshow is a UL with all LI (exept one) not displayed. Time after time, LI desappear and let next LI appear.
+	 * @param {Object} obj the object which will have slideshow
+	 * @param {Object} params params with at least 1 properties : {delay:00} (in milliseconds)
+	 */
+	init: function(obj,params) {
+		if (!obj.tagName || obj.tagName.toLowerCase()!="ul")
+			return nova.debug.raiseError("you can have a slideshow only on ul element");
+		
+		if (!nova.variable.isSet(params))
+			params={};
+		if (!nova.variable.isSet(params.delay))
+			params.delay=3000;
+		if (!nova.variable.isSet(params.scope))
+			params.scope="slideshow";
+		if (!nova.variable.isSet(params.start))
+			params.start=false;			
+		
+		var li = obj.childNodes;
+		var showFirst=-1;
+		for (var i=0;i<li.length;i++) {
+			if (!li[i].nodeType) continue;
+			if (li[i].nodeType!=1) continue;
+			if (showFirst!=-1)
+				li[i].style.display="none";
+			else
+				showFirst=i
+		}
+		params.visibleChild=showFirst;
+		params.firstLi = showFirst;
+		obj.params=params;
+		if (params.start)
+			nova.slideshow.start(obj);
+	},
+	/**
+	 * Start/restart the slideshow on obj
+	 * @param {Object} obj the object which have slideshow
+	 */
+	start:function(obj) {
+		if (nova.variable.isSet(obj.params.slideHandle))
+			clearInterval(obj.params.slideHandle);
+		obj.params.slideHandle = nova.setInterval(nova.slideshow._next, obj.params.delay,obj);
+	},
+	/**
+	 * Stop (and reset) the slideshow on obj
+	 * @param {Object} obj the object which have slideshow
+	 */	
+	stop:function(obj) {
+		clearInterval(obj.params.slideHandle);
+		
+		nova.effects.addToQueue(nova.effects.fadeOut,obj.childNodes[obj.params.visibleChild],{duration:250,scope:obj.params.scope});
+		nova.effects.addToQueue(nova.effects.fadeIn,obj.childNodes[obj.params.firstLi],{duration:250,scope:obj.params.scope});
+		nova.effects.queueNext(obj.params.scope);
+		obj.params.visibleChild=obj.params.firstLi;
+		
+	},
+	/**
+	 * pause the slideshow on obj
+	 * @param {Object} obj the object which have slideshow
+	 */
+	pause:function(obj) {
+		clearInterval(obj.params.slideHandle);
+	},
+	/**
+	 * @private
+	 * Show the next slide
+	 */
+	_next:function() {
+		var child = this.params.visibleChild;
+		var nextChild = child+1;
+		
+		while (this.childNodes[nextChild].nodeType!=1) {
+			nextChild++;
+			if (nextChild>this.childNodes.length-1)
+				nextChild=this.params.firstLi;
+		}		
+		nova.effects.addToQueue(nova.effects.fadeOut,this.childNodes[child],{duration:250,scope:this.params.scope});
+		nova.effects.addToQueue(nova.effects.fadeIn,this.childNodes[nextChild],{duration:250,scope:this.params.scope});
+		nova.effects.queueNext(this.params.scope);
+		this.params.visibleChild = nextChild;
+	}
+	 		
+};
+/**
  * Nova's lighbox namespace
  * To add a custom style on the dock window, create the css class #lightbox_dock { }
  * To add a custom style on the picture window, create the css class #lightbox_image { }
@@ -654,8 +766,8 @@ nova.lightbox = {
 
 			nova.lightbox._modal.style.top=((vps.height-size.height)/2) + "px";
 			nova.lightbox._modal.style.left=((vps.width-size.width)/2) + "px";
-			nova.effects.addToQueue(nova.effects.fadeIn,nova.lightbox._modal,{duration:250});
-			nova.effects.queueNext();
+			nova.effects.addToQueue(nova.effects.fadeIn,nova.lightbox._modal,{duration:250,scope:'lightbox'});
+			nova.effects.queueNext('lightbox');
 			preload.onload=function(){}; 
 		}
 		preload.src = src;
@@ -768,8 +880,13 @@ nova.dom = {
 	 */
 	getElementsByAnything:function () {
 		var elements = new Array();
-		for (var i=0,len=arguments.length;i<len;i++) {
-			var element = arguments[i];
+		var len=arguments.length;
+		for (var ij=0;ij<len;ij++) {
+			
+			var element = arguments[ij];
+			if (element == null) continue;
+			console.log(element);
+			var find=false;
 			if (typeof element == 'string') {
 				var matched = document.getElementById(element);
 				if (matched) {
@@ -777,21 +894,47 @@ nova.dom = {
 				} else {
 					var allels = (document.all) ? document.all : document.getElementsByTagName('*');
 					var regexp = new RegExp('(^| )'+element+'( |$)');
-					for (var i=0,len=allels.length;i<len;i++) if (regexp.test(allels[i].className)) elements.push(allels[i]);
+					for (var i=0,len=allels.length;i<len;i++) {
+						if (regexp.test(allels[i].className)) {
+							elements.push(allels[i]);
+							find=true;
+						}
+					}
 				}
-				if (!elements.length) elements = document.getElementsByTagName(element);
-				if (!elements.length) {
-					elements = new Array();
+				if (!find) {
+					var matched = document.getElementsByTagName(element);
+					for(var i=0;i<matched.length;i++) {
+						elements.push(matched[i]);
+						find=true;
+					}
+				}
+				if (!find) {
 					var allels = (document.all) ? document.all : document.getElementsByTagName('*');
-					for (var i=0,len=allels.length;i<len;i++) if (allels[i].getAttribute(element)) elements.push(allels[i]);
+					for (var i=0,len=allels.length;i<len;i++) {
+						if (allels[i].getAttribute(element)) { 
+							elements.push(allels[i]);
+							find=true;
+						}
+					}
 				}
-				if (!elements.length) {
+				if (!find) {
 					var allels = (document.all) ? document.all : document.getElementsByTagName('*');
-					for (var i=0,len=allels.length;i<len;i++) if (allels[i].attributes) for (var j=0,lenn=allels[i].attributes.length;j<lenn;j++) if (allels[i].attributes[j].specified) if (allels[i].attributes[j].nodeValue == element) elements.push(allels[i]);
+					for (var i=0,len=allels.length;i<len;i++) { 
+						if (allels[i].attributes) {
+							for (var j=0,lenn=allels[i].attributes.length;j<lenn;j++) { 
+								if (allels[i].attributes[j].specified) { 
+									if (allels[i].attributes[j].nodeValue == element) { 
+										elements.push(allels[i]);
+										find=true;
+									}
+								}
+							}
+						}
+					}
 				}
-				} else {
-					elements.push(element);
-				}
+			} else {
+				elements.push(element);
+			}
 		}
 		if (elements.length == 1) {
 			return elements[0];
@@ -2326,7 +2469,47 @@ nova.table= {
 		}
 	}
 };
-
+nova.toc = {
+	_state : 'block',
+	/**
+	 * Create a toc for the actual page
+	 * @param {String} title the title of the toc
+	 * @param {String} ignore the object which have className==ignore are skiped
+	 */
+	init : function (title, ignore) {
+    	var toc = document.createElement('div');
+    	toc.id = 'toc';		
+    	var tocTitle = toc.appendChild(document.createElement('div'));
+		nova.html.addClass(tocTitle,'title');
+	    tocTitle.onclick = nova.toc._toggleToc;
+	    tocTitle.innerHTML = title;
+	    var tocContent = toc.appendChild(document.createElement('div'));
+		nova.html.addClass(tocContent,'content');
+	    var tocElemnts = nova.dom.getElementsByAnything('h1','h2','h3','h4');
+	    if (tocElemnts.length < 2) return;
+	
+	    for (var i=0;i<tocElemnts.length;i++){
+	        if (nova.html.hasClass(tocElemnts[i],ignore)) continue;
+			var tmp = document.createElement('a');
+	        tmp.innerHTML = tocElemnts[i].innerHTML;
+	        tmp.href = '#link' + i;
+	        nova.html.addClass(tmp,'indent'+tocElemnts[i].nodeName.toLowerCase());
+	        tocContent.appendChild(tmp);			
+	        var tmp2 = document.createElement('a');
+	        tmp2.name = tmp2.id = 'link' + i;
+	        tocElemnts[i].parentNode.insertBefore(tmp2,tocElemnts[i]);
+	    }
+	    document.body.insertBefore(toc,document.body.childNodes[0]);
+	},
+	/**
+	 * @private
+	 * toggle the toc
+	 */
+	_toggleToc : function () {
+	    nova.toc._state = (nova.toc._state == 'none') ? 'block' : 'none';
+	    document.getElementById('toc').lastChild.style.display = nova.toc._state;
+	} 
+};
 /**
  * Nova's forms namespace
  * @constructor
@@ -2847,7 +3030,9 @@ nova.form= {
 	
 			for (i in elm) {
 				//if (elm[i]==_this) continue;
+				if (typeof elm[i] == "function") continue;
 				for (j in elm[i].inErrors) {
+					if (typeof elm[i].inErrors[j] == "function") continue;
 					if (elm[i].inErrors[j]) {
 						_this.inErrors['validate']=true;
 						_this.Errors.push(elm[i]);
