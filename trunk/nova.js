@@ -82,6 +82,7 @@ var nova = new Object({
 	 * @return {handle} handle to the timeout method
 	 */
 	setTimeOut:function(fn, delay,_this) {
+		var args = arguments;
 		return window.setTimeout(function () { 
 			fn.apply(_this, args); 
 		}, delay);
@@ -95,6 +96,7 @@ var nova = new Object({
 	 * @return {handle} handle to the interval method
 	 */
 	setInterval:function(fn, delay,_this) {
+		var args = arguments;
 		return window.setInterval(function () { 
 			fn.apply(_this, args); 
 		}, delay);
@@ -247,31 +249,39 @@ nova.effects = {
 		params.duration=params.duration / ((Math.abs(params.from - params.to)*100) / pas);
 
 		_this.effectInProgress[params.scope] = nova.setInterval(function() {
-			obj=this.obj;
-			if (typeof this.fadeValue=="undefined") {
-				this.fadeValue=this.params.from;
-			}
-			obj.style.display="";
-			nova.html.setOpacity(obj,this.fadeValue );
-			
-			if (this.params.fadeIn)
-				this.fadeValue+=(this.pas/100);
-			else
-				this.fadeValue-=(this.pas/100);
-
-			if ((this.params.fadeIn && this.fadeValue>=params.to) || (!this.params.fadeIn && this.fadeValue<=params.to)) {
-				clearInterval(this.effectInProgress[this.params.scope]);
-				
-				if (!this.params.fadeIn && this.params.to == 0)
-					obj.style.display="none";
-				else if (this.params.fadeIn && this.params.to == 1) {
-					nova.html.setOpacity(obj,1);
+			try {
+				if (typeof nova=="undefined" && nova===null) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					return;
 				}
+				obj=this.obj;
+				if (typeof this.fadeValue=="undefined") {
+					this.fadeValue=this.params.from;
+				}
+				obj.style.display="";
+				nova.html.setOpacity(obj,this.fadeValue );
 				
-				if (fromQueue)
-					nova.effects.queueNext(this.params.scope,true);
-			}
-				
+				if (this.params.fadeIn)
+					this.fadeValue+=(this.pas/100);
+				else
+					this.fadeValue-=(this.pas/100);
+	
+				if ((this.params.fadeIn && this.fadeValue>=params.to) || (!this.params.fadeIn && this.fadeValue<=params.to)) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					
+					if (!this.params.fadeIn && this.params.to == 0)
+						obj.style.display="none";
+					else if (this.params.fadeIn && this.params.to == 1) {
+						nova.html.setOpacity(obj,1);
+					}
+					
+					if (fromQueue)
+						nova.effects.queueNext(this.params.scope,true);
+				}
+			} catch (e) {
+				clearInterval(this.effectInProgress[this.params.scope]);
+				return;
+			}	
 		},params.duration,_this);
 	},
 	/**
@@ -306,25 +316,33 @@ nova.effects = {
 		};
 		params.duration=params.duration/(ecart / pas);
 		_this.effectInProgress[params.scope] = nova.setInterval(function() {
-
-			obj=this.obj;
+			try {
+				if (typeof nova=="undefined" && nova===null) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					return;
+				}
+				obj=this.obj;
+				
+				if (nova.dom.getDomOffset(obj,"left")<this.params.left)
+					obj.style.left=nova.dom.getDomOffset(obj,"left")+this.pas+"px";
+				if (nova.dom.getDomOffset(obj,"left")>this.params.left)
+					obj.style.left=nova.dom.getDomOffset(obj,"left")-this.pas+"px";
+				
+				
+				if (nova.dom.getDomOffset(obj,"top")<this.params.top)
+					obj.style.top=nova.dom.getDomOffset(obj,"top")+this.pas+"px";
+				if (nova.dom.getDomOffset(obj,"top")>this.params.top)
+					obj.style.top=nova.dom.getDomOffset(obj,"top")-this.pas+"px";
+				
 			
-			if (nova.dom.getDomOffset(obj,"left")<this.params.left)
-				obj.style.left=nova.dom.getDomOffset(obj,"left")+this.pas+"px";
-			if (nova.dom.getDomOffset(obj,"left")>this.params.left)
-				obj.style.left=nova.dom.getDomOffset(obj,"left")-this.pas+"px";
-			
-			
-			if (nova.dom.getDomOffset(obj,"top")<this.params.top)
-				obj.style.top=nova.dom.getDomOffset(obj,"top")+this.pas+"px";
-			if (nova.dom.getDomOffset(obj,"top")>this.params.top)
-				obj.style.top=nova.dom.getDomOffset(obj,"top")-this.pas+"px";
-			
-		
-			if (nova.dom.getDomOffset(obj,"left")==this.params.left && nova.dom.getDomOffset(obj,"top")==this.params.top) {
+				if (nova.dom.getDomOffset(obj,"left")==this.params.left && nova.dom.getDomOffset(obj,"top")==this.params.top) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					if (fromQueue)
+						nova.effects.queueNext(this.params.scope,true);
+				}
+			} catch (e) {
 				clearInterval(this.effectInProgress[this.params.scope]);
-				if (fromQueue)
-					nova.effects.queueNext(this.params.scope,true);
+				return;
 			}
 		},params.duration,_this);
 	},
@@ -357,17 +375,25 @@ nova.effects = {
 		};
 		params.duration=params.duration/(ecart / pas);
 		_this.effectInProgress[params.scope] = nova.setInterval(function() {
-
-			obj=this.obj;
-			if (obj.offsetHeight<this.params.height)
-				obj.style.height=obj.offsetHeight+this.pas+"px";
-			if (obj.offsetWidth<this.params.width)
-				obj.style.width=obj.offsetWidth+this.pas+"px";
-		
-			if (obj.offsetHeight>=this.params.height && obj.offsetWidth>=this.params.width) {
+			try {
+				if (typeof nova=="undefined" && nova===null) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					return;
+				}
+				obj=this.obj;
+				if (obj.offsetHeight<this.params.height)
+					obj.style.height=obj.offsetHeight+this.pas+"px";
+				if (obj.offsetWidth<this.params.width)
+					obj.style.width=obj.offsetWidth+this.pas+"px";
+			
+				if (obj.offsetHeight>=this.params.height && obj.offsetWidth>=this.params.width) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					if (fromQueue)
+						nova.effects.queueNext(this.params.scope,true);
+				}
+			} catch (e) {
 				clearInterval(this.effectInProgress[this.params.scope]);
-				if (fromQueue)
-					nova.effects.queueNext(this.params.scope,true);
+				return;
 			}
 		},params.duration,_this);
 	},
@@ -439,30 +465,39 @@ nova.effects = {
 		params.duration=params.duration/(params.originalSize / pas);
 	
 		_this.effectInProgress[params.scope] = nova.setInterval(function() {
-			obj=this.obj;
-			
-			if (typeof this.slideValue=="undefined") {
-				if (this.params.slideUp)
-					this.slideValue=0;
-				else
-					this.slideValue=this.params.originalSize;
-			}
-			
-			obj.style.height=this.slideValue+"px";
-			
-			if (params.slideUp) {
-				if (this.slideValue==0)
-					obj.style.display="";
-				this.slideValue+=pas;		
-			} else
-				this.slideValue-=pas;
-							
-			if ((obj.offsetHeight>=this.params.originalSize && params.slideUp) || (obj.offsetHeight<=0 && !params.slideUp)) {
+			try {
+				if (typeof nova=="undefined" && nova===null) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					return;
+				}
+				obj=this.obj;
+				
+				if (typeof this.slideValue=="undefined") {
+					if (this.params.slideUp)
+						this.slideValue=0;
+					else
+						this.slideValue=this.params.originalSize;
+				}
+				
+				obj.style.height=this.slideValue+"px";
+				
+				if (params.slideUp) {
+					if (this.slideValue==0)
+						obj.style.display="";
+					this.slideValue+=pas;		
+				} else
+					this.slideValue-=pas;
+								
+				if ((obj.offsetHeight>=this.params.originalSize && params.slideUp) || (obj.offsetHeight<=0 && !params.slideUp)) {
+					clearInterval(this.effectInProgress[this.params.scope]);
+					if (!params.slideUp)
+						obj.style.display="none";
+					if (fromQueue)
+						nova.effects.queueNext(this.params.scope,true);
+				}
+			} catch (e) {
 				clearInterval(this.effectInProgress[this.params.scope]);
-				if (!params.slideUp)
-					obj.style.display="none";
-				if (fromQueue)
-					nova.effects.queueNext(this.params.scope,true);
+				return;
 			}
 		},params.duration,_this);
 	}
@@ -885,7 +920,6 @@ nova.dom = {
 			
 			var element = arguments[ij];
 			if (element == null) continue;
-			console.log(element);
 			var find=false;
 			if (typeof element == 'string') {
 				var matched = document.getElementById(element);
