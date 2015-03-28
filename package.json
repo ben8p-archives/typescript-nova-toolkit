@@ -1,0 +1,9 @@
+{
+  "name": "nova",
+  "version": "2.0.0",
+  "description": "nova framework",
+  "author": "benjamin santalucia",
+  "devDependencies": {
+    "intern": "latest"
+  }
+}

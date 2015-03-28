@@ -1,0 +1,31 @@
+{
+    "version": "1.4.1",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./node_modules/intern/tests/unit/data/lib/util/bar.ts",
+        "./node_modules/intern/typings/chai/chai.d.ts",
+        "./node_modules/intern/typings/digdug/digdug.d.ts",
+        "./node_modules/intern/typings/dojo2/dojo.d.ts",
+        "./node_modules/intern/typings/intern/intern.d.ts",
+        "./node_modules/intern/typings/leadfoot/leadfoot.d.ts",
+        "./node_modules/intern/typings/node/node.d.ts",
+        "./nova/core/_base/c3mro.ts",
+        "./nova/core/classFactory.ts",
+        "./nova/core/object.ts",
+        "./nova/tests/core/_base/c3mro.ts",
+        "./nova/tests/core/classFactory.ts",
+        "./nova/tests/core/object.ts",
+        "./nova/tests/intern.ts"
+    ]
+}

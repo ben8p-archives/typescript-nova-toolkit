@@ -1,5 +1,8 @@
 # nova-framework
-Automatically exported from code.google.com/p/nova-framework
+nova-framework revival...
+Fully written in TypeScript
 
-Not maintained since 2007.
-Backup from google-code just for records. Do not even look at the code quality ;)
+Currently support:
+- class linearization
+- multiple inheritance
+- object mixin
