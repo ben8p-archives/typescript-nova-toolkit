@@ -1,4 +1,11 @@
-export function assign (target:Object, ...sources:Object[]):Object {
+/**
+ * implemation of es6 Object.asign
+ *
+ * @param	target	the object which will receive new attributes
+ * @param	sources	sources which will be combined into target
+ * @return			target (modified by reference)
+ */
+export function assign(target:Object, ...sources:Object[]):Object {
 	if (target === undefined || target === null) {
 		throw 'Cannot convert first argument to object';
 	}

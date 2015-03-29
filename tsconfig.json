@@ -23,9 +23,11 @@
         "./nova/core/_base/c3mro.ts",
         "./nova/core/classFactory.ts",
         "./nova/core/object.ts",
+        "./nova/core/promise.ts",
         "./nova/tests/core/_base/c3mro.ts",
         "./nova/tests/core/classFactory.ts",
         "./nova/tests/core/object.ts",
+        "./nova/tests/core/promise.ts",
         "./nova/tests/intern.ts"
     ]
 }

@@ -1,8 +1,13 @@
 # nova-framework
-nova-framework revival...
-Fully written in TypeScript
+nova-framework aim is to not re-invent the wheel.
+It provides es6 feature for es5 browser but use native feature when available.
+It also add extra functionalities and helpers to facilitate your journey.
 
-Currently support:
-- class linearization
-- multiple inheritance
-- object mixin
+Fully written in TypeScript to reduce the learning curve.
+
+Current support:
+- class linearization (using using c3 method)
+- multiple class inheritance
+- es6 object.assign
+- es6 promise
+- deferred / when as convenient helper/class for promises

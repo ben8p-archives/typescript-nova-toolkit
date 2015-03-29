@@ -12,7 +12,7 @@ class Foo extends classFactory.Base implements IFoo {
 	foo: boolean = true;
 	log(): void {
 		results.push('foo');
-		this.inherited(arguments);
+		this.super(arguments);
 		this.foo2();
 	}
 	foo2(): void {
@@ -26,7 +26,7 @@ class Bar extends classFactory.Base implements IBar {
 	bar: boolean = true;
 	log(): void {
 		results.push('bar');
-		this.inherited(arguments);
+		this.super(arguments);
 
 	}
 }
@@ -35,7 +35,7 @@ class Baz extends classFactory.Base implements IFoo, IBar {
 	baz: boolean = true;
 	log(): void {
 		results.push('baz');
-		this.inherited(arguments);
+		this.super(arguments);
 	}
 }
 var BazClass = classFactory.declare(Baz, [ Foo, Bar ]);
@@ -67,7 +67,7 @@ registerSuite(function () {
 				}
 
 
-			},
+			}
 
 		}
 

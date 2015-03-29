@@ -40,10 +40,13 @@ var computeMethodNames = function (target:any):void {
 	}
 
 }
-
+/**
+ * Base class for every class using linearized inheritance
+ * Provides the this.super() method to call superclass method
+ */
 export class Base {
 
-	inherited(args: IArguments): Function {
+	super(args: IArguments): Function {
 		var inheritedFunction:Function;
 		var callee:any = <any>args.callee;
 		if(callee.superclass) {
@@ -76,7 +79,13 @@ export class Base {
 		}
 	}
 }
-
+/**
+ * linearize and combine all class and subclass in order to create one Class
+ *
+ * @param	base			The base class
+* @param	superclasses	an array of class mixins
+ * @return					a class
+ */
 export function declare <T extends Object>(base: T, superclasses:any[]): T {
 	//inspired from dojo toolkit
 	var bases:any[] = c3mro.linearize(superclasses);
