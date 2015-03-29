@@ -1,17 +1,20 @@
-var emptyObject = {};
-
-export function mixin (destination:Object, source:Object) {
-	//from dojo toolkit
-	var name:string;
-
-	for(name in source) {
-		var s:any = source[name];
-		if(!(name in destination) || (destination[name] !== s && (!(name in emptyObject) || emptyObject[name] !== s))){
-			destination[name] = s;
-			if(s instanceof Function) {
-				destination[name].functionName = name;
-			}
-		}
+export function assign (target:Object, ...sources:Object[]):Object {
+	if (target === undefined || target === null) {
+		throw 'Cannot convert first argument to object';
 	}
+	var to:any = Object(target);
+	sources.forEach((source:any) => {
+		if (source === undefined || source === null) {
+			return;
+		}
+		var keys:any[] = Object.keys(Object(source));
+		keys.forEach((key:string) => {
+			var desc:PropertyDescriptor = Object.getOwnPropertyDescriptor(source, key);
+			if (desc !== undefined && desc.enumerable) {
+				to[key] = source[key];
+			}
+		});
+	});
 
+	return to;
 }

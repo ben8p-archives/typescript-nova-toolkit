@@ -5,37 +5,49 @@ import c3mro = require('./_base/c3mro');
 import object = require('./object');
 
 var defaultConstructor:any = new Function();
-var forceNew = function (ctor:Function):Function {
+var forceNew = function (currentConstructor:Function):Function {
 	//from dojo toolkit
 	// create object with correct prototype using a do-nothing
 	// constructor
-	defaultConstructor.prototype = ctor.prototype;
-	var t:Function = new defaultConstructor;
+	defaultConstructor.prototype = currentConstructor.prototype;
+	var object:Function = new defaultConstructor();
 	defaultConstructor.prototype = null;	// clean up
-	return t;
+	return object;
 }
 var chainedConstructor = function (bases:Function[]):Function {
 	return function() {
 		var i:number;
-		var l:number = bases.length;
-		for(i = l - 1; i >= 0; --i){
-			var f:any = bases[i];
-			var m:any = f._meta;
-			f = m ? m.ctor : f;
-			if(f instanceof Function) {
-				f.apply(this, arguments);
+		var baseLength:number = bases.length;
+		//execute the construcotrs from bottom to top
+		for(i = baseLength - 1; i >= 0; --i){
+			var objectConstructor:any = bases[i];
+			var meta:any = objectConstructor._meta;
+			objectConstructor = meta ? meta.baseConstructor : objectConstructor;
+			if(objectConstructor instanceof Function) {
+				objectConstructor.apply(this, arguments);
 			}
 		}
 	}
 }
+var computeMethodNames = function (target:any):void {
+	var name:string;
+
+	for(name in target) {
+		var property:any = target[name];
+		if(property instanceof Function) {
+			property.functionName = name;
+		}
+	}
+
+}
 
 export class Base {
 
-	inherited(args: IArguments): any {
-		var fnc:Function;
+	inherited(args: IArguments): Function {
+		var inheritedFunction:Function;
 		var callee:any = <any>args.callee;
 		if(callee.superclass) {
-			fnc = callee.superclass;
+			inheritedFunction = callee.superclass;
 		} else {
 			var bases:Function[] = (<any>this.constructor)._meta.bases;
 
@@ -45,22 +57,22 @@ export class Base {
 			bases.some(function(base:Function) {
 				if(!base.prototype) { return false; }
 
-				if(!fnc && base.prototype[name]) {
-					fnc = base.prototype[name];
+				if(!inheritedFunction && base.prototype[name]) {
+					inheritedFunction = base.prototype[name];
 				}
-				if(fnc && stopHere) {
+				if(inheritedFunction && stopHere) {
 					return true;
 				}
 				if(base.prototype[name] === callee) {
 					//pick the next one
 					stopHere = true;
-					fnc = null;
+					inheritedFunction = null;
 				}
 			});
 		}
-		if(fnc instanceof Function) {
-			callee.superclass = fnc;
-			return fnc.apply(this, args);
+		if(inheritedFunction instanceof Function) {
+			callee.superclass = inheritedFunction; //save for cache
+			return inheritedFunction.apply(this, args);
 		}
 	}
 }
@@ -72,32 +84,34 @@ export function declare <T extends Object>(base: T, superclasses:any[]): T {
 	var mixins:number = bases.length - bases[0];
 	var superclass:any = bases[mixins];
 
-	var ctor:any;
+	var finalConstructor:any;
 	for(i = mixins - 1;; --i){
-		var proto = forceNew(superclass);
+		var prototypeConstructor = forceNew(superclass);
 		if(!i){
 			// stop if nothing to add (the last base)
 			break;
 		}
 		// mix in properties
-		object.mixin(proto, bases[i].prototype);
+		object.assign(prototypeConstructor, bases[i].prototype);
+		computeMethodNames(prototypeConstructor);
 		// chain in new constructor
-		ctor = new Function();
-		ctor.superclass = superclass;
-		ctor.prototype = proto;
-		superclass = proto.constructor = ctor;
+		finalConstructor = new Function();
+		finalConstructor.superclass = superclass;
+		finalConstructor.prototype = prototypeConstructor;
+		superclass = prototypeConstructor.constructor = finalConstructor;
 	}
 
-	// mix in properties
-	object.mixin(proto, (<any> base).prototype);
-	proto.constructor = base.constructor;
-	bases[0] = ctor = chainedConstructor([<any> base].concat(bases));
+	// mix in base properties
+	object.assign(prototypeConstructor, (<any> base).prototype);
+	computeMethodNames(prototypeConstructor);
+	prototypeConstructor.constructor = base.constructor;
+	bases[0] = finalConstructor = chainedConstructor([<any> base].concat(bases));
 
 	// add meta information to the constructor
-	ctor._meta  = {bases: bases, parents: superclasses, ctor: base.constructor};
-	ctor.superclass = superclass && superclass.prototype;
-	ctor.prototype = proto;
-	proto.constructor = ctor;
+	finalConstructor._meta  = {bases: bases, superclasses: superclasses, baseConstructor: base.constructor};
+	finalConstructor.superclass = superclass && superclass.prototype;
+	finalConstructor.prototype = prototypeConstructor;
+	prototypeConstructor.constructor = finalConstructor;
 
-	return <T> ctor;
+	return <T> finalConstructor;
 }
