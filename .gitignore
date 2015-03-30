@@ -1,2 +1,4 @@
 /node_modules
 *.js
+*.project
+.settings/org.eclipse.core.resources.prefs
