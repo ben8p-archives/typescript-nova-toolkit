@@ -1,28 +1,42 @@
-# nova-framework
-nova-framework aim is to not re-invent the wheel.
-It provides es6 feature for es5 browser but use native feature when available.
-It also add extra functionalities and helpers to facilitate your journey.
+# about nova-framework
+nova-framework aims is to be the next generation framework.  
+With no frills it goes straight to the goal: facilitate your journey through your webapp's development.  
+It is built around [typescript](http://www.typescriptlang.org/) technology to offer you the best experience and reduce the learning curve.  
+Because the development is 100% test driven, every functionality is safe to use, regression issues are memories.  
+With nova-framework we want to smooth your developer life so you can focus on your ultimate goal : building your product.
 
-Fully written in TypeScript to reduce the learning curve.
+# environment support
+- Chrome
+- Firefox (To be validated)
+- Internet explorer 10+ (To be validated)
+- Safari (To be validated)
+- NodeJs (To be validated)
 
-Note: No IE8 support
+# features
 
-Current support:
-- class linearization (using using c3 method)
+- es6 feature provided by [typescript](http://www.typescriptlang.org/)
+- XMLHTTPRequest (supporing method GET, POST, PUT, DEL)
 - multiple class inheritance
-- es6 object.assign
-- es6 promise
-- deferred / when as convenient helper/class for promises
-- XMLHTTPRequest (GET, POST, PUT, DEL)
+- class linearization (based on [c3 Method Resolution Order](https://www.python.org/download/releases/2.3/mro/))
+- [Object.assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+- Promise, respecting [the standards](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise)
+- Deferred / when(): convenient helpers for dealing with Promise
 
-#to run tests
-- install dependencies: run ```npm install``` from the project directory
-- add intern typings to the node_modules/intern/ folder (typings are not yet released). You can get typings on intern master : https://github.com/theintern/intern/tree/master/typings
-- you need to compile the .ts files into .js (a build script will come later)
-- run a webserver
+# dependencies
+- [npm](https://www.npmjs.com/), to install/update dependencies
+- [typescript](http://www.typescriptlang.org/), to compile the code
+- [intern](http://theintern.github.io/), to test the code
+- [grunt](http://gruntjs.com/), to perform extra task like code minification (soon)
+
+# getting started
+- first of all, clone this git repository.
+- from the project directory run ```npm install```. That will install all required dependencies.
+- add intern TypeScript typings to the ```./node_modules/intern/``` folder (typings are not yet released with intern). You can get typings on [intern master branch](https://github.com/theintern/intern/tree/master/typings)
+- .ts files into .js (typescript reside in ```./node_modules/typescript/bin/tsc```)
+- start a webserver
 - access intern form your localhost: http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern
 
-#LICENSE
+# lisence
 GNU GENERAL PUBLIC LICENSE
 
 Version 3, 29 June 2007
