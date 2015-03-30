@@ -5,12 +5,15 @@ It also add extra functionalities and helpers to facilitate your journey.
 
 Fully written in TypeScript to reduce the learning curve.
 
+Note: No IE8 support
+
 Current support:
 - class linearization (using using c3 method)
 - multiple class inheritance
 - es6 object.assign
 - es6 promise
 - deferred / when as convenient helper/class for promises
+- XMLHTTPRequest (GET, POST, PUT, DEL)
 
 #to run tests
 - you need to compile the .ts files into .js (a build script will come later)

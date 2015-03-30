@@ -5,7 +5,7 @@ import promise = require('nova/core/promise');
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/Promise',
+		name: 'nova/core/promise',
 
 		beforeEach: function () {
 		},

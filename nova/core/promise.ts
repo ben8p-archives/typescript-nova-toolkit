@@ -34,7 +34,7 @@ class PromisePolyfill {
 		this.isFulfilling = true;
 		setTimeout(() => {
 			this.success.forEach((next:any) => {
-				var returnedValue = next.callback(value);
+				let returnedValue = next.callback(value);
 				if(next.promise) {
 					next.promise.resolve(returnedValue);
 				}
@@ -43,7 +43,7 @@ class PromisePolyfill {
 		}, 0);
 	}
 	then(successCallback:Function, failCallback?:Function): PromisePolyfill {
-		var promise = new PromisePolyfill(function() {});
+		let promise = new PromisePolyfill(function() {});
 
 		this.success.push({
 			callback: successCallback,
@@ -65,7 +65,7 @@ class PromisePolyfill {
 		return promise;
 	}
 	catch(failCallback:Function): PromisePolyfill {
-		var promise = new PromisePolyfill(function() {});
+		let promise = new PromisePolyfill(function() {});
 
 		if(failCallback) {
 			this.fail.push({
@@ -80,7 +80,7 @@ class PromisePolyfill {
 		return promise;
 	}
 }
-var Promise:any = (<any>window).Promise || PromisePolyfill;
+let Promise:any = (<any>window).Promise || PromisePolyfill;
 
 /**
  * Convenient helper to always have a promise
@@ -93,8 +93,8 @@ export function when(value?:any): PromisePolyfill {
 	if(value instanceof Deferred || value instanceof Promise) {
 		return value;
 	}
-	var promiseResolve:Function;
-	var promise:PromisePolyfill = new Promise((resolve:Function) => {
+	let promiseResolve:Function;
+	let promise:PromisePolyfill = new Promise((resolve:Function) => {
 		promiseResolve = resolve;
 	});
 

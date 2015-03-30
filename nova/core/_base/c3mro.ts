@@ -1,4 +1,4 @@
-var counter: number = 0;
+let counter: number = 0;
 
 /**
  * C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
@@ -8,7 +8,7 @@ var counter: number = 0;
  * @return			an array containing linearized classes
  */
 export function linearize (bases: any[]): any[] {
-	var result : any[] = [];
+	let result : any[] = [];
 	var	roots = [{
 			classes: <number>0,
 			references: <any>[]

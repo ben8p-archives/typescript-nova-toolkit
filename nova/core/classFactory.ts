@@ -1,27 +1,24 @@
-/// <reference path="_base/c3mro.ts" />
-/// <reference path="object.ts" />
-
 import c3mro = require('./_base/c3mro');
 import object = require('./object');
 
-var defaultConstructor:any = new Function();
-var forceNew = function (currentConstructor:Function):Function {
+let defaultConstructor:any = new Function();
+let forceNew = function (currentConstructor:Function):Function {
 	//from dojo toolkit
 	// create object with correct prototype using a do-nothing
 	// constructor
 	defaultConstructor.prototype = currentConstructor.prototype;
-	var object:Function = new defaultConstructor();
+	let object:Function = new defaultConstructor();
 	defaultConstructor.prototype = null;	// clean up
 	return object;
 }
-var chainedConstructor = function (bases:Function[]):Function {
+let chainedConstructor = function (bases:Function[]):Function {
 	return function() {
-		var i:number;
-		var baseLength:number = bases.length;
+		let i:number;
+		let baseLength:number = bases.length;
 		//execute the construcotrs from bottom to top
 		for(i = baseLength - 1; i >= 0; --i){
-			var objectConstructor:any = bases[i];
-			var meta:any = objectConstructor._meta;
+			let objectConstructor:any = bases[i];
+			let meta:any = objectConstructor._meta;
 			objectConstructor = meta ? meta.baseConstructor : objectConstructor;
 			if(objectConstructor instanceof Function) {
 				objectConstructor.apply(this, arguments);
@@ -29,11 +26,11 @@ var chainedConstructor = function (bases:Function[]):Function {
 		}
 	}
 }
-var computeMethodNames = function (target:any):void {
-	var name:string;
+let computeMethodNames = function (target:any):void {
+	let name:string;
 
 	for(name in target) {
-		var property:any = target[name];
+		let property:any = target[name];
 		if(property instanceof Function) {
 			property.functionName = name;
 		}
@@ -47,15 +44,15 @@ var computeMethodNames = function (target:any):void {
 export class Base {
 
 	super(args: IArguments): Function {
-		var inheritedFunction:Function;
-		var callee:any = <any>args.callee;
+		let inheritedFunction:Function;
+		let callee:any = <any>args.callee;
 		if(callee.superclass) {
 			inheritedFunction = callee.superclass;
 		} else {
-			var bases:Function[] = (<any>this.constructor)._meta.bases;
+			let bases:Function[] = (<any>this.constructor)._meta.bases;
 
-			var stopHere:Boolean = false;
-			var name: string = (<any>args.callee).functionName;
+			let stopHere:Boolean = false;
+			let name: string = (<any>args.callee).functionName;
 
 			bases.some(function(base:Function) {
 				if(!base.prototype) { return false; }
@@ -88,12 +85,12 @@ export class Base {
  */
 export function declare <T extends Object>(base: T, superclasses:any[]): T {
 	//inspired from dojo toolkit
-	var bases:any[] = c3mro.linearize(superclasses);
-	var i:number;
-	var mixins:number = bases.length - bases[0];
-	var superclass:any = bases[mixins];
+	let bases:any[] = c3mro.linearize(superclasses);
+	let i:number;
+	let mixins:number = bases.length - bases[0];
+	let superclass:any = bases[mixins];
 
-	var finalConstructor:any;
+	let finalConstructor:any;
 	for(i = mixins - 1;; --i){
 		var prototypeConstructor = forceNew(superclass);
 		if(!i){
