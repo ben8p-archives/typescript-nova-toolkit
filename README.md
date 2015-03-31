@@ -39,6 +39,12 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - Be sure to have a localhost webserver
 - access intern form your localhost: http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern
 
+# contributing
+Are you searching for new challenges ? You adhere on our vision ?  
+We are just at the beginning of our adventure. It is the most exiting moment to join!  
+Just clone the repository and go ahead : do your changes, send pull request, ...  
+All contributors are welcomed!
+
 # lisence
 GNU GENERAL PUBLIC LICENSE
 
