@@ -1,5 +1,6 @@
-import promise = require('./promise');
+import Deferred = require('./promise/Deferred');
 import object = require('./object');
+import xhrInterface = require('./interface/xhr');
 
 interface xhrOptions {
 	url: string;
@@ -26,9 +27,9 @@ function isNativeObject(value:any):Boolean {
 }
 
 
-function xhr(options:xhrFinalOptions):promise.Deferred {
+function xhr(options:xhrFinalOptions):Deferred {
 	let request = new XMLHttpRequest();
-	let deferred = new promise.Deferred();
+	let deferred = new Deferred();
 
 	let url:string = options.url;
 	let query:string = isNativeObject(options.query) ? toQuery(options.query) : options.query;
@@ -55,12 +56,12 @@ function xhr(options:xhrFinalOptions):promise.Deferred {
 	request.timeout = options.timeout || 0;
 
 	request.addEventListener('load', (event) => {
-		let response:TextResponse = {
+		let response:xhrInterface.TextResponse = {
 			status: request.status,
 			response: request.responseText
 		}
-		let responseJson:JsonResponse;
-		let responseXml:XmlResponse;
+		let responseJson:xhrInterface.JsonResponse;
+		let responseXml:xhrInterface.XmlResponse;
 		if(options.handleAs === handleAs.JSON) {
 			responseJson = {
 				status: request.status,
@@ -79,7 +80,7 @@ function xhr(options:xhrFinalOptions):promise.Deferred {
 		deferred.resolve(responseJson || responseXml || response);
 	}, false);
 	request.addEventListener('error', () => {
-		deferred.reject(<TextResponse>{
+		deferred.reject(<xhrInterface.TextResponse>{
 			status: request.status,
 			response: request.responseText
 		});
@@ -95,27 +96,7 @@ function xhr(options:xhrFinalOptions):promise.Deferred {
 }
 
 
-/**
- * interface for response when handled as JSON
- */
-export interface JsonResponse {
-	status: number;
-	response: any;
-}
-/**
- * interface for response when handled as XML
- */
-export interface XmlResponse {
-	status: number;
-	response: XMLDocument;
-}
-/**
- * interface for response when handled as TEXT
- */
-export interface TextResponse {
-	status: number;
-	response: string;
-}
+
 /**
  * types of data we will return
  */
@@ -160,7 +141,7 @@ export function toQuery(value:any):string {
  * @param	options		xhr options, see interface
  * @return				promise resolved when the query is done
  */
-export function get(options:xhrOptions):promise.Deferred {
+export function get(options:xhrOptions):Deferred {
 	(<xhrFinalOptions>options).method = method.GET;
 	return xhr(<xhrFinalOptions>options);
 }
@@ -169,7 +150,7 @@ export function get(options:xhrOptions):promise.Deferred {
  * @param	options		xhr options, see interface
  * @return				promise resolved when the query is done
  */
-export function post(options:xhrOptions):promise.Deferred {
+export function post(options:xhrOptions):Deferred {
 	(<xhrFinalOptions>options).method = method.POST;
 	return xhr(<xhrFinalOptions>options);
 }
@@ -178,7 +159,7 @@ export function post(options:xhrOptions):promise.Deferred {
  * @param	options		xhr options, see interface
  * @return				promise resolved when the query is done
  */
-export function del(options:xhrOptions):promise.Deferred {
+export function del(options:xhrOptions):Deferred {
 	(<xhrFinalOptions>options).method = method.DEL;
 	return xhr(<xhrFinalOptions>options);
 }
@@ -187,7 +168,7 @@ export function del(options:xhrOptions):promise.Deferred {
  * @param	options		xhr options, see interface
  * @return				promise resolved when the query is done
  */
-export function put(options:xhrOptions):promise.Deferred {
+export function put(options:xhrOptions):Deferred {
 	(<xhrFinalOptions>options).method = method.PUT;
 	return xhr(<xhrFinalOptions>options);
 }

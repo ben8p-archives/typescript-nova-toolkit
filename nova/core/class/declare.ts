@@ -1,5 +1,5 @@
-import c3mro = require('./_base/c3mro');
-import object = require('./object');
+import c3mro = require('../_base/c3mro');
+import object = require('../object');
 
 let defaultConstructor:any = new Function();
 let forceNew = function (currentConstructor:Function):Function {
@@ -37,45 +37,7 @@ let computeMethodNames = function (target:any):void {
 	}
 
 }
-/**
- * Base class for every class using linearized inheritance
- * Provides the this.super() method to call superclass method
- */
-export class Base {
 
-	super(args: IArguments): Function {
-		let inheritedFunction:Function;
-		let callee:any = <any>args.callee;
-		if(callee.superclass) {
-			inheritedFunction = callee.superclass;
-		} else {
-			let bases:Function[] = (<any>this.constructor)._meta.bases;
-
-			let stopHere:Boolean = false;
-			let name: string = (<any>args.callee).functionName;
-
-			bases.some(function(base:Function) {
-				if(!base.prototype) { return false; }
-
-				if(!inheritedFunction && base.prototype[name]) {
-					inheritedFunction = base.prototype[name];
-				}
-				if(inheritedFunction && stopHere) {
-					return true;
-				}
-				if(base.prototype[name] === callee) {
-					//pick the next one
-					stopHere = true;
-					inheritedFunction = null;
-				}
-			});
-		}
-		if(inheritedFunction instanceof Function) {
-			callee.superclass = inheritedFunction; //save for cache
-			return inheritedFunction.apply(this, args);
-		}
-	}
-}
 /**
  * linearize and combine all class and subclass in order to create one Class
  *
@@ -83,7 +45,7 @@ export class Base {
 * @param	superclasses	an array of class mixins
  * @return					a class
  */
-export function declare <T extends Object>(base: T, superclasses:any[]): T {
+var declareClass = function  <T extends Object>(base: T, superclasses:any[]): T {
 	//inspired from dojo toolkit
 	let bases:any[] = c3mro.linearize(superclasses);
 	let i:number;
@@ -121,3 +83,4 @@ export function declare <T extends Object>(base: T, superclasses:any[]): T {
 
 	return <T> finalConstructor;
 }
+export = declareClass;

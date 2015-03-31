@@ -1,7 +1,7 @@
-/// <reference path="../../../node_modules/intern/typings/intern/intern.d.ts" />
+/// <reference path="../../../../node_modules/intern/typings/intern/intern.d.ts" />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import promise = require('nova/core/promise');
+import Deferred = require('nova/core/promise/Deferred');
 
 registerSuite(function () {
 	return {
@@ -9,70 +9,12 @@ registerSuite(function () {
 
 		beforeEach: function () {
 		},
-		'when':  {
-			'basic types' : function() {
-				var dfd = this.async(200);
-				var results:any[] = [];
 
-				promise.when(true).then((value:boolean) => {
-					results.push(value);
-				});
-				promise.when(false).then((value:boolean) => {
-					results.push(value);
-				});
-				promise.when('foobar').then((value:boolean) => {
-					results.push(value);
-				});
-				promise.when(5).then((value:boolean) => {
-					results.push(value);
-				});
-				promise.when(null).then((value:boolean) => {
-					results.push(value);
-				});
-				promise.when().then((value:boolean) => {
-					results.push(value);
-				});
-
-				setTimeout(dfd.callback(() => {
-					assert.deepEqual(results, [true, false, 'foobar', 5, null, undefined]);
-				}), 150);
-			},
-			'with promise' : function() {
-				var dfd = this.async(200);
-				var results:any[] = [];
-
-				var p0:promise.Deferred = new promise.Deferred();
-				promise.when(p0).then((value:string) => {
-					results.push(value);
-				});
-				p0.resolve('foo');
-
-				var p1:promise.Deferred = new promise.Deferred();
-				promise.when(p1).then(() => {}, (value:string) => {
-					results.push(value);
-				});
-				p1.reject('rejected');
-
-				var p2:promise.Deferred = new promise.Deferred();
-				var p3 = p2.then((value:string) => {
-					return value + 'baz';
-				})
-				promise.when(p3).then((value:string) => {
-					results.push(value);
-				});
-				p2.resolve('bar');
-
-				setTimeout(dfd.callback(() => {
-					assert.deepEqual(results, ['foo', 'rejected', 'barbaz']);
-				}), 150);
-			},
-
-		},
-		'new Promise': {
+		'Deferred and Promise': {
 			'resolve': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				p.then(dfd.callback((value:string) => {
 					assert.equal(value, 'foo');
 				}));
@@ -82,7 +24,7 @@ registerSuite(function () {
 			'double resolve': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var results:any[] = [];
 				p.then((value:string) => {
 					results.push('then');
@@ -98,7 +40,7 @@ registerSuite(function () {
 			'double reject': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var results:any[] = [];
 				p.catch((value:string) => {
 					results.push('catch');
@@ -114,7 +56,7 @@ registerSuite(function () {
 			'then after resolve': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var results:any[] = [];
 				p.then((value:string) => {
 					var newValue:string = value + 'then1';
@@ -123,7 +65,7 @@ registerSuite(function () {
 				});
 				p.resolve('foo');
 
-				var p2:promise.Deferred = new promise.Deferred();
+				var p2:Deferred = new Deferred();
 				var results2:any[] = [];
 				var p3 = p2.then((value:string) => {
 					var newValue:string = value + 'then1';
@@ -154,7 +96,7 @@ registerSuite(function () {
 			'catch after reject': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var results:any[] = [];
 				p.catch((value:string) => {
 					var newValue:string = value + 'catch1';
@@ -163,7 +105,7 @@ registerSuite(function () {
 				});
 				p.reject('foo');
 
-				var p2:promise.Deferred = new promise.Deferred();
+				var p2:Deferred = new Deferred();
 				var results2:any[] = [];
 				var p3 = p2.catch((value:string) => {
 					var newValue:string = value + 'catch1';
@@ -194,7 +136,7 @@ registerSuite(function () {
 			'resolve chain': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				p.then(function(value:string) {
 					return value + 'bar';
 				}).then(dfd.callback((value:string) => {
@@ -206,7 +148,7 @@ registerSuite(function () {
 			'multiple resolve without chain': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var count:number = 0;
 				p.then(function(value:string) {
 					count++;
@@ -223,7 +165,7 @@ registerSuite(function () {
 			'reject using catch': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				p.catch(dfd.callback((value:string) => {
 					assert.equal(value, 'foo');
 				}));
@@ -232,7 +174,7 @@ registerSuite(function () {
 			'reject using then': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				p.then(function() {}, dfd.callback((value:string) => {
 					assert.equal(value, 'foo');
 				}));
@@ -241,7 +183,7 @@ registerSuite(function () {
 			'reject cannot be chained': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var count:number = 0;
 				p.catch(() => {
 					count++;
@@ -258,7 +200,7 @@ registerSuite(function () {
 			'multiple reject without chain': function() {
 				var dfd = this.async(200);
 
-				var p:promise.Deferred = new promise.Deferred();
+				var p:Deferred = new Deferred();
 				var count:number = 0;
 				p.catch(function(value:string) {
 					count++;
@@ -275,14 +217,14 @@ registerSuite(function () {
 			'deferred interface': function() {
 				var dfd = this.async(200);
 
-				var p1:promise.Deferred = new promise.Deferred();
+				var p1:Deferred = new Deferred();
 				p1.resolve();
 
-				var p2:promise.Deferred = new promise.Deferred();
+				var p2:Deferred = new Deferred();
 				p2.catch(function() {}); //dummy to prevent error
 				p2.reject();
 
-				var p3:promise.Deferred = new promise.Deferred();
+				var p3:Deferred = new Deferred();
 
 				setTimeout(dfd.callback(() => {
 					assert.equal(p1.isFulfilled(), true);

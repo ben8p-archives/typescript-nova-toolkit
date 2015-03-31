@@ -1,4 +1,9 @@
-class PromisePolyfill {
+import promiseInterface = require('../interface/Promise');
+
+/**
+ * A Promise as defined in Ecma standards
+ **/
+class PromisePolyfill implements promiseInterface.Promise {
 	private fail:any[] = [];
 	private success:any[] = [];
 	private resolved:boolean = false;
@@ -42,7 +47,7 @@ class PromisePolyfill {
 			this.isFulfilling = false;
 		}, 0);
 	}
-	then(successCallback:Function, failCallback?:Function): PromisePolyfill {
+	then(successCallback:Function, failCallback?:Function): promiseInterface.Promise {
 		let promise = new PromisePolyfill(function() {});
 
 		this.success.push({
@@ -64,7 +69,7 @@ class PromisePolyfill {
 
 		return promise;
 	}
-	catch(failCallback:Function): PromisePolyfill {
+	catch(failCallback:Function): promiseInterface.Promise {
 		let promise = new PromisePolyfill(function() {});
 
 		if(failCallback) {
@@ -80,71 +85,5 @@ class PromisePolyfill {
 		return promise;
 	}
 }
-let Promise:any = (<any>window).Promise || PromisePolyfill;
-
-/**
- * Convenient helper to always have a promise
- * if the parameter is not a promise, then an already resolved Promise will be created
- *
- * @param	value	anything
- * @return			a promise (resolved or not)
- */
-export function when(value?:any): PromisePolyfill {
-	if(value instanceof Deferred || value instanceof Promise) {
-		return value;
-	}
-	let promiseResolve:Function;
-	let promise:PromisePolyfill = new Promise((resolve:Function) => {
-		promiseResolve = resolve;
-	});
-
-	promiseResolve(value);
-	return promise;
-
-}
-
-/**
- * reprensent a Promise container
- * it implements the the method and add convenient method to know the state of the Promise
- */
-export class Deferred {
-	private promiseResolve:Function;
-	private promiseReject:Function;
-
-	private promise:any;
-	private resolved:Boolean = false;
-	private rejected:Boolean = false;
-	constructor() {
-		this.promise = new Promise((promiseResolve:Function, promiseReject:Function) => {
-			this.promiseResolve = promiseResolve;
-			this.promiseReject = promiseReject;
-		});
-	}
-	isFulfilled(): Boolean {
-		return this.resolved || this.rejected;
-	}
-	isResolved(): Boolean {
-		return this.resolved;
-	}
-	isRejected(): Boolean {
-		return this.rejected;
-	}
-
-	resolve(value?:any): void {
-		this.promiseResolve(value);
-		this.resolved = true;
-	}
-	reject(reason?:any): void {
-		this.promiseReject(reason);
-		this.rejected = true;
-	}
-
-	//interface for to native Promise
-	then(successCallback:Function, failCallback?:Function): PromisePolyfill {
-		return this.promise.then(successCallback, failCallback);
-	}
-	catch(failCallback:Function): PromisePolyfill {
-		return this.promise.catch(failCallback);
-	}
-
-}
+let PromiseClass:any = (<any>window).Promise || PromisePolyfill;
+export = PromiseClass;

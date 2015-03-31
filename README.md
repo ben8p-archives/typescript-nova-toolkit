@@ -7,8 +7,8 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 
 # environment support
 - Chrome
-- Firefox (To be validated)
-- Internet explorer 10+ (To be validated)
+- Firefox
+- Internet explorer 10+
 - Safari (To be validated)
 - NodeJs (To be validated)
 
