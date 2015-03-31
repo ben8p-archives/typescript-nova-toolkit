@@ -1,4 +1,6 @@
 /node_modules
 *.js
+*.js.map
 *.project
 .settings/org.eclipse.core.resources.prefs
+.tscache

@@ -4,7 +4,9 @@
   "description": "nova framework",
   "author": "benjamin santalucia",
   "devDependencies": {
-    "intern": "latest",
-    "typescript": "latest"
+    "intern": "^2.2.2",
+    "typescript": "https://github.com/Arnavion/typescript-github/tarball/2015-03-21-0d2a5bbf7c7409671e29387b17fcd20e3f9776bc",
+    "grunt": "^0.4.5",
+    "grunt-ts": "^4.0.1"
   }
 }

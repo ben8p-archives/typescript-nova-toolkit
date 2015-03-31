@@ -13,7 +13,6 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - NodeJs (To be validated)
 
 # features
-
 - es6 feature provided by [typescript](http://www.typescriptlang.org/)
 - XMLHTTPRequest (supporing method GET, POST, PUT, DEL)
 - multiple class inheritance
@@ -22,18 +21,22 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - Promise, respecting [the standards](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise)
 - Deferred / when(): convenient helpers for dealing with Promise
 
-# dependencies
+# development dependencies
+- [nodejs](https://nodejs.org/), for all kind of things
 - [npm](https://www.npmjs.com/), to install/update dependencies
 - [typescript](http://www.typescriptlang.org/), to compile the code
 - [intern](http://theintern.github.io/), to test the code
-- [grunt](http://gruntjs.com/), to perform extra task like code minification (soon)
+- [grunt](http://gruntjs.com/), to perform extra task like code minification
+- [grunt-ts](https://github.com/TypeStrong/grunt-ts), to perform TypeScript transpilation from grunt
 
 # getting started
 - first of all, clone this git repository.
-- from the project directory run ```npm install```. That will install all required dependencies.
+- from the project directory run ```npm install```. This will install all required dependencies.
 - add intern TypeScript typings to the ```./node_modules/intern/``` folder (typings are not yet released with intern). You can get typings on [intern master branch](https://github.com/theintern/intern/tree/master/typings)
-- .ts files into .js (typescript reside in ```./node_modules/typescript/bin/tsc```)
-- start a webserver
+- run ```node -e "require('grunt').cli()"``` to transpile .ts files into .js
+
+# run the tests
+- Be sure to have a localhost webserver
 - access intern form your localhost: http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern
 
 # lisence
