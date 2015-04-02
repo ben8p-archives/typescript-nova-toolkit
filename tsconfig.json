@@ -28,6 +28,7 @@
         "./nova/tests/core/class/declare.ts",
         "./nova/tests/core/object.ts",
         "./nova/tests/core/promise/Deferred.ts",
+        "./nova/tests/core/promise/Promise.ts",
         "./nova/tests/core/promise/when.ts",
         "./nova/tests/core/xhr.ts",
         "./nova/tests/intern.ts"

@@ -3,7 +3,7 @@ import promiseInterface = require('../interface/Promise');
 /**
  * A Promise as defined in Ecma standards
  **/
-class PromisePolyfill implements promiseInterface.Promise {
+class PromisePolyfill {
 	private fail:any[] = [];
 	private success:any[] = [];
 	private resolved:boolean = false;
@@ -14,6 +14,78 @@ class PromisePolyfill implements promiseInterface.Promise {
 
 	constructor(resolver:Function) {
 		resolver(this.resolve.bind(this), this.reject.bind(this));
+	}
+	/**
+	 * Convenient helper to always have a promise
+	 * if the parameter is not a promise, then an already resolved Promise will be created
+	 *
+	 * @param	value	anything
+	 * @return			a promise (resolved or not)
+	 **/
+	 static all(values:any[]): PromisePolyfill {
+		var lastPromise:PromisePolyfill = null;
+		var totalValues = values.length;
+		var resolvedValueCount = 0;
+		var resolvedValues:any[] = [];
+		var reject:Function;
+		var resolve:Function;
+		var allPromise = new PromisePolyfill(function(allResolve:Function, allReject:Function) {
+			reject = allReject;
+			resolve = allResolve;
+		});
+
+		values.forEach((value, index) => {
+			var promise:PromisePolyfill = PromisePolyfill.resolve(value);
+			var then = (value:any) => {
+				resolvedValueCount++;
+				resolvedValues[index] = value;
+				if(resolvedValueCount === totalValues) {
+					resolve(resolvedValues);
+				}
+			}
+			promise.then(then, (value:any) => {
+				reject(value);
+			});
+		});
+		return allPromise;
+	}
+	/**
+	 * Instant resolved promise if @value is not a Promise itself
+	 * Otherwise resolved when @value is resolved
+	 *
+	 * @param	value	anything
+	 * @return			a promise (resolved or not)
+	 **/
+	static resolve(value?:any): PromisePolyfill {
+		if(value && typeof value.then === 'function') {
+			return value;
+		}
+		let promiseResolve:Function;
+		let promise:PromisePolyfill = new PromisePolyfill((resolve:Function) => {
+			promiseResolve = resolve;
+		});
+
+		promiseResolve(value);
+		return promise;
+	}
+	/**
+	 * Convenient helper to always have a promise
+	 * if the parameter is not a promise, then an already resolved Promise will be created
+	 *
+	 * @param	value	anything
+	 * @return			a promise (resolved or not)
+	 **/
+	 static reject (value?:any): PromisePolyfill {
+		if(value && typeof value.then === 'function') {
+			return value;
+		}
+		let promiseReject:Function;
+		let promise:PromisePolyfill = new PromisePolyfill((dummy:Function, reject:Function) => {
+			promiseReject = reject;
+		});
+
+		promiseReject(value);
+		return promise;
 	}
 	private reject(reason?:any) {
 		//native reject a always async, setTimeout emulate that
@@ -47,7 +119,7 @@ class PromisePolyfill implements promiseInterface.Promise {
 			this.isFulfilling = false;
 		}, 0);
 	}
-	then(successCallback:Function, failCallback?:Function): promiseInterface.Promise {
+	then(successCallback:Function, failCallback?:Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});
 
 		this.success.push({
@@ -69,7 +141,7 @@ class PromisePolyfill implements promiseInterface.Promise {
 
 		return promise;
 	}
-	catch(failCallback:Function): promiseInterface.Promise {
+	catch(failCallback:Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});
 
 		if(failCallback) {
@@ -85,5 +157,14 @@ class PromisePolyfill implements promiseInterface.Promise {
 		return promise;
 	}
 }
-let PromiseClass:any = (<any>window).Promise || PromisePolyfill;
+
+
+let PromiseClass = PromisePolyfill;
+
+// if((<any>window).Promise) {
+// 	PromiseClass = (<any>window).Promise;
+// }
+
+
+
 export = PromiseClass;
