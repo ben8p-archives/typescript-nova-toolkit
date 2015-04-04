@@ -1,12 +1,12 @@
 {
   "name": "nova",
   "version": "2.0.0",
-  "description": "nova framework",
+  "description": "nova toolkit",
   "author": "benjamin santalucia",
   "devDependencies": {
-    "intern": "^2.2.2",
-    "typescript": "https://github.com/Arnavion/typescript-github/tarball/2015-03-21-0d2a5bbf7c7409671e29387b17fcd20e3f9776bc",
     "grunt": "^0.4.5",
-    "grunt-ts": "^4.0.1"
+    "grunt-ts": "^4.0.1",
+    "intern": "^2.2.2",
+    "typescript": "https://github.com/Arnavion/typescript-github/tarball/2015-04-02-b18dd53242df31163390c411ac7ab5e9c282fea2"
   }
 }
