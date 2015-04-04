@@ -1,10 +1,15 @@
 import Promise = require('./Promise');
-import promiseInterface = require('../interface/Promise');
-
 /**
  * reprensent a Promise container
  * it implements the Promise interface and add convenient method to know the state of the Promise
  **/
+
+interface PromiseInterface{
+	then(successCallback:Function, failCallback?:Function):PromiseInterface;
+	catch(failCallback:Function):PromiseInterface;
+}
+
+
 class Deferred {
 	private promiseResolve:Function;
 	private promiseReject:Function;
@@ -38,10 +43,10 @@ class Deferred {
 	}
 
 	//interface for to native Promise
-	then(successCallback:Function, failCallback?:Function): promiseInterface.Promise {
+	then(successCallback:Function, failCallback?:Function):PromiseInterface {
 		return this.promise.then(successCallback, failCallback);
 	}
-	catch(failCallback:Function): promiseInterface.Promise {
+	catch(failCallback:Function):PromiseInterface {
 		return this.promise.catch(failCallback);
 	}
 

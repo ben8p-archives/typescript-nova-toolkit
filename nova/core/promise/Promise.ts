@@ -1,5 +1,3 @@
-import promiseInterface = require('../interface/Promise');
-
 /**
  * A Promise as defined in Ecma standards
  **/
@@ -16,14 +14,12 @@ class PromisePolyfill {
 		resolver(this.resolve.bind(this), this.reject.bind(this));
 	}
 	/**
-	 * Convenient helper to always have a promise
-	 * if the parameter is not a promise, then an already resolved Promise will be created
+	 * return a Promise which will be resolved when All values are resolved
 	 *
-	 * @param	value	anything
+	 * @param	values	anything
 	 * @return			a promise (resolved or not)
 	 **/
 	 static all(values:any[]): PromisePolyfill {
-		var lastPromise:PromisePolyfill = null;
 		var totalValues = values.length;
 		var resolvedValueCount = 0;
 		var resolvedValues:any[] = [];
@@ -48,6 +44,30 @@ class PromisePolyfill {
 			});
 		});
 		return allPromise;
+	}
+	/**
+	 * Return a Promise which will be resolved when one of the values is resolved
+	 *
+	 * @param	values	anything
+	 * @return			a promise (resolved or not)
+	 **/
+	 static race(values:any[]): PromisePolyfill {
+		var reject:Function;
+		var resolve:Function;
+		var racePromise = new PromisePolyfill(function(allResolve:Function, allReject:Function) {
+			reject = allReject;
+			resolve = allResolve;
+		});
+
+		values.forEach((value, index) => {
+			var promise:PromisePolyfill = PromisePolyfill.resolve(value);
+			promise.then((value:any) => {
+				resolve(value);
+			}, (value:any) => {
+				reject(value);
+			});
+		});
+		return racePromise;
 	}
 	/**
 	 * Instant resolved promise if @value is not a Promise itself

@@ -1,8 +1,8 @@
 /// <reference path="../../../../node_modules/intern/typings/intern/intern.d.ts" />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import PromiseInterface = require('nova/core/interface/Promise');
 import Promise = require('nova/core/promise/Promise');
+import Deferred = require('nova/core/promise/Deferred');
 
 registerSuite(function () {
 	return {
@@ -14,7 +14,6 @@ registerSuite(function () {
 		'Promise': {
 			'standard resolve': function() {
 				var dfd = this.async(200);
-
 				var resolver:Function;
 				var p = new Promise(function(resolverCallback:Function) {
 					resolver = resolverCallback;
@@ -35,13 +34,96 @@ registerSuite(function () {
 				}));
 
 			},
-			'Promise.resolve': function() {
-				var dfd = this.async(200);
+			'Promise.race': {
+				'with basic type': function() {
+					var dfd = this.async(200);
+					var promise = Promise.resolve(3);
 
-				var p = Promise.resolve('foo');
-				p.then(dfd.callback((value:string) => {
-					assert.equal(value, 'foo');
-				}));
+					var p = Promise.race(['foo']);
+					p.then(dfd.callback((value:any[]) => {
+						assert.equal(value, 'foo');
+					}));
+				},
+				'with Promise': function() {
+					var dfd = this.async(200);
+					var promise = Promise.resolve(3);
+
+					var p = Promise.race([promise]);
+					p.then(dfd.callback((value:any[]) => {
+						assert.equal(value, 3);
+					}));
+				},
+				'with Promise (order)': function() {
+					var dfd = this.async(2000);
+
+					var p0:Deferred = new Deferred();
+					var p1:Deferred = new Deferred();
+
+					var p = Promise.race([p0, p1]);
+					p.then(dfd.callback((value:any[]) => {
+						assert.equal(value, 'bar');
+					}));
+
+					p1.resolve('bar');
+				},
+			},
+			'Promise.resolve':  {
+				'basic types' : function() {
+					var dfd = this.async(200);
+					var results:any[] = [];
+
+					Promise.resolve(true).then((value:boolean) => {
+						results.push(value);
+					});
+					Promise.resolve(false).then((value:boolean) => {
+						results.push(value);
+					});
+					Promise.resolve('foobar').then((value:boolean) => {
+						results.push(value);
+					});
+					Promise.resolve(5).then((value:boolean) => {
+						results.push(value);
+					});
+					Promise.resolve(null).then((value:boolean) => {
+						results.push(value);
+					});
+					Promise.resolve().then((value:boolean) => {
+						results.push(value);
+					});
+
+					setTimeout(dfd.callback(() => {
+						assert.deepEqual(results, [true, false, 'foobar', 5, null, undefined]);
+					}), 150);
+				},
+				'with promise' : function() {
+					var dfd = this.async(200);
+					var results:any[] = [];
+
+					var p0:Deferred = new Deferred();
+					Promise.resolve(p0).then((value:string) => {
+						results.push(value);
+					});
+					p0.resolve('foo');
+
+					var p1:Deferred = new Deferred();
+					Promise.resolve(p1).then(() => {}, (value:string) => {
+						results.push(value);
+					});
+					p1.reject('rejected');
+
+					var p2:Deferred = new Deferred();
+					var p3 = p2.then((value:string) => {
+						return value + 'baz';
+					})
+					Promise.resolve(p3).then((value:string) => {
+						results.push(value);
+					});
+					p2.resolve('bar');
+
+					setTimeout(dfd.callback(() => {
+						assert.deepEqual(results, ['foo', 'rejected', 'barbaz']);
+					}), 150);
+				}
 
 			},
 			'Promise.reject': function() {
@@ -53,6 +135,7 @@ registerSuite(function () {
 				}));
 
 			},
+
 			'double resolve': function() {
 				var dfd = this.async(200);
 
