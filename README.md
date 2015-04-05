@@ -46,7 +46,7 @@ We are just at the beginning of our adventure. It is the most exiting moment to 
 Just clone the repository and go ahead : do your changes, send pull request, ...  
 All contributors are welcomed!
 
-# lisence
+# license
 BSD 3-Clause License
 Copyright (c) 2015, Benjamin Santalucia
 All rights reserved.
