@@ -56,6 +56,30 @@ registerSuite(function () {
 			}));
 
 			bus.publish('bar', '1', [1, 2, 3], {isBar: true});
-		}
+		},
+		'once()': function() {
+			var dfd = this.async(200);
+			var result:string[] = [];
+
+			var event = bus.once('onceEvent');
+			var handle = event.then((value:string) => {
+				result.push('h1:' + value);
+			});
+			event.then((value:string) => {
+				result.push('h2:' + value);
+			});
+
+			bus.publish('onceEvent', '1');
+			bus.publish('onceEvent', '2');  // all events are already disconnected, this will be ignored
+			handle.then((value:string) => {
+				result.push('h3:' + value);
+			})
+			bus.publish('onceEvent', '3');
+			bus.publish('onceEvent', '4'); // all events are already disconnected, this will be ignored
+
+			setTimeout(dfd.callback(() => {
+				assert.deepEqual(result, ['h1:1', 'h2:1', 'h3:3']);
+			}), 150);
+		},
 	}
 })

@@ -18,11 +18,13 @@ interface ISubEvent {
  * represent an event
  */
 class PublishEvent {
-	private eventName:String;
+	private eventName:string;
+	private autoCancel:boolean;
 	private success:Function[] = [];
 
-	constructor(eventName:string) {
+	constructor(eventName:string, autoCancel:boolean) {
 		this.eventName = eventName;
+		this.autoCancel = autoCancel;
 	}
 	/**
 	 * attach a handler to an event. Return a canceler method
@@ -38,9 +40,12 @@ class PublishEvent {
 		};
 	}
 	execute(...values:any[]):void {
-		this.success.forEach((callback:Function) => {
+		this.success.forEach((callback:Function, index:number) => {
 			if(callback) {
 				callback.apply(null, values);
+			}
+			if(this.autoCancel) {
+				this.success[index] = null;
 			}
 		});
 	}
@@ -52,15 +57,21 @@ class PublishEvent {
  */
 class EventBus {
 	private events:any = {};
-	when(eventName:string):IRootEvent {
+	private subscribe(eventName:string, autoCancel:boolean):IRootEvent {
 		this.events[eventName] = this.events[eventName] || [];
-		var event = new PublishEvent(eventName);
+		var event = new PublishEvent(eventName, autoCancel);
 
 		this.events[eventName].push(event);
 
 		return {
 			then: event.then.bind(event)
 		};
+	}
+	when(eventName:string):IRootEvent {
+		return this.subscribe(eventName, false);
+	}
+	once(eventName:string):IRootEvent {
+		return this.subscribe(eventName, true);
 	}
 	publish(eventName:string, ...values:any[]) {
 		var events = this.events[eventName] || [];
