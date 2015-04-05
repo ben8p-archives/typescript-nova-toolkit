@@ -9,7 +9,6 @@ interface PromiseInterface{
 	catch(failCallback:Function):PromiseInterface;
 }
 
-
 class Deferred {
 	private promiseResolve:Function;
 	private promiseReject:Function;

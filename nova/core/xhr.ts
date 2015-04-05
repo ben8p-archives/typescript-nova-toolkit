@@ -1,6 +1,6 @@
 import Deferred = require('./promise/Deferred');
 import object = require('./object');
-import xhrInterface = require('./interface/xhr');
+import xhrInterface = require('./xhr.d');
 
 interface xhrOptions {
 	url: string;

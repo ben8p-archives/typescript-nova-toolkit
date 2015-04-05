@@ -19,7 +19,8 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - class linearization (based on [c3 Method Resolution Order](https://www.python.org/download/releases/2.3/mro/))
 - [Object.assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 - Promise, respecting [the standards](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise)
-- Deferred / when(): convenient helpers for dealing with Promise
+- Deferred: convenient helpers for dealing with Promise
+- Publish/Subscribe pattern
 
 # development dependencies
 - [nodejs](https://nodejs.org/), for all kind of things
