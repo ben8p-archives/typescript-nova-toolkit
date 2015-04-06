@@ -5,7 +5,13 @@
 
 </div>
 <div class="col2">
-	{% render _includes/structure/sidebar.md %}
+	<ul>
+	  {% for post in site.posts %}
+	    <li>
+	      <a href="#{{ post.title | downcase }}">{{ post.title }}</a>
+	    </li>
+	  {% endfor %}
+	</ul>
 </div>
 
 {% include structure/footer.html %}

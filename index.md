@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-
-{% loop_directory directory:doc iterator:file filter:.md sort:descending %}
-   {% render file %}
-{% endloop_directory %}
+{% for post in site.posts %}
+	{{ post.content }}
+{% endfor %}

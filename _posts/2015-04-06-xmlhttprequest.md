@@ -1,3 +1,4 @@
+
 #XMLHTTPRequest
 Reside in the package ```nova/core/xhr```  
 Send a request to a web service and return a [Promise](#Promise).  
