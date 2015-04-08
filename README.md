@@ -21,6 +21,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - Promise, respecting [the standards](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise)
 - Deferred: convenient helpers for dealing with Promise
 - Publish/Subscribe pattern
+- Dom events
 
 # development dependencies
 - [nodejs](https://nodejs.org/), for all kind of things
