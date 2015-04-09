@@ -14,7 +14,7 @@ module.exports = (grunt) ->
         build:
             options:
                 module: 'amd'
-                out: './docs'
+                out: './gh-pages/docs'
                 name: 'nova-toolkit'
                 mode: 'modules'
                 target: 'es6'
