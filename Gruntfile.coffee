@@ -10,6 +10,16 @@ module.exports = (grunt) ->
         sourceMap: false
       default:
         src: ['**/*.ts', '!node_modules/**/*.ts']
+    typedoc:
+        build:
+            options:
+                module: 'amd'
+                out: './docs'
+                name: 'nova-toolkit'
+                mode: 'modules'
+                target: 'es6'
+            src: ['**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
 
   grunt.loadNpmTasks 'grunt-ts'
-  grunt.registerTask 'default', ['ts']
+  grunt.loadNpmTasks 'grunt-typedoc'
+  grunt.registerTask 'default', ['typedoc', 'ts']
