@@ -1,16 +1,26 @@
 import c3mro = require('../_base/c3mro');
 import object = require('../object');
 
+/** Quick access to native Function constructor */
 let defaultConstructor:any = new Function();
+
+/**
+ * create object with correct prototype using a do-nothing constructor
+ * @param	currentConstructor	a Function constructor
+ * @return	a function constructor
+ */
 let forceNew = function (currentConstructor:Function):Function {
-	//from dojo toolkit
-	// create object with correct prototype using a do-nothing
-	// constructor
+	//copy from dojotoolkit
 	defaultConstructor.prototype = currentConstructor.prototype;
 	let object:Function = new defaultConstructor();
 	defaultConstructor.prototype = null;	// clean up
 	return object;
 }
+/**
+ * Generate a constructor which will call all constructor of passed arguments in cascade.
+ * @param	bases	an array of function constructor to chain
+ * @return	a function constructor
+ */
 let chainedConstructor = function (bases:Function[]):Function {
 	return function() {
 		let i:number;
@@ -26,6 +36,12 @@ let chainedConstructor = function (bases:Function[]):Function {
 		}
 	}
 }
+/**
+ * iterate over the passed argument and determine if a property is a function.
+ * if yes, it add the name of the property to the 'functionName' property of the function
+ * so we can later on know what is the name of some anonymous function
+ * @param	target	anything inheriting from ObjectConstructor
+ */
 let computeMethodNames = function (target:any):void {
 	let name:string;
 
@@ -39,10 +55,10 @@ let computeMethodNames = function (target:any):void {
 }
 
 /**
- * linearize and combine all class and subclass in order to create one Class
+ * linearize and combine all class and subclass in order to create one extended Class
  *
  * @param	base			The base class
-* @param	superclasses	an array of class mixins
+ * @param	superclasses	an array of class mixins
  * @return					a class
  */
 var declareClass = function  <T extends Object>(base: T, superclasses:any[]): T {

@@ -2,7 +2,8 @@ import Deferred = require('./promise/Deferred');
 import object = require('./object');
 import xhrInterface = require('./xhr.d');
 
-interface xhrOptions {
+/** interface used to defined how options should look like */
+export interface xhrOptions {
 	url: string;
 	handleAs?: handleAs;
 	timeout?: number;
@@ -13,12 +14,19 @@ interface xhrOptions {
 	password?:string;
 	headers?:string[];
 }
+/** interface used to defined how options should look like when including xhr method */
 interface xhrFinalOptions extends xhrOptions {
 	method: method
 }
 
+/** enum of supported protocols */
 enum method {GET, POST, DEL, PUT};
 
+/**
+ * return true is the value is an object
+ * @param	value	anything to test
+ * @return	a boolean
+ */
 function isNativeObject(value:any):Boolean {
 	if(value && value.toString && value.toString() === '[object Object]') {
 		return true;
@@ -26,7 +34,11 @@ function isNativeObject(value:any):Boolean {
 	return false;
 }
 
-
+/**
+ * execute an xhr request
+ * @param	options	represent the xhr options
+ * @return	Deferred
+ */
 function xhr(options:xhrFinalOptions):Deferred {
 	let request = new XMLHttpRequest();
 	let deferred = new Deferred();
@@ -97,9 +109,7 @@ function xhr(options:xhrFinalOptions):Deferred {
 
 
 
-/**
- * types of data we will return
- */
+/** types of data we will return */
 export enum handleAs {JSON, XML, TEXT};
 /**
  * convert an object into a query string

@@ -1,9 +1,12 @@
 /**
  * Base class for every class using linearized inheritance
- * Provides the this.super() method to call superclass method
+ * Provides this.super() method to call superclass
  */
 class Base {
-
+	/**
+	 * call the superclass method
+	 * @param	args	the arguments object received by the current method
+	 */
 	super(args: IArguments): Function {
 		let inheritedFunction:Function;
 		let callee:any = <any>args.callee;

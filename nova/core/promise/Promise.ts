@@ -1,6 +1,4 @@
-/**
- * A Promise as defined in Ecma standards
- **/
+/** A Promise as defined in Ecma standards **/
 class PromisePolyfill {
 	private fail:any[] = [];
 	private success:any[] = [];
@@ -10,6 +8,11 @@ class PromisePolyfill {
 	private resolvedValue:any;
 	private isFulfilling:boolean = false; //prevent a then() to restart a pending resolve
 
+	/**
+	 * create the promise and bind the resolver and rejecter
+	 * @param	resolver	a function which will be called with the resolver and the rejecter as argumnets
+	 * @constructor
+	 */
 	constructor(resolver:Function) {
 		resolver(this.resolve.bind(this), this.reject.bind(this));
 	}
@@ -19,7 +22,7 @@ class PromisePolyfill {
 	 * @param	values	anything
 	 * @return			a promise (resolved or not)
 	 **/
-	 static all(values:any[]): PromisePolyfill {
+	static all(values:any[]): PromisePolyfill {
 		var totalValues = values.length;
 		var resolvedValueCount = 0;
 		var resolvedValues:any[] = [];
@@ -51,7 +54,7 @@ class PromisePolyfill {
 	 * @param	values	anything
 	 * @return			a promise (resolved or not)
 	 **/
-	 static race(values:any[]): PromisePolyfill {
+	static race(values:any[]): PromisePolyfill {
 		var reject:Function;
 		var resolve:Function;
 		var racePromise = new PromisePolyfill(function(allResolve:Function, allReject:Function) {
@@ -89,13 +92,13 @@ class PromisePolyfill {
 		return promise;
 	}
 	/**
-	 * Convenient helper to always have a promise
-	 * if the parameter is not a promise, then an already resolved Promise will be created
+	 * Instant rejected promise if @value is not a Promise itself
+	 * Otherwise rejected when @value is rejected
 	 *
 	 * @param	value	anything
-	 * @return			a promise (resolved or not)
+	 * @return			a promise (rejected or not)
 	 **/
-	 static reject (value?:any): PromisePolyfill {
+	static reject (value?:any): PromisePolyfill {
 		if(value && typeof value.then === 'function') {
 			return value;
 		}
@@ -107,6 +110,10 @@ class PromisePolyfill {
 		promiseReject(value);
 		return promise;
 	}
+	/**
+	 * reject the promise with @reason
+	 * @param	reason	anything
+	 */
 	private reject(reason?:any) {
 		//native reject a always async, setTimeout emulate that
 		if(this.rejected || this.resolved) { return; }
@@ -123,6 +130,10 @@ class PromisePolyfill {
 			this.isFulfilling = false;
 		}, 0);
 	}
+	/**
+	 * resolve the promise with @value
+	 * @param	value	anything
+	 */
 	private resolve(value?:any) {
 		//native resolve a always async, setTimeout emulate that
 		if(this.rejected || this.resolved) { return; }
@@ -139,6 +150,12 @@ class PromisePolyfill {
 			this.isFulfilling = false;
 		}, 0);
 	}
+	/**
+	 * Add a callback for when the promise will be resolve or rejected
+	 * @param	successCallback	callback executed when the promise is resolved
+	 * @param	failCallback	callback executed when the promise is rejected
+	 * @return	a promise
+	 */
 	then(successCallback:Function, failCallback?:Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});
 
@@ -161,6 +178,11 @@ class PromisePolyfill {
 
 		return promise;
 	}
+	/**
+	 * Add a callback for when the promise will be rejected
+	 * @param	failCallback	callback executed when the promise is rejected
+	 * @return	a promise
+	 */
 	catch(failCallback:Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});
 
@@ -184,7 +206,5 @@ let PromiseClass = PromisePolyfill;
 // if((<any>window).Promise) {
 // 	PromiseClass = (<any>window).Promise;
 // }
-
-
 
 export = PromiseClass;
