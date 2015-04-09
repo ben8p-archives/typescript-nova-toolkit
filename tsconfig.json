@@ -5,7 +5,7 @@
         "module": "amd",
         "declaration": false,
         "noImplicitAny": true,
-        "removeComments": true,
+        "removeComments": false,
         "noLib": false
     },
     "filesGlob": [
