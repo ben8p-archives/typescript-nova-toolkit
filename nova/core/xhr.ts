@@ -80,13 +80,14 @@ function xhr(options:xhrFinalOptions):Deferred {
 				response: JSON.parse(response.response)
 			}
 		} else if(options.handleAs === handleAs.XML) {
-			if(!request.responseXML) {
+			var xmlDocument = request.responseXML;
+			if(!xmlDocument) {
 				let parser = new DOMParser();
-				request.responseXML = parser.parseFromString(response.response, 'text/xml');
+				xmlDocument = parser.parseFromString(response.response, 'text/xml');
 			}
 			responseXml = {
 				status: request.status,
-				response: request.responseXML
+				response: xmlDocument
 			}
 		}
 		deferred.resolve(responseJson || responseXml || response);
