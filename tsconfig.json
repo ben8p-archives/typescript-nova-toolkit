@@ -16,6 +16,7 @@
     "files": [
         "./nova/core/_base/c3mro.ts",
         "./nova/core/class/Base.ts",
+        "./nova/core/class/Evented.ts",
         "./nova/core/class/declare.ts",
         "./nova/core/event.ts",
         "./nova/core/event/CustomEvent.ts",
