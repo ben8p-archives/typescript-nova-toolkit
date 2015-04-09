@@ -65,7 +65,7 @@ registerSuite(function () {
 					}));
 
 					p1.resolve('bar');
-				},
+				}
 			},
 			'Promise.resolve':  {
 				'basic types' : function() {
