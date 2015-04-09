@@ -41,9 +41,9 @@ class CustomEventPolyfill implements CustomEvent {
 	}
 }
 
-CustomEventPolyfill.prototype = (<any>window).Event.prototype;
-var BrowserCustomEvent = (<any>window).CustomEvent;
-if (typeof BrowserCustomEvent !== 'function') {
-  BrowserCustomEvent = CustomEventPolyfill;
+//CustomEventPolyfill.prototype = <any>Event.prototype;
+var BrowserCustomEvent = CustomEventPolyfill;
+if (typeof BrowserCustomEvent === 'function') {
+  BrowserCustomEvent = <any>CustomEvent;
 }
 export = BrowserCustomEvent;
