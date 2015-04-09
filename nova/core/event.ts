@@ -83,107 +83,130 @@ class InternalEvent {
 }
 
 /**
- * core part of the event mechanism
- * it includes an implementation of publish/subscribe mechanism
- * as well as an implementation for dom events and custom events
- * handling event is done through a when()/once() method which return a thenable object
+ * represent an event bus
+ * implementation of publish/subscribe mechanism
  */
-class EventBus {
+class EventBus implements EventTarget {
 	private events:any = {};
 	/**
-	 * prepare an event to receive handlers and attach it to the event bus
-	 * @param	eventName	type of the event
-	 * @param	autoRemove	if true, the handler will be disconnected after being fired
-	 * @return	IRootEvent
+	 * detach a handler from an event type in the event bus
+	 * @param	type		the type event to attach
+	 * @param	listener	the handler to attach
 	 */
-	private subscribe(eventName:string, autoRemove:boolean):IRootEvent;
-	/**
-	 * prepare an event to receive handlers
-	 * @param	eventName	type of the event
-	 * @param	autoRemove	if true, the handler will be disconnected after being fired
-	 * @param	target		an EventTarget to attach the event to
-	 * @return	IRootEvent
-	 */
-	private subscribe(eventName:string, autoRemove:boolean, target:EventTarget):IRootEvent;
-	private subscribe(eventName:string, autoRemove:boolean, target?:EventTarget):IRootEvent {
-		let event:InternalEvent;
-		if(target) {
-			event = new InternalEvent(eventName, autoRemove, target);
-		} else {
-			this.events[eventName] = this.events[eventName] || [];
-			event = new InternalEvent(eventName, autoRemove);
-
-			this.events[eventName].push(event);
-		}
-
-		return {
-			then: event.then.bind(event)
-		};
+	removeEventListener(type:string, listener:Function) {
+		var handlers = <Function[]>this.events[type];
+		handlers.some((handler, index) => {
+			if(handler === listener) {
+				handlers[index] = null;
+				return true;
+			}
+			return false;
+		});
 	}
 	/**
-	 * return a thenable object reacting when @eventName is fired by the event bus
-	 * @param	eventName	type of the event
-	 * @return	IRootEvent
+	 * attach a handler to an event type in the event bus
+	 * @param	type		the type event to attach
+	 * @param	listener	the handler to attach
 	 */
-	when(eventName:string):IRootEvent;
-	/**
-	 * return a thenable object reacting when @target fire @eventName
-	 * @param	target		target firing the vent
-	 * @param	eventName	type of the event
-	 * @return	IRootEvent
-	 */
-	when(target:EventTarget, eventName:string):IRootEvent;
-	/** overload for managing the different method signature */
-	when(target:EventTarget|string, eventName?:string):IRootEvent {
-		if(typeof target === 'string') {
-			return this.subscribe(target, false);
-		}
-		return this.subscribe(eventName, false, <EventTarget>target);
+	addEventListener(type:string, listener:Function) {
+		this.events[type] = this.events[type] || [];
+		this.events[type].push(listener);
 	}
 	/**
-	 * return a thenable object reacting when @eventName is fired by the event bus
-	 * the handler will be disconnected after being executed.
-	 * @param	eventName	type of the event
-	 * @return	IRootEvent
+	 * dispatch a event to the event bus
+	 * does not support cancelable/bubbles/preventDefault()/stopPropagation()
+	 * @param	event	the event to dispatch
+	 * @return	boolean
 	 */
-	once(eventName:string):IRootEvent;
-	/**
-	 * return a thenable object reacting when @target fire @eventName
-	 * the handler will be disconnected after being executed.
-	 * @param	target		target firing the vent
-	 * @param	eventName	type of the event
-	 * @return	IRootEvent
-	 */
-	once(target:EventTarget, eventName:string):IRootEvent;
-	/** overload for managing the different method signature */
-	once(target:EventTarget|string, eventName?:string):IRootEvent {
-		if(typeof target === 'string') {
-			return this.subscribe(target, true);
-		}
-		return this.subscribe(eventName, true, <EventTarget>target);
-	}
-	/**
-	 * dispatch @eventName from the event bus
-	 * @param	eventName	type of the event
-	 * @param	values		anything handlers should receive as argument
-	 */
-	dispatchEvent(eventName:string, ...values:any[]):void;
-	/**
-	 * dispatch @eventName from @target
-	 * @param	target		the event dispatcher
-	 * @param	event		the event itself containing anything that should be fired with it
-	 */
-	dispatchEvent(target:EventTarget, event:Event):void;
-	/** overload for managing the different method signature */
-	dispatchEvent(eventName:string|EventTarget, ...values:any[]) {
-		if(typeof eventName === 'string') {
-			let events = this.events[eventName] || [];
-			events.forEach((event:InternalEvent) => {
-				event.execute.apply(event, values);
-			});
-		} else {
-			eventName.dispatchEvent(values[0]);
-		}
+	dispatchEvent(event:Event):boolean {
+		var handlers = <Function[]>this.events[event.type];
+		if(!handlers || handlers.length === 0) { return true; }
+		handlers.forEach((handler) => {
+			if(typeof handler === 'function') {
+				handler(event);
+			}
+		});
+		return true;
 	}
 }
-export = new EventBus();
+let eventBus = new EventBus();
+
+
+/**
+* prepare an event to receive handlers
+* @param	target		an EventTarget to attach the event to
+* @param	eventName	type of the event
+* @param	autoRemove	if true, the handler will be disconnected after being fired
+* @return	IRootEvent
+*/
+function subscribe(target:EventTarget, eventName:string, autoRemove:boolean):IRootEvent {
+	let event:InternalEvent = new InternalEvent(eventName, autoRemove, target);
+	return {
+		then: event.then.bind(event)
+	};
+}
+
+/**
+* return a thenable object reacting when @eventName is fired by the event bus
+* @param	eventName	type of the event
+* @return	IRootEvent
+*/
+export function when(eventName:string):IRootEvent;
+/**
+* return a thenable object reacting when @target fire @eventName
+* @param	target		target firing the vent
+* @param	eventName	type of the event
+* @return	IRootEvent
+*/
+export function when(target:EventTarget, eventName:string):IRootEvent;
+/** overload for managing the different method signature */
+export function when(target:EventTarget|string, eventName?:string):IRootEvent {
+	if(typeof target === 'string') {
+		eventName = <string>target;
+		target = eventBus;
+	}
+	return subscribe(<EventTarget>target, eventName, false);
+}
+/**
+* return a thenable object reacting when @eventName is fired by the event bus
+* the handler will be disconnected after being executed.
+* @param	eventName	type of the event
+* @return	IRootEvent
+*/
+export function once(eventName:string):IRootEvent;
+/**
+* return a thenable object reacting when @target fire @eventName
+* the handler will be disconnected after being executed.
+* @param	target		target firing the vent
+* @param	eventName	type of the event
+* @return	IRootEvent
+*/
+export function once(target:EventTarget, eventName:string):IRootEvent;
+/** overload for managing the different method signature */
+export function once(target:EventTarget|string, eventName?:string):IRootEvent {
+	if(typeof target === 'string') {
+		eventName = <string>target;
+		target = eventBus;
+	}
+	return subscribe(<EventTarget>target, eventName, true);
+}
+/**
+* dispatch @eventName from the event bus
+* @param	event		the event itself containing anything that should be fired with it
+*/
+export function dispatchEvent(event:Event):boolean;
+/**
+* dispatch @eventName from @target
+* @param	target		the event dispatcher
+* @param	event		the event itself containing anything that should be fired with it
+*/
+export function dispatchEvent(target:EventTarget, event:Event):boolean;
+/** overload for managing the different method signature */
+export function dispatchEvent(target:Event|EventTarget, event?:Event):boolean {
+	if(!event) {
+		event = <Event>target;
+		target = eventBus;
+	}
+	(<EventTarget>target).dispatchEvent(event);
+	return true;
+}
