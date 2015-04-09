@@ -201,10 +201,9 @@ class PromisePolyfill {
 }
 
 
-let PromiseClass = PromisePolyfill;
-
+//let PromiseClass = PromisePolyfill;
 // if((<any>window).Promise) {
 // 	PromiseClass = (<any>window).Promise;
 // }
 
-export = PromiseClass;
+export = PromisePolyfill;
