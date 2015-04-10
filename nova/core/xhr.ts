@@ -20,7 +20,7 @@ interface xhrFinalOptions extends xhrOptions {
 }
 
 /** enum of supported protocols */
-enum method {GET, POST, DEL, PUT};
+enum method {GET, POST, DELETE, PUT};
 
 /**
  * return true is the value is an object
@@ -171,7 +171,7 @@ export function post(options:xhrOptions):Deferred {
  * @return				promise resolved when the query is done
  */
 export function del(options:xhrOptions):Deferred {
-	(<xhrFinalOptions>options).method = method.DEL;
+	(<xhrFinalOptions>options).method = method.DELETE;
 	return xhr(<xhrFinalOptions>options);
 }
 /**
