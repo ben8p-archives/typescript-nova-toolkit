@@ -44,6 +44,9 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - run ```node -e "var g = require('grunt'); g.cli.tasks = ['test']; g.cli()"```
 - access intern form http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern
 
+# online documentation
+Documentation can be found on GitHub page: http://ben8p.github.io/nova-toolkit/
+
 # grunt tasks
 grunt tasks can be run using the following command line: ```node -e "var g = require('grunt'); g.cli.tasks = ['NAME_OF_THE_TASK']; g.cli()"```  
 replace ```NAME_OF_THE_TASK``` by one of the following:
