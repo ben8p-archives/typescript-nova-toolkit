@@ -28,8 +28,11 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - [npm](https://www.npmjs.com/), to install/update dependencies
 - [typescript](http://www.typescriptlang.org/), to compile the code
 - [intern](http://theintern.github.io/), to test the code
+- [express](http://expressjs.com/), to spawn a test webserver
 - [grunt](http://gruntjs.com/), to perform extra task like code minification
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts), to perform TypeScript transpilation from grunt
+- [grunt-typedoc](https://github.com/TypeStrong/grunt-typedoc), to generate the documentation
+- [grunt-express-server](https://github.com/ericclemmons/grunt-express-server), to run express web server from Grunt
 
 # getting started
 - first of all, clone this git repository.
@@ -38,8 +41,17 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - run ```node -e "require('grunt').cli()"``` to transpile .ts files into .js
 
 # run the tests
-- Be sure to have a localhost webserver
-- access intern form your localhost: http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern
+- run ```node -e "var g = require('grunt'); g.cli.tasks = ['test']; g.cli()"```
+- access intern form http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern
+
+# grunt tasks
+grunt tasks can be run using the following command line: ```node -e "var g = require('grunt'); g.cli.tasks = ['NAME_OF_THE_TASK']; g.cli()"```  
+replace ```NAME_OF_THE_TASK``` by one of the following:
+- transpile => to transpile all .ts into .js
+- doc => to generate documentation
+- test => start the test server (it will run until you kill the task)
+- default => generate documentation and transpile all .ts into .js
+if ```NAME_OF_THE_TASK``` is not provided, the default task will run.  
 
 # contributing
 Are you searching for new challenges ? You adhere on our vision ?  

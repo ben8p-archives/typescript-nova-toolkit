@@ -32,6 +32,7 @@
         "./nova/tests/core/promise/Deferred.ts",
         "./nova/tests/core/promise/Promise.ts",
         "./nova/tests/core/xhr.ts",
-        "./nova/tests/intern.ts"
+        "./nova/tests/intern.ts",
+        "./nova/tests/test-server.ts"
     ]
 }

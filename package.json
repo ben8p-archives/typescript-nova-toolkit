@@ -8,7 +8,9 @@
     "url": "https://github.com/ben8p/nova-toolkit.git"
   },
   "devDependencies": {
+    "express": "^4.12.3",
     "grunt": "^0.4.5",
+    "grunt-express-server": "^0.5.1",
     "grunt-ts": "^4.0.1",
     "grunt-typedoc": "^0.2.2",
     "intern": "^2.2.2",

@@ -19,7 +19,17 @@ module.exports = (grunt) ->
                 mode: 'modules'
                 target: 'es6'
             src: ['**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
+    express:
+        test:
+            options:
+                script: './nova/tests/test-server.js'
+                background: false
 
   grunt.loadNpmTasks 'grunt-ts'
   grunt.loadNpmTasks 'grunt-typedoc'
+  grunt.loadNpmTasks 'grunt-express-server'
+
   grunt.registerTask 'default', ['typedoc', 'ts']
+  grunt.registerTask 'doc', ['typedoc']
+  grunt.registerTask 'transpile', ['ts']
+  grunt.registerTask 'test', ['ts', 'express']
