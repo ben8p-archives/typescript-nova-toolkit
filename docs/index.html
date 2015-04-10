@@ -93,8 +93,11 @@
 					<li><a href="https://www.npmjs.com/">npm</a>, to install/update dependencies</li>
 					<li><a href="http://www.typescriptlang.org/">typescript</a>, to compile the code</li>
 					<li><a href="http://theintern.github.io/">intern</a>, to test the code</li>
+					<li><a href="http://expressjs.com/">express</a>, to spawn a test webserver</li>
 					<li><a href="http://gruntjs.com/">grunt</a>, to perform extra task like code minification</li>
 					<li><a href="https://github.com/TypeStrong/grunt-ts">grunt-ts</a>, to perform TypeScript transpilation from grunt</li>
+					<li><a href="https://github.com/TypeStrong/grunt-typedoc">grunt-typedoc</a>, to generate the documentation</li>
+					<li><a href="https://github.com/ericclemmons/grunt-express-server">grunt-express-server</a>, to run express web server from Grunt</li>
 				</ul>
 				<h1 id="getting-started">getting started</h1>
 				<ul>
@@ -105,8 +108,8 @@
 				</ul>
 				<h1 id="run-the-tests">run the tests</h1>
 				<ul>
-					<li>Be sure to have a localhost webserver</li>
-					<li>access intern form your localhost: <a href="http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern">http://localhost/nova-framework/node_modules/intern/client.html?config=nova/tests/intern</a></li>
+					<li>run <code>node -e &quot;var g = require(&#39;grunt&#39;); g.cli.tasks = [&#39;test&#39;]; g.cli()&quot;</code></li>
+					<li>access intern form <a href="http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern">http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern</a></li>
 				</ul>
 				<h1 id="contributing">contributing</h1>
 				<p>Are you searching for new challenges ? You adhere on our vision ?<br>We are just at the beginning of our adventure. It is the most exiting moment to join!<br>Just clone the repository and go ahead : do your changes, send pull request, ...<br>All contributors are welcomed!</p>
@@ -132,6 +135,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_class_base_.html">"class/<wbr>Base"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_class_evented_.html">"class/<wbr>Evented"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_class_declare_.html">"class/declare"</a>
