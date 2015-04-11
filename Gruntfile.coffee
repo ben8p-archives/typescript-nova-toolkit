@@ -9,7 +9,8 @@ module.exports = (grunt) ->
         noImplicitAny: true
         sourceMap: false
       default:
-        src: ['**/*.ts', '!node_modules/**/*.ts']
+        src: ['nova/**/*.ts', '!node_modules/**/*.ts']
+        html: ['nova/**/*.html', '!node_modules/**/*.html']
     typedoc:
         build:
             options:
@@ -18,18 +19,40 @@ module.exports = (grunt) ->
                 name: 'nova-toolkit'
                 mode: 'modules'
                 target: 'es6'
-            src: ['**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
+            src: ['nova/**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
     express:
         test:
             options:
                 script: './nova/tests/test-server.js'
-                background: false
+                background: true
+    watch:
+         default:
+             files: ['nova/**/*.ts', 'nova/**/*.html']
+             tasks: ['ts']
+             options:
+                  spawn: false
+    open:
+        test:
+            path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
+
+    clean: ['nova/**/*.js']
+
+  grunt.event.on 'watch', (action, filepath) ->
+    if !!~ filepath.indexOf ".html"
+        grunt.config.set('ts.default.src', [])
+        grunt.config.set('ts.default.html', filepath)
+    else
+        grunt.config.set('ts.default.src', filepath)
+
 
   grunt.loadNpmTasks 'grunt-ts'
   grunt.loadNpmTasks 'grunt-typedoc'
   grunt.loadNpmTasks 'grunt-express-server'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-open'
 
-  grunt.registerTask 'default', ['typedoc', 'ts']
+  grunt.registerTask 'default', ['clean', 'typedoc', 'ts']
   grunt.registerTask 'doc', ['typedoc']
-  grunt.registerTask 'transpile', ['ts']
-  grunt.registerTask 'test', ['ts', 'express']
+  grunt.registerTask 'transpile', ['clean', 'ts']
+  grunt.registerTask 'dev', ['clean', 'ts', 'express', 'open', 'watch']
