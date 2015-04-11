@@ -95,21 +95,44 @@
 					<li><a href="http://theintern.github.io/">intern</a>, to test the code</li>
 					<li><a href="http://expressjs.com/">express</a>, to spawn a test webserver</li>
 					<li><a href="http://gruntjs.com/">grunt</a>, to perform extra task like code minification</li>
+					<li><a href="https://github.com/gruntjs/grunt-cli">grunt-cli</a>, the command line runner for grunt</li>
 					<li><a href="https://github.com/TypeStrong/grunt-ts">grunt-ts</a>, to perform TypeScript transpilation from grunt</li>
 					<li><a href="https://github.com/TypeStrong/grunt-typedoc">grunt-typedoc</a>, to generate the documentation</li>
 					<li><a href="https://github.com/ericclemmons/grunt-express-server">grunt-express-server</a>, to run express web server from Grunt</li>
+					<li><a href="https://github.com/gruntjs/grunt-contrib-watch">grunt-contrib-watch</a>, to transpile .ts on save</li>
+					<li><a href="https://github.com/jsoverson/grunt-open">grunt-open</a>, to spwan the browser and go to the test url</li>
+					<li><a href="https://github.com/gruntjs/grunt-contrib-clean">grunt-contrib-clean</a>, to clean up all transpiled files</li>
+					<li><a href="https://github.com/gruntjs/grunt-contrib-requirejs">grunt-contrib-requirejs</a>, to release the toolkit</li>
 				</ul>
 				<h1 id="getting-started">getting started</h1>
 				<ul>
 					<li>first of all, clone this git repository.</li>
 					<li>from the project directory run <code>npm install</code>. This will install all required dependencies.</li>
 					<li>add intern TypeScript typings to the <code>./node_modules/intern/</code> folder (typings are not yet released with intern). You can get typings on <a href="https://github.com/theintern/intern/tree/master/typings">intern master branch</a></li>
-					<li>run <code>node -e &quot;require(&#39;grunt&#39;).cli()&quot;</code> to transpile .ts files into .js</li>
+					<li>run <code>./node_modules/.bin/grunt default</code> to transpile .ts files into .js</li>
 				</ul>
 				<h1 id="run-the-tests">run the tests</h1>
 				<ul>
-					<li>run <code>node -e &quot;var g = require(&#39;grunt&#39;); g.cli.tasks = [&#39;test&#39;]; g.cli()&quot;</code></li>
-					<li>access intern form <a href="http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern">http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern</a></li>
+					<li>run <code>./node_modules/.bin/grunt dev</code></li>
+					<li>if you IDE support tranpilation on save use the following task: <code>./node_modules/.bin/grunt dev:nowatch</code></li>
+					<li>a browser should open and load the url <a href="http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern">http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern</a></li>
+				</ul>
+				<h1 id="releasing">releasing</h1>
+				<p>You can release the full toolkit by running the task <code>./node_modules/.bin/grunt release</code><br>This will produce a compressed version of each files.<br>You may want to produce a single javascript containing only the modules you need in your application.<br>This can be achieved by add options to the command line: <code>node_modules/.bin/grunt release --build-config=module/to/build</code><br>For instance, if the main loader of your application is &quot;./my/own/application.js&quot; the task should be : <code>node_modules/.bin/grunt release --build-config=my/own/application</code>
+				This will follow all dependencies of &quot;application.js&quot; and produce a single javascript file containing everything needed to run your application.</p>
+				<h1 id="online-documentation">online documentation</h1>
+				<p>Documentation can be found on GitHub page: <a href="http://ben8p.github.io/nova-toolkit/">http://ben8p.github.io/nova-toolkit/</a></p>
+				<h1 id="grunt-tasks">grunt tasks</h1>
+				<p>grunt tasks can be run using the following command line: <code>./node_modules/.bin/grunt NAME_OF_THE_TASK</code><br>replace <code>NAME_OF_THE_TASK</code> by one of the following:</p>
+				<ul>
+					<li>transpile =&gt; to transpile all .ts into .js</li>
+					<li>doc =&gt; to generate documentation</li>
+					<li>clean =&gt; delete all generated js files</li>
+					<li>dev =&gt; start the test server (it will run until you kill the task), transpile all ts when a change is detected</li>
+					<li>dev:nowatch =&gt; start the test server (it will run until you kill the task). No automatic transpilation.</li>
+					<li>default =&gt; generate documentation and transpile all .ts into .js</li>
+					<li>release =&gt; release the toolkit
+					if <code>NAME_OF_THE_TASK</code> is not provided, the default task will run.  </li>
 				</ul>
 				<h1 id="contributing">contributing</h1>
 				<p>Are you searching for new challenges ? You adhere on our vision ?<br>We are just at the beginning of our adventure. It is the most exiting moment to join!<br>Just clone the repository and go ahead : do your changes, send pull request, ...<br>All contributors are welcomed!</p>
@@ -156,6 +179,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_promise_promise_.html">"promise/<wbr>Promise"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_string_.html">"string"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_xhr_.html">"xhr"</a>
