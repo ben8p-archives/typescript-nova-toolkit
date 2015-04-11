@@ -30,29 +30,39 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - [intern](http://theintern.github.io/), to test the code
 - [express](http://expressjs.com/), to spawn a test webserver
 - [grunt](http://gruntjs.com/), to perform extra task like code minification
+- [grunt-cli](https://github.com/gruntjs/grunt-cli), the command line runner for grunt
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts), to perform TypeScript transpilation from grunt
 - [grunt-typedoc](https://github.com/TypeStrong/grunt-typedoc), to generate the documentation
 - [grunt-express-server](https://github.com/ericclemmons/grunt-express-server), to run express web server from Grunt
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch), to transpile .ts on save
 - [grunt-open](https://github.com/jsoverson/grunt-open), to spwan the browser and go to the test url
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean), to clean up all transpiled files
+- [grunt-contrib-requirejs](https://github.com/gruntjs/grunt-contrib-requirejs), to release the toolkit
 
 # getting started
 - first of all, clone this git repository.
 - from the project directory run ```npm install```. This will install all required dependencies.
 - add intern TypeScript typings to the ```./node_modules/intern/``` folder (typings are not yet released with intern). You can get typings on [intern master branch](https://github.com/theintern/intern/tree/master/typings)
-- run ```node -e "require('grunt').cli()"``` to transpile .ts files into .js
+- run ```./node_modules/.bin/grunt default``` to transpile .ts files into .js
 
 # run the tests
-- run ```node -e "var g = require('grunt'); g.cli.tasks = ['dev']; g.cli()"```
-- if you IDE support tranpilation on save use the following task: ```node -e "var g = require('grunt'); g.cli.tasks = ['dev:nowatch']; g.cli()"```
+- run ```./node_modules/.bin/grunt dev```
+- if you IDE support tranpilation on save use the following task: ```./node_modules/.bin/grunt dev:nowatch```
 - a browser should open and load the url http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern
+
+# releasing
+You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
+This will produce a compressed version of each files.  
+You may want to produce a single javascript containing only the modules you need in your application.  
+This can be achieved by add options to the command line: ```node_modules/.bin/grunt release --build-config=module/to/build```  
+For instance, if the main loader of your application is "./my/own/application.js" the task should be : ```node_modules/.bin/grunt release --build-config=my/own/application```
+This will follow all dependencies of "application.js" and produce a single javascript file containing everything needed to run your application.
 
 # online documentation
 Documentation can be found on GitHub page: http://ben8p.github.io/nova-toolkit/
 
 # grunt tasks
-grunt tasks can be run using the following command line: ```node -e "var g = require('grunt'); g.cli.tasks = ['NAME_OF_THE_TASK']; g.cli()"```  
+grunt tasks can be run using the following command line: ```./node_modules/.bin/grunt NAME_OF_THE_TASK```  
 replace ```NAME_OF_THE_TASK``` by one of the following:
 - transpile => to transpile all .ts into .js
 - doc => to generate documentation
@@ -60,6 +70,7 @@ replace ```NAME_OF_THE_TASK``` by one of the following:
 - dev => start the test server (it will run until you kill the task), transpile all ts when a change is detected
 - dev:nowatch => start the test server (it will run until you kill the task). No automatic transpilation.
 - default => generate documentation and transpile all .ts into .js
+- release => release the toolkit
 if ```NAME_OF_THE_TASK``` is not provided, the default task will run.  
 
 # contributing

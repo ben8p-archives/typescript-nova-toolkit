@@ -42,8 +42,17 @@ module.exports = (grunt) ->
             path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
             options:
                 delay: 500
-
     clean: ['nova/**/*.js']
+    requirejs:
+        release:
+            options:
+                appDir: './nova/'
+                dir: './release/'
+        custom:
+            options:
+                baseUrl: './'
+                out: './release/' + grunt.option('build-config') + '.js'
+                include: grunt.option('build-config')
 
   grunt.event.on 'watch', (action, filepath) ->
     if !!~ filepath.indexOf ".html"
@@ -52,6 +61,9 @@ module.exports = (grunt) ->
     else
         grunt.config.set('ts.default.src', filepath)
 
+  requireJsTarget = 'release'
+  if grunt.option('build-config')?
+      requireJsTarget = 'custom'
 
   grunt.loadNpmTasks 'grunt-ts'
   grunt.loadNpmTasks 'grunt-typedoc'
@@ -59,9 +71,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-open'
+  grunt.loadNpmTasks 'grunt-contrib-requirejs'
 
   grunt.registerTask 'default', ['clean', 'typedoc', 'ts']
   grunt.registerTask 'doc', ['typedoc']
   grunt.registerTask 'transpile', ['clean', 'ts']
   grunt.registerTask 'dev', ['clean', 'ts', 'express', 'open', 'watch']
   grunt.registerTask 'dev:nowatch', ['clean', 'ts', 'open:nowatch', 'express:nowatch']
+  grunt.registerTask 'release', ['clean', 'ts', 'requirejs:' + requireJsTarget]
