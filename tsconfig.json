@@ -23,6 +23,7 @@
         "./nova/core/object.ts",
         "./nova/core/promise/Deferred.ts",
         "./nova/core/promise/Promise.ts",
+        "./nova/core/string.ts",
         "./nova/core/xhr.d.ts",
         "./nova/core/xhr.ts",
         "./nova/tests/core/_base/c3mro.ts",
@@ -31,6 +32,7 @@
         "./nova/tests/core/object.ts",
         "./nova/tests/core/promise/Deferred.ts",
         "./nova/tests/core/promise/Promise.ts",
+        "./nova/tests/core/string.ts",
         "./nova/tests/core/xhr.ts",
         "./nova/tests/intern.ts",
         "./nova/tests/test-server.ts"

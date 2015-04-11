@@ -6,7 +6,7 @@ import CustomEvent = require('nova/core/event/CustomEvent');
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/event/bus',
+		name: 'nova/core/bus',
 
 		beforeEach: function () {
 		},
