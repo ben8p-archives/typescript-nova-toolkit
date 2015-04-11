@@ -1,18 +1,18 @@
 module.exports = (grunt) ->
   grunt.initConfig
     ts:
-      options:
-        compile: true
-        removeComments: false
-        target: 'es5'
-        module: 'amd'
-        noImplicitAny: true
-        sourceMap: false
-      default:
-        src: ['nova/**/*.ts', '!node_modules/**/*.ts']
-        html: ['nova/**/*.html', '!node_modules/**/*.html']
+        options:
+            compile: true
+            removeComments: false
+            target: 'es5'
+            module: 'amd'
+            noImplicitAny: true
+            sourceMap: false
+        default:
+            src: ['nova/**/*.ts', '!node_modules/**/*.ts']
+            html: ['nova/**/*.html', '!node_modules/**/*.html']
     typedoc:
-        build:
+        default:
             options:
                 module: 'amd'
                 out: './gh-pages/docs'
@@ -21,10 +21,14 @@ module.exports = (grunt) ->
                 target: 'es6'
             src: ['nova/**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
     express:
-        test:
+        default:
             options:
                 script: './nova/tests/test-server.js'
                 background: true
+        nowatch:
+            options:
+                script: './nova/tests/test-server.js'
+                background: false
     watch:
          default:
              files: ['nova/**/*.ts', 'nova/**/*.html']
@@ -32,8 +36,12 @@ module.exports = (grunt) ->
              options:
                   spawn: false
     open:
-        test:
+        default:
             path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
+        nowatch:
+            path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
+            options:
+                delay: 500
 
     clean: ['nova/**/*.js']
 
@@ -56,3 +64,4 @@ module.exports = (grunt) ->
   grunt.registerTask 'doc', ['typedoc']
   grunt.registerTask 'transpile', ['clean', 'ts']
   grunt.registerTask 'dev', ['clean', 'ts', 'express', 'open', 'watch']
+  grunt.registerTask 'dev:nowatch', ['clean', 'ts', 'open:nowatch', 'express:nowatch']

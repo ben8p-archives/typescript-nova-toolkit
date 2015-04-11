@@ -33,7 +33,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts), to perform TypeScript transpilation from grunt
 - [grunt-typedoc](https://github.com/TypeStrong/grunt-typedoc), to generate the documentation
 - [grunt-express-server](https://github.com/ericclemmons/grunt-express-server), to run express web server from Grunt
-- [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch), to transpile *.ts on save
+- [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch), to transpile .ts on save
 - [grunt-open](https://github.com/jsoverson/grunt-open), to spwan the browser and go to the test url
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean), to clean up all transpiled files
 
@@ -45,6 +45,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 
 # run the tests
 - run ```node -e "var g = require('grunt'); g.cli.tasks = ['dev']; g.cli()"```
+- if you IDE support tranpilation on save use the following task: ```node -e "var g = require('grunt'); g.cli.tasks = ['dev:nowatch']; g.cli()"```
 - a browser should open and load the url http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern
 
 # online documentation
@@ -56,7 +57,8 @@ replace ```NAME_OF_THE_TASK``` by one of the following:
 - transpile => to transpile all .ts into .js
 - doc => to generate documentation
 - clean => delete all generated js files
-- dev => start the test server (it will run until you kill the task)
+- dev => start the test server (it will run until you kill the task), transpile all ts when a change is detected
+- dev:nowatch => start the test server (it will run until you kill the task). No automatic transpilation.
 - default => generate documentation and transpile all .ts into .js
 if ```NAME_OF_THE_TASK``` is not provided, the default task will run.  
 
