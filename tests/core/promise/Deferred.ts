@@ -14,8 +14,8 @@ registerSuite(function () {
 			'resolve': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				p.then(dfd.callback((value:string) => {
+				var p: Deferred = new Deferred();
+				p.then(dfd.callback((value: string) => {
 					assert.equal(value, 'foo');
 				}));
 				p.resolve('foo');
@@ -24,9 +24,9 @@ registerSuite(function () {
 			'double resolve': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var results:any[] = [];
-				p.then((value:string) => {
+				var p: Deferred = new Deferred();
+				var results: any[] = [];
+				p.then((value: string) => {
 					results.push('then');
 				});
 				p.resolve();
@@ -40,9 +40,9 @@ registerSuite(function () {
 			'double reject': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var results:any[] = [];
-				p.catch((value:string) => {
+				var p: Deferred = new Deferred();
+				var results: any[] = [];
+				p.catch((value: string) => {
 					results.push('catch');
 				});
 				p.reject();
@@ -56,32 +56,32 @@ registerSuite(function () {
 			'then after resolve': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var results:any[] = [];
-				p.then((value:string) => {
-					var newValue:string = value + 'then1';
+				var p: Deferred = new Deferred();
+				var results: any[] = [];
+				p.then((value: string) => {
+					var newValue: string = value + 'then1';
 					results.push(newValue);
 					return newValue;
 				});
 				p.resolve('foo');
 
-				var p2:Deferred = new Deferred();
-				var results2:any[] = [];
-				var p3 = p2.then((value:string) => {
-					var newValue:string = value + 'then1';
+				var p2: Deferred = new Deferred();
+				var results2: any[] = [];
+				var p3 = p2.then((value: string) => {
+					var newValue: string = value + 'then1';
 					results2.push(newValue);
 					return newValue;
 				});
 				p2.resolve('bar');
 
 				setTimeout(() => {
-					p.then((value:string) => {
-						var newValue:string = value + 'then2';
+					p.then((value: string) => {
+						var newValue: string = value + 'then2';
 						results.push(newValue);
 						return newValue;
 					});
-					p3.then((value:string) => {
-						var newValue:string = value + 'then2';
+					p3.then((value: string) => {
+						var newValue: string = value + 'then2';
 						results2.push(newValue);
 						return newValue;
 					});
@@ -96,32 +96,32 @@ registerSuite(function () {
 			'catch after reject': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var results:any[] = [];
-				p.catch((value:string) => {
-					var newValue:string = value + 'catch1';
+				var p: Deferred = new Deferred();
+				var results: any[] = [];
+				p.catch((value: string) => {
+					var newValue: string = value + 'catch1';
 					results.push(newValue);
 					return newValue;
 				});
 				p.reject('foo');
 
-				var p2:Deferred = new Deferred();
-				var results2:any[] = [];
-				var p3 = p2.catch((value:string) => {
-					var newValue:string = value + 'catch1';
+				var p2: Deferred = new Deferred();
+				var results2: any[] = [];
+				var p3 = p2.catch((value: string) => {
+					var newValue: string = value + 'catch1';
 					results2.push(newValue);
 					return newValue;
 				});
 				p2.reject('bar');
 
 				setTimeout(() => {
-					p.catch((value:string) => {
-						var newValue:string = value + 'catch2';
+					p.catch((value: string) => {
+						var newValue: string = value + 'catch2';
 						results.push(newValue);
 						return newValue;
 					});
-					p3.catch((value:string) => {
-						var newValue:string = value + 'catch2';
+					p3.catch((value: string) => {
+						var newValue: string = value + 'catch2';
 						results2.push(newValue);
 						return newValue;
 					});
@@ -136,10 +136,10 @@ registerSuite(function () {
 			'resolve chain': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				p.then(function(value:string) {
+				var p: Deferred = new Deferred();
+				p.then(function(value: string) {
 					return value + 'bar';
-				}).then(dfd.callback((value:string) => {
+				}).then(dfd.callback((value: string) => {
 					assert.equal(value, 'foobar');
 				}));
 				p.resolve('foo');
@@ -148,13 +148,13 @@ registerSuite(function () {
 			'multiple resolve without chain': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var count:number = 0;
-				p.then(function(value:string) {
+				var p: Deferred = new Deferred();
+				var count: number = 0;
+				p.then(function(value: string) {
 					count++;
 					return value + 'bar';
 				});
-				p.then(dfd.callback((value:string) => {
+				p.then(dfd.callback((value: string) => {
 					count++;
 					assert.equal(count, 2); //both 'then' have been executed
 					assert.equal(value, 'foo'); //no chaining so the value is not modified by the previous return
@@ -165,8 +165,8 @@ registerSuite(function () {
 			'reject using catch': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				p.catch(dfd.callback((value:string) => {
+				var p: Deferred = new Deferred();
+				p.catch(dfd.callback((value: string) => {
 					assert.equal(value, 'foo');
 				}));
 				p.reject('foo');
@@ -174,8 +174,8 @@ registerSuite(function () {
 			'reject using then': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				p.then(function() {}, dfd.callback((value:string) => {
+				var p: Deferred = new Deferred();
+				p.then(function() {}, dfd.callback((value: string) => {
 					assert.equal(value, 'foo');
 				}));
 				p.reject('foo');
@@ -183,8 +183,8 @@ registerSuite(function () {
 			'reject cannot be chained': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var count:number = 0;
+				var p: Deferred = new Deferred();
+				var count: number = 0;
 				p.catch(() => {
 					count++;
 				}).catch(() => {
@@ -200,13 +200,13 @@ registerSuite(function () {
 			'multiple reject without chain': function() {
 				var dfd = this.async(200);
 
-				var p:Deferred = new Deferred();
-				var count:number = 0;
-				p.catch(function(value:string) {
+				var p: Deferred = new Deferred();
+				var count: number = 0;
+				p.catch(function(value: string) {
 					count++;
 					return value + 'bar';
 				});
-				p.catch(dfd.callback((value:string) => {
+				p.catch(dfd.callback((value: string) => {
 					count++;
 					assert.equal(count, 2); //both 'then' have been executed
 					assert.equal(value, 'foo'); //no chaining so the value is not modified by the previous return
@@ -217,14 +217,14 @@ registerSuite(function () {
 			'deferred interface': function() {
 				var dfd = this.async(200);
 
-				var p1:Deferred = new Deferred();
+				var p1: Deferred = new Deferred();
 				p1.resolve();
 
-				var p2:Deferred = new Deferred();
+				var p2: Deferred = new Deferred();
 				p2.catch(function() {}); //dummy to prevent error
 				p2.reject();
 
-				var p3:Deferred = new Deferred();
+				var p3: Deferred = new Deferred();
 
 				setTimeout(dfd.callback(() => {
 					assert.equal(p1.isFulfilled(), true);
@@ -242,5 +242,5 @@ registerSuite(function () {
 
 			}
 		}
-	}
-})
+	};
+});

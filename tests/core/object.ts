@@ -1,4 +1,4 @@
-/// <reference path="../../node_modules/intern/typings/intern/intern.d.ts" />
+/// <reference path='../../node_modules/intern/typings/intern/intern.d.ts' />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import object = require('nova/core/object');
@@ -15,7 +15,7 @@ registerSuite(function () {
 				var ok = false,
 					object1 = {
 						a: 1,
-						b: "test",
+						b: 'test',
 						c: false,
 						d: function() {
 							ok = false;
@@ -27,7 +27,7 @@ registerSuite(function () {
 						}
 					},
 					object2 = {
-						b: "test2",
+						b: 'test2',
 						c: true,
 						d: function() {
 							ok = true;
@@ -42,7 +42,7 @@ registerSuite(function () {
 
 				object.assign(object1, object2);
 				assert.equal(object1.a, 1);
-				assert.equal((<any>object1).g, 2);
+				assert.equal((<any> object1).g, 2);
 				assert.equal(object1.b, object2.b);
 				assert.equal(object1.c, object2.c);
 				assert.equal(object1.d, object2.d);
@@ -64,9 +64,9 @@ registerSuite(function () {
 
 				object.assign(object1, object2, object3);
 				assert.equal(object1.a, 1);
-				assert.equal((<any>object1).b, object2.b);
-				assert.equal((<any>object1).c, object3.c);
+				assert.equal((<any> object1).b, object2.b);
+				assert.equal((<any> object1).c, object3.c);
 			}
 		}
-	}
-})
+	};
+});

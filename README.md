@@ -29,6 +29,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - [typescript](http://www.typescriptlang.org/), to compile the code
 - [intern](http://theintern.github.io/), to test the code
 - [express](http://expressjs.com/), to spawn a test webserver
+- [tslint](https://github.com/palantir/tslint), to lint the code
 - [grunt](http://gruntjs.com/), to perform extra task like code minification
 - [grunt-cli](https://github.com/gruntjs/grunt-cli), the command line runner for grunt
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts), to perform TypeScript transpilation from grunt
@@ -38,6 +39,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - [grunt-open](https://github.com/jsoverson/grunt-open), to spwan the browser and go to the test url
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean), to clean up all transpiled files
 - [grunt-contrib-requirejs](https://github.com/gruntjs/grunt-contrib-requirejs), to release the toolkit
+- [grunt-tslint](https://github.com/palantir/grunt-tslint), to lint the code from grunt
 
 # getting started
 - first of all, clone this git repository.
@@ -71,6 +73,7 @@ replace ```NAME_OF_THE_TASK``` by one of the following:
 - dev:nowatch => start the test server (it will run until you kill the task). No automatic transpilation.
 - default => generate documentation and transpile all .ts into .js
 - release => release the toolkit
+- lint => to lint the code
 if ```NAME_OF_THE_TASK``` is not provided, the default task will run.  
 
 # contributing

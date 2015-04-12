@@ -1,27 +1,27 @@
 /** interface for event properties */
 interface EventProperties {
-	bubbles?:boolean;
-	cancelable?:boolean;
-	detail?:any;
+	bubbles?: boolean;
+	cancelable?: boolean;
+	detail?: any;
 }
 /** a polyfill for CustomEvent implemetation. Allow to create a dispatchable event */
 class CustomEventPolyfill implements CustomEvent {
-	detail:any;
-	timeStamp:number;
-	defaultPrevented:boolean;
-	isTrusted:boolean;
-	currentTarget:HTMLElement;
-	cancelBubble:boolean;
-	target:HTMLElement;
-	eventPhase:number;
-	cancelable:boolean;
-	type:string;
-	srcElement:HTMLElement;
-	bubbles:boolean;
-	CAPTURING_PHASE:number;
-	AT_TARGET:number;
-	BUBBLING_PHASE:number;
-	stopImmediatePropagation(){}
+	detail: any;
+	timeStamp: number;
+	defaultPrevented: boolean;
+	isTrusted: boolean;
+	currentTarget: HTMLElement;
+	cancelBubble: boolean;
+	target: HTMLElement;
+	eventPhase: number;
+	cancelable: boolean;
+	type: string;
+	srcElement: HTMLElement;
+	bubbles: boolean;
+	CAPTURING_PHASE: number;
+	AT_TARGET: number;
+	BUBBLING_PHASE: number;
+	stopImmediatePropagation() {}
 	stopPropagation() {}
 	preventDefault() {}
 	initEvent() {}
@@ -32,18 +32,18 @@ class CustomEventPolyfill implements CustomEvent {
 	 * @param	properties	sme extra properties, respecting the interface EventProperties
 	 * @constructor
 	 */
-	constructor(type:string, properties?:EventProperties) {
-		let customEvent:CustomEvent;
-		customEvent = <CustomEvent>document.createEvent('CustomEvent');
-		properties = properties || <EventProperties>{};
+	constructor(type: string, properties?: EventProperties) {
+		let customEvent: CustomEvent;
+		customEvent = <CustomEvent> document.createEvent('CustomEvent');
+		properties = properties || <EventProperties> {};
 		customEvent.initCustomEvent(type, properties.bubbles, properties.cancelable, properties.detail);
-		return <any>customEvent;
+		return <any> customEvent;
 	}
 }
 
-//CustomEventPolyfill.prototype = <any>Event.prototype;
+//CustomEventPolyfill.prototype = <any> Event.prototype;
 var BrowserCustomEvent = CustomEventPolyfill;
 if (typeof BrowserCustomEvent === 'function') {
-  BrowserCustomEvent = <any>CustomEvent;
+  BrowserCustomEvent = <any> CustomEvent;
 }
 export = BrowserCustomEvent;

@@ -3,16 +3,16 @@
  * implements EventTarget interface
  */
 class Evented implements EventTarget {
-	private events:any = {};
+	private events: any = {};
 	/**
 	 * detach a handler from an event type in the event bus
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	removeEventListener(type:string, listener:Function) {
-		var handlers = <Function[]>this.events[type];
+	removeEventListener(type: string, listener: Function) {
+		var handlers = <Function[]> this.events[type];
 		handlers.some((handler, index) => {
-			if(handler === listener) {
+			if (handler === listener) {
 				handlers[index] = null;
 				return true;
 			}
@@ -24,7 +24,7 @@ class Evented implements EventTarget {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	addEventListener(type:string, listener:Function) {
+	addEventListener(type: string, listener: Function) {
 		this.events[type] = this.events[type] || [];
 		this.events[type].push(listener);
 	}
@@ -34,11 +34,11 @@ class Evented implements EventTarget {
 	 * @param	event	the event to dispatch
 	 * @return	boolean
 	 */
-	dispatchEvent(event:Event):boolean {
-		var handlers = <Function[]>this.events[event.type];
-		if(!handlers || handlers.length === 0) { return true; }
+	dispatchEvent(event: Event): boolean {
+		var handlers = <Function[]> this.events[event.type];
+		if (!handlers || handlers.length === 0) { return true; }
 		handlers.forEach((handler) => {
-			if(typeof handler === 'function') {
+			if (typeof handler === 'function') {
 				handler(event);
 			}
 		});

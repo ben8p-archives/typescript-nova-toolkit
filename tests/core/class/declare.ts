@@ -1,10 +1,10 @@
-/// <reference path="../../../node_modules/intern/typings/intern/intern.d.ts" />
+/// <reference path='../../../node_modules/intern/typings/intern/intern.d.ts' />
 
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import declareClass = require('nova/core/class/declare');
 import Base = require('nova/core/class/Base');
-var results:any[] = [];
+var results: any[] = [];
 
 interface IFoo {
 	log(): void;
@@ -42,7 +42,6 @@ class Baz extends Base implements IFoo, IBar {
 var BazClass = declareClass(Baz, [ Foo, Bar ]);
 var BazClass2 = declareClass(Baz, [ Bar, Foo ]);
 
-
 registerSuite(function () {
 	return {
 		name: 'nova/core/class/declare',
@@ -54,23 +53,19 @@ registerSuite(function () {
 			'valid linearization + BaseClass super call': function() {
 				var smartObj = new BazClass();
 				smartObj.log();
-				var expected = ["baz", "bar", "foo", "foo2"];
+				var expected = ['baz', 'bar', 'foo', 'foo2'];
 				assert.deepEqual(expected, results);
-				assert.isTrue((<any>smartObj).foo);
+				assert.isTrue((<any> smartObj).foo);
 			},
 			'invalid linearization': function() {
 				try {
-					var BazClass3 = declareClass(Foo, [ BazClass2, BazClass ]);
+					declareClass(Foo, [ BazClass2, BazClass ]);
 					assert.isTrue(false); //force the test to fail
-				} catch(e) {
+				} catch (e) {
 					//linearization is wrong so we must end up here
 					assert.isTrue(true);
 				}
-
-
 			}
-
 		}
-
-	}
-})
+	};
+});

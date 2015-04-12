@@ -1,7 +1,7 @@
 let counter: number = 0;
 
 /**
- * C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)
+ * C3 Method Resolution Order (see http: //www.python.org/download/releases/2.3/mro/)
  * code from dojo toolkit
  *
  * @param	bases	an array of class (may contain subclasses)
@@ -10,29 +10,29 @@ let counter: number = 0;
 export function linearize (bases: any[]): any[] {
 	let result : any[] = [];
 	var	roots = [{
-			classes: <number>0,
-			references: <any>[]
+			classes: <number> 0,
+			references: <any> []
 		}],
-		nameMap = <any>{},
-		classCount = <number>1,
-		iteratorLength = <number>bases.length,
-		i = <number>0,
-		j: number, linearizedBases:any, base:any, top:any, linearizedPrototype:any, record:any, name:any, references:any;
+		nameMap = <any> {},
+		classCount = <number> 1,
+		iteratorLength = <number> bases.length,
+		i = <number> 0,
+		j: number, linearizedBases: any, base: any, top: any, linearizedPrototype: any, record: any, name: any, references: any;
 
 	// build a list of bases naming them if needed
 	for (; i < iteratorLength; ++i) {
 		base = bases[i];
 		if (!base) {
-			throw "mixin #" + i + " is unknown.";
-		} else if (Object.prototype.toString.call(base) != "[object Function]") {
-			throw "mixin #" + i + " is not a callable constructor.";
+			throw 'mixin #' + i + ' is unknown.';
+		} else if (Object.prototype.toString.call(base) !== '[object Function]') {
+			throw 'mixin #' + i + ' is not a callable constructor.';
 		}
 		linearizedBases = base._meta ? base._meta.bases : [base];
 		top = 0;
 		// add bases to the name map
 		for (j = linearizedBases.length - 1; j >= 0; --j) {
 			linearizedPrototype = linearizedBases[j].prototype;
-			linearizedPrototype.declaredClass = "novaClass_" + (counter++);
+			linearizedPrototype.declaredClass = 'novaClass_' + (counter++);
 
 			name = linearizedPrototype.declaredClass;
 			if (!nameMap.hasOwnProperty(name)) {
@@ -60,7 +60,7 @@ export function linearize (bases: any[]): any[] {
 		result.push(top.classes);
 		--classCount;
 		// optimization: follow a single-linked chain
-		while (references = top.references, references.length == 1) {
+		while (references = top.references, references.length === 1) {
 			top = references[0];
 			if (!top || --top.count) {
 				// branch or end of chain => do not end to roots
@@ -81,7 +81,7 @@ export function linearize (bases: any[]): any[] {
 		}
 	}
 	if (classCount) {
-		throw "can't build consistent linearization";
+		throw 'can\'t build consistent linearization';
 	}
 
 	// calculate the superclass offset

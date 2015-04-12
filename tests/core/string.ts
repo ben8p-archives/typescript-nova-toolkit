@@ -3,7 +3,6 @@ import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import stringUtil = require('nova/core/string');
 
-
 registerSuite(function () {
 	return {
 		name: 'nova/core/string',
@@ -11,7 +10,7 @@ registerSuite(function () {
 		beforeEach: function () {
 		},
 		'.template': function() {
-			let test = "hello ${world} ! Current date is ${now}";
+			let test = 'hello ${world} ! Current date is ${now}';
 			let today = (new Date()).toString();
 			let newString = stringUtil.template(test, {
 				world: 'WORLD',
@@ -24,5 +23,5 @@ registerSuite(function () {
 			});
 			assert.equal(newString, 'hello BAR ! Current date is ${now}');
 		}
-	}
-})
+	};
+});

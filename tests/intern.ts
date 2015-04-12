@@ -1,4 +1,4 @@
-export = {
+var tests = {
 	suites: [
 		'tests/core/class/c3mro',
 		'tests/core/class/declare',
@@ -10,3 +10,4 @@ export = {
 		'tests/core/xhr'
 	]
 };
+export = tests;

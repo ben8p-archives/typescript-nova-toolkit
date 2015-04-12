@@ -18,7 +18,7 @@ registerSuite(function () {
 			assert.equal(xhr.toQuery(5), '5');
 			assert.equal(xhr.toQuery('foo'), 'foo');
 			assert.equal(xhr.toQuery('foo bar'), 'foo%20bar');
-			assert.equal(xhr.toQuery([1,2,3]), '1%2C2%2C3');
+			assert.equal(xhr.toQuery([1, 2, 3]), '1%2C2%2C3');
 			assert.equal(xhr.toQuery({
 				foo: true,
 				bar: 5,
@@ -35,41 +35,41 @@ registerSuite(function () {
 			'get json': function() {
 				var dfd = this.async(1000);
 				xhr.get({
-					url: (<any>require).toUrl('./testResources/foo.json'),
+					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON,
 					query: {
 						bar: 'baz'
 					}
-				}).then(dfd.callback((e:xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
 					assert.isTrue(e.response.ok);
-				}))
+				}));
 
 			},
 			'get text': function() {
 				var dfd = this.async(1000);
 				xhr.get({
-					url: (<any>require).toUrl('./testResources/foo.txt'),
+					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT,
 					query: 'baz=true'
-				}).then(dfd.callback((e:xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
-				}))
+				}));
 
 			},
 			'get xml': function() {
 				var dfd = this.async(1000);
 				xhr.get({
-					url: (<any>require).toUrl('./testResources/foo.xml'),
+					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e:xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
-				}))
+				}));
 
 			},
 			'post json': function() {
 				var dfd = this.async(1000);
 				xhr.post({
-					url: (<any>require).toUrl('./testResources/foo.json'),
+					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON,
 					query: {
 						bar: 'baz'
@@ -77,93 +77,93 @@ registerSuite(function () {
 					post: {
 						foo: 'bar'
 					}
-				}).then(dfd.callback((e:xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
 					assert.isTrue(e.response.ok);
-				}))
+				}));
 
 			},
 			'post text': function() {
 				var dfd = this.async(1000);
 				xhr.post({
-					url: (<any>require).toUrl('./testResources/foo.txt'),
+					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT,
 					query: '?bar=true',
 					post: '?baz=true'
-				}).then(dfd.callback((e:xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
-				}))
+				}));
 
 			},
 			'post xml': function() {
 				var dfd = this.async(1000);
 				xhr.post({
-					url: (<any>require).toUrl('./testResources/foo.xml'),
+					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e:xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
-				}))
+				}));
 
 			},
 			'put json': function() {
 				var dfd = this.async(1000);
 				xhr.put({
-					url: (<any>require).toUrl('./testResources/foo.json'),
+					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON
-				}).then(dfd.callback((e:xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
 					assert.isTrue(e.response.ok);
-				}))
+				}));
 
 			},
 			'put text': function() {
 				var dfd = this.async(1000);
 				xhr.put({
-					url: (<any>require).toUrl('./testResources/foo.txt'),
+					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT
-				}).then(dfd.callback((e:xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
-				}))
+				}));
 
 			},
 			'put xml': function() {
 				var dfd = this.async(1000);
 				xhr.put({
-					url: (<any>require).toUrl('./testResources/foo.xml'),
+					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e:xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
-				}))
+				}));
 
 			},
 			'del json': function() {
 				var dfd = this.async(1000);
 				xhr.del({
-					url: (<any>require).toUrl('./testResources/foo.json'),
+					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON
-				}).then(dfd.callback((e:xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
 					assert.isTrue(e.response.ok);
-				}))
+				}));
 
 			},
 			'del text': function() {
 				var dfd = this.async(1000);
 				xhr.del({
-					url: (<any>require).toUrl('./testResources/foo.txt'),
+					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT
-				}).then(dfd.callback((e:xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
-				}))
+				}));
 
 			},
 			'del xml': function() {
 				var dfd = this.async(1000);
 				xhr.del({
-					url: (<any>require).toUrl('./testResources/foo.xml'),
+					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e:xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
-				}))
+				}));
 
 			}
 		}
-	}
-})
+	};
+});

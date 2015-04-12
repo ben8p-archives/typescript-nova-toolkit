@@ -53,6 +53,11 @@ module.exports = (grunt) ->
                 baseUrl: './'
                 out: './release/' + grunt.option('build-config') + '.js'
                 include: grunt.option('build-config')
+    tslint:
+        options:
+                configuration: grunt.file.readJSON('tslint.json')
+        default:
+                src: ['nova/**/*.ts', 'tests/**/*.ts']
 
   grunt.event.on 'watch', (action, filepath) ->
     if !!~ filepath.indexOf ".html"
@@ -65,6 +70,7 @@ module.exports = (grunt) ->
   if grunt.option('build-config')?
       requireJsTarget = 'custom'
 
+  grunt.loadNpmTasks 'grunt-tslint'
   grunt.loadNpmTasks 'grunt-ts'
   grunt.loadNpmTasks 'grunt-typedoc'
   grunt.loadNpmTasks 'grunt-express-server'
@@ -73,9 +79,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-open'
   grunt.loadNpmTasks 'grunt-contrib-requirejs'
 
-  grunt.registerTask 'default', ['clean', 'typedoc', 'ts']
+  grunt.registerTask 'default', ['clean', 'tslint', 'typedoc', 'ts']
   grunt.registerTask 'doc', ['typedoc']
-  grunt.registerTask 'transpile', ['clean', 'ts']
+  grunt.registerTask 'lint', ['tslint']
+  grunt.registerTask 'transpile', ['clean', 'tslint', 'ts']
   grunt.registerTask 'dev', ['clean', 'ts', 'express', 'open', 'watch']
   grunt.registerTask 'dev:nowatch', ['clean', 'ts', 'open:nowatch', 'express:nowatch']
-  grunt.registerTask 'release', ['clean', 'ts', 'requirejs:' + requireJsTarget]
+  grunt.registerTask 'release', ['clean', 'tslint', 'ts', 'requirejs:' + requireJsTarget]
