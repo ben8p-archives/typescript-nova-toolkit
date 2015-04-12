@@ -1,4 +1,4 @@
-/// <reference path="../../../node_modules/intern/typings/intern/intern.d.ts" />
+/// <reference path="../../node_modules/intern/typings/intern/intern.d.ts" />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import stringUtil = require('nova/core/string');

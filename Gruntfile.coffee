@@ -9,8 +9,8 @@ module.exports = (grunt) ->
             noImplicitAny: true
             sourceMap: false
         default:
-            src: ['nova/**/*.ts', '!node_modules/**/*.ts']
-            html: ['nova/**/*.html', '!node_modules/**/*.html']
+            src: ['nova/**/*.ts', 'tests/**/*.ts']
+            html: ['nova/**/*.html', 'tests/**/*.html']
     typedoc:
         default:
             options:
@@ -19,30 +19,30 @@ module.exports = (grunt) ->
                 name: 'nova-toolkit'
                 mode: 'modules'
                 target: 'es6'
-            src: ['nova/**/*.ts', '!node_modules/**/*.ts', '!nova/tests/**/*.ts']
+            src: ['nova/**/*.ts']
     express:
         default:
             options:
-                script: './nova/tests/test-server.js'
+                script: './tests/test-server.js'
                 background: true
         nowatch:
             options:
-                script: './nova/tests/test-server.js'
+                script: './tests/test-server.js'
                 background: false
     watch:
          default:
-             files: ['nova/**/*.ts', 'nova/**/*.html']
+             files: ['nova/**/*.ts', 'nova/**/*.html', 'tests/**/*.ts', 'tests/**/*.html']
              tasks: ['ts']
              options:
                   spawn: false
     open:
         default:
-            path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
+            path: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
         nowatch:
-            path: 'http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern'
+            path: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
             options:
                 delay: 500
-    clean: ['nova/**/*.js']
+    clean: ['nova/**/*.js', 'tests/**/*.js']
     requirejs:
         release:
             options:

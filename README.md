@@ -48,7 +48,7 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 # run the tests
 - run ```./node_modules/.bin/grunt dev```
 - if you IDE support tranpilation on save use the following task: ```./node_modules/.bin/grunt dev:nowatch```
-- a browser should open and load the url http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern
+- a browser should open and load the url http://localhost:3000/node_modules/intern/client.html?config=tests/intern
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  

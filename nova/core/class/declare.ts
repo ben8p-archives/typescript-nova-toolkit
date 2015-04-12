@@ -1,4 +1,4 @@
-import c3mro = require('../_base/c3mro');
+import c3mro = require('./c3mro');
 import object = require('../object');
 
 /** Quick access to native Function constructor */
