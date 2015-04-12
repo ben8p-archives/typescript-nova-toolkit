@@ -72,20 +72,22 @@
 					<li>Chrome</li>
 					<li>Firefox</li>
 					<li>Internet explorer 10+</li>
+					<li>NodeJs</li>
 					<li>Safari (To be validated)</li>
-					<li>NodeJs (To be validated)</li>
 				</ul>
 				<h1 id="features">features</h1>
 				<ul>
 					<li>es6 feature provided by <a href="http://www.typescriptlang.org/">typescript</a></li>
-					<li>XMLHTTPRequest (supporing method GET, POST, PUT, DEL)</li>
+					<li>XMLHTTPRequest supporing method GET, POST, PUT, DELETE (not in NodeJs)</li>
 					<li>multiple class inheritance</li>
 					<li>class linearization (based on <a href="https://www.python.org/download/releases/2.3/mro/">c3 Method Resolution Order</a>)</li>
 					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign</a></li>
 					<li>Promise, respecting <a href="https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise">the standards</a></li>
 					<li>Deferred: convenient helpers for dealing with Promise</li>
 					<li>Publish/Subscribe pattern</li>
-					<li>Dom events</li>
+					<li>Dom events (not in NodeJs)</li>
+					<li>feature detection</li>
+					<li>string template substitution</li>
 				</ul>
 				<h1 id="development-dependencies">development dependencies</h1>
 				<ul>
@@ -94,6 +96,7 @@
 					<li><a href="http://www.typescriptlang.org/">typescript</a>, to compile the code</li>
 					<li><a href="http://theintern.github.io/">intern</a>, to test the code</li>
 					<li><a href="http://expressjs.com/">express</a>, to spawn a test webserver</li>
+					<li><a href="https://github.com/palantir/tslint">tslint</a>, to lint the code</li>
 					<li><a href="http://gruntjs.com/">grunt</a>, to perform extra task like code minification</li>
 					<li><a href="https://github.com/gruntjs/grunt-cli">grunt-cli</a>, the command line runner for grunt</li>
 					<li><a href="https://github.com/TypeStrong/grunt-ts">grunt-ts</a>, to perform TypeScript transpilation from grunt</li>
@@ -103,6 +106,7 @@
 					<li><a href="https://github.com/jsoverson/grunt-open">grunt-open</a>, to spwan the browser and go to the test url</li>
 					<li><a href="https://github.com/gruntjs/grunt-contrib-clean">grunt-contrib-clean</a>, to clean up all transpiled files</li>
 					<li><a href="https://github.com/gruntjs/grunt-contrib-requirejs">grunt-contrib-requirejs</a>, to release the toolkit</li>
+					<li><a href="https://github.com/palantir/grunt-tslint">grunt-tslint</a>, to lint the code from grunt</li>
 				</ul>
 				<h1 id="getting-started">getting started</h1>
 				<ul>
@@ -115,7 +119,14 @@
 				<ul>
 					<li>run <code>./node_modules/.bin/grunt dev</code></li>
 					<li>if you IDE support tranpilation on save use the following task: <code>./node_modules/.bin/grunt dev:nowatch</code></li>
-					<li>a browser should open and load the url <a href="http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern">http://localhost:3000/node_modules/intern/client.html?config=nova/tests/intern</a></li>
+					<li>a browser should open and load the url <a href="http://localhost:3000/node_modules/intern/client.html?config=tests/intern">http://localhost:3000/node_modules/intern/client.html?config=tests/intern</a></li>
+				</ul>
+				<p>You can also run the test in NodeJs with the following command: <code>./node_modules/.bin/intern-client --config=tests/intern</code><br>Note: Some tests will be ignored</p>
+				<h1 id="note-for-windows-users">note for windows users</h1>
+				<p>You will have to add &quot;.cmd&quot; to every command:</p>
+				<ul>
+					<li><code>./node_modules/.bin/grunt.cmd XXX</code>  </li>
+					<li><code>./node_modules/.bin/intern-client.cmd XXX</code></li>
 				</ul>
 				<h1 id="releasing">releasing</h1>
 				<p>You can release the full toolkit by running the task <code>./node_modules/.bin/grunt release</code><br>This will produce a compressed version of each files.<br>You may want to produce a single javascript containing only the modules you need in your application.<br>This can be achieved by add options to the command line: <code>node_modules/.bin/grunt release --build-config=module/to/build</code><br>For instance, if the main loader of your application is &quot;./my/own/application.js&quot; the task should be : <code>node_modules/.bin/grunt release --build-config=my/own/application</code>
@@ -131,7 +142,8 @@
 					<li>dev =&gt; start the test server (it will run until you kill the task), transpile all ts when a change is detected</li>
 					<li>dev:nowatch =&gt; start the test server (it will run until you kill the task). No automatic transpilation.</li>
 					<li>default =&gt; generate documentation and transpile all .ts into .js</li>
-					<li>release =&gt; release the toolkit
+					<li>release =&gt; release the toolkit</li>
+					<li>lint =&gt; to lint the code
 					if <code>NAME_OF_THE_TASK</code> is not provided, the default task will run.  </li>
 				</ul>
 				<h1 id="contributing">contributing</h1>
@@ -154,13 +166,13 @@
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/__base_c3mro_.html">"_<wbr>base/c3mro"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_class_base_.html">"class/<wbr>Base"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_class_evented_.html">"class/<wbr>Evented"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_class_c3mro_.html">"class/c3mro"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_class_declare_.html">"class/declare"</a>
@@ -170,6 +182,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_event_customevent_.html">"event/<wbr>Custom<wbr>Event"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_has_.html">"has"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_object_.html">"object"</a>

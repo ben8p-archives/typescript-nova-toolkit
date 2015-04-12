@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;_base/c3mro&quot; | nova-toolkit</title>
+	<title>&quot;has&quot; | nova-toolkit</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="__base_c3mro_.html">&quot;_base/c3mro&quot;</a>
+					<a href="_has_.html">&quot;has&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;_base/c3mro&quot;</h1>
+			<h1>External module &quot;has&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -72,15 +72,23 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Variables</h3>
+							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="__base_c3mro_.html#counter" class="tsd-kind-icon">counter</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported"><a href="../classes/_has_.hasplugin.html" class="tsd-kind-icon">Has<wbr>Plugin</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="__base_c3mro_.html#linearize" class="tsd-kind-icon">linearize</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_has_.has.html" class="tsd-kind-icon">Has</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_has_.html#has-1" class="tsd-kind-icon">has</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_has_.html#plugin" class="tsd-kind-icon">plugin</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_has_.html#tokenregexp" class="tsd-kind-icon">token<wbr>Reg<wbr>Exp</a></li>
 							</ul>
 						</section>
 					</div>
@@ -89,50 +97,34 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="counter" class="tsd-anchor"></a>
-					<h3>counter</h3>
-					<div class="tsd-signature tsd-kind-icon">counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="has-1" class="tsd-anchor"></a>
+					<h3>has</h3>
+					<div class="tsd-signature tsd-kind-icon">has<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_has_.has.html" class="tsd-signature-type">Has</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/_base/c3mro.ts#L1">_base/c3mro.ts:1</a></li>
+							<li>Defined in has.ts:63</li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="linearize" class="tsd-anchor"></a>
-					<h3>linearize</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">linearize<span class="tsd-signature-symbol">(</span>bases<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/_base/c3mro.ts#L10">_base/c3mro.ts:10</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>C3 Method Resolution Order (see <a href="http://www.python.org/download/releases/2.3/mro/">http://www.python.org/download/releases/2.3/mro/</a>)
-									code from dojo toolkit</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>bases: <span class="tsd-signature-type">any[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>an array of class (may contain subclasses)</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any[]</span></h4>
-							<p>an array containing linearized classes</p>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="plugin" class="tsd-anchor"></a>
+					<h3>plugin</h3>
+					<div class="tsd-signature tsd-kind-icon">plugin<span class="tsd-signature-symbol">:</span> <a href="../classes/_has_.hasplugin.html" class="tsd-signature-type">HasPlugin</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in has.ts:61</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="tokenregexp" class="tsd-anchor"></a>
+					<h3>token<wbr>Reg<wbr>Exp</h3>
+					<div class="tsd-signature tsd-kind-icon">token<wbr>Reg<wbr>Exp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in has.ts:2</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -142,14 +134,14 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="__base_c3mro_.html">"_<wbr>base/c3mro"</a>
-					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_class_base_.html">"class/<wbr>Base"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_class_evented_.html">"class/<wbr>Evented"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_class_c3mro_.html">"class/c3mro"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_class_declare_.html">"class/declare"</a>
@@ -159,6 +151,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_event_customevent_.html">"event/<wbr>Custom<wbr>Event"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="_has_.html">"has"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_object_.html">"object"</a>
@@ -179,11 +174,20 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="__base_c3mro_.html#counter" class="tsd-kind-icon">counter</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../classes/_has_.hasplugin.html" class="tsd-kind-icon">Has<wbr>Plugin</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="__base_c3mro_.html#linearize" class="tsd-kind-icon">linearize</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_has_.has.html" class="tsd-kind-icon">Has</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_has_.html#has-1" class="tsd-kind-icon">has</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_has_.html#plugin" class="tsd-kind-icon">plugin</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_has_.html#tokenregexp" class="tsd-kind-icon">token<wbr>Reg<wbr>Exp</a>
 					</li>
 				</ul>
 			</nav>
