@@ -3,9 +3,10 @@ import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import xhr = require('nova/core/xhr');
 import xhrInterface = require('nova/core/xhr.d');
+import has = require('nova/core/has');
 
 registerSuite(function () {
-	return {
+	var suite = {
 		name: 'nova/core/xhr',
 
 		beforeEach: function () {
@@ -166,4 +167,9 @@ registerSuite(function () {
 			}
 		}
 	};
+	if (has('node-host')) {
+		delete suite.xmlhttprequest;
+		console.warn('xmlhttprequest test skipped because of NodeJs');
+	}
+	return suite;
 });

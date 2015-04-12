@@ -3,10 +3,11 @@ import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import bus = require('nova/core/event');
 import CustomEvent = require('nova/core/event/CustomEvent');
+import has = require('nova/core/has');
 
 registerSuite(function () {
-	return {
-		name: 'nova/core/bus',
+	var suite = {
+		name: 'nova/core/event',
 
 		beforeEach: function () {
 		},
@@ -16,6 +17,7 @@ registerSuite(function () {
 					bus.dispatchEvent(new CustomEvent('barbaz', {detail: '1'}));
 					assert.isTrue(true); //if here, there was no javascript error
 				} catch (e) {
+					console.log(e);
 					assert.isTrue(false); //if here, there was no javascript error
 				}
 			},
@@ -82,7 +84,7 @@ registerSuite(function () {
 				}), 150);
 			}
 		},
-		'addeventListener': {
+		'addEventListener': {
 			'add custom event': function() {
 				var dfd = this.async(200);
 				bus.when(document, 'custom1').then(dfd.callback(() => {
@@ -157,4 +159,9 @@ registerSuite(function () {
 			}
 		}
 	};
+	if (has('node-host')) {
+		delete suite.addEventListener;
+		console.warn('addEventListener test skipped because of NodeJs');
+	}
+	return suite;
 });

@@ -1,3 +1,4 @@
+import has = require('../has');
 /** interface for event properties */
 interface EventProperties {
 	bubbles?: boolean;
@@ -33,17 +34,28 @@ class CustomEventPolyfill implements CustomEvent {
 	 * @constructor
 	 */
 	constructor(type: string, properties?: EventProperties) {
-		let customEvent: CustomEvent;
-		customEvent = <CustomEvent> document.createEvent('CustomEvent');
-		properties = properties || <EventProperties> {};
-		customEvent.initCustomEvent(type, properties.bubbles, properties.cancelable, properties.detail);
-		return <any> customEvent;
+		if (has('node-host')) {
+			//create a lite event just for node
+			this.type = type;
+			this.bubbles = properties.bubbles;
+			this.cancelable = properties.cancelable;
+			this.detail = properties.detail;
+			this.timeStamp = (new Date()).getTime();
+			return this;
+		} else {
+			let customEvent: CustomEvent = <CustomEvent> document.createEvent('CustomEvent');
+			properties = properties || <EventProperties> {};
+			customEvent.initCustomEvent(type, properties.bubbles, properties.cancelable, properties.detail);
+			return <any> customEvent;
+		}
+
 	}
 }
 
 //CustomEventPolyfill.prototype = <any> Event.prototype;
 var BrowserCustomEvent = CustomEventPolyfill;
-if (typeof BrowserCustomEvent === 'function') {
-  BrowserCustomEvent = <any> CustomEvent;
+if (!has('node-host') && typeof CustomEvent === 'function') {
+	has.add('browser-custom-event', true);
+	BrowserCustomEvent = <any> CustomEvent;
 }
 export = BrowserCustomEvent;

@@ -9,19 +9,21 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - Chrome
 - Firefox
 - Internet explorer 10+
+- NodeJs
 - Safari (To be validated)
-- NodeJs (To be validated)
 
 # features
 - es6 feature provided by [typescript](http://www.typescriptlang.org/)
-- XMLHTTPRequest (supporing method GET, POST, PUT, DEL)
+- XMLHTTPRequest supporing method GET, POST, PUT, DELETE (not in NodeJs)
 - multiple class inheritance
 - class linearization (based on [c3 Method Resolution Order](https://www.python.org/download/releases/2.3/mro/))
 - [Object.assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 - Promise, respecting [the standards](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise)
 - Deferred: convenient helpers for dealing with Promise
 - Publish/Subscribe pattern
-- Dom events
+- Dom events (not in NodeJs)
+- feature detection
+- string template substitution
 
 # development dependencies
 - [nodejs](https://nodejs.org/), for all kind of things
@@ -51,6 +53,14 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - run ```./node_modules/.bin/grunt dev```
 - if you IDE support tranpilation on save use the following task: ```./node_modules/.bin/grunt dev:nowatch```
 - a browser should open and load the url http://localhost:3000/node_modules/intern/client.html?config=tests/intern
+
+You can also run the test in NodeJs with the following command: ```./node_modules/.bin/intern-client --config=tests/intern```  
+Note: Some tests will be ignored
+
+# note for windows users
+You will have to add ".cmd" to every command:
+- ```./node_modules/.bin/grunt.cmd XXX```  
+- ```./node_modules/.bin/intern-client.cmd XXX```
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
