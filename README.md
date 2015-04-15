@@ -1,6 +1,6 @@
 # about nova-framework
 <p align="center">
-  ![logo](https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png)
+	<img src="https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png" title="nova" alt="nova"/>
 </p>
 nova-framework aims is to be the next generation framework.  
 With no frills it goes straight to the goal: facilitate your journey through your webapp's development.  
