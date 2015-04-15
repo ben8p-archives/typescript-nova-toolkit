@@ -70,10 +70,15 @@ class InternalEvent {
 	}
 	/**
 	 * fire all callbacks attached to this class
+	 * support preventDefault() to prevent other handlers to starts
 	 * @param	values	any arguments the listener are suposed to receive
 	 */
 	execute(...values: any[]): void {
 		this.success.forEach((callback: Function, index: number) => {
+			var event = <CustomEvent> values[0];
+			if (event && event.defaultPrevented) {
+				return;
+			}
 			if (callback) {
 				callback.apply(null, values);
 			}

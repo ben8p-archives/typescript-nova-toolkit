@@ -8,7 +8,11 @@ var tests = {
 		'tests/core/event',
 		'tests/core/object',
 		'tests/core/string',
-		'tests/core/xhr'
+		'tests/core/xhr',
+		'tests/dom/create',
+		'tests/dom/insert',
+		'tests/dom/style'
 	]
 };
+
 export = tests;

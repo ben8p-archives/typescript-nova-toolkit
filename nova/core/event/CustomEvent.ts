@@ -5,7 +5,10 @@ interface EventProperties {
 	cancelable?: boolean;
 	detail?: any;
 }
-/** a polyfill for CustomEvent implemetation. Allow to create a dispatchable event */
+/**
+ * a polyfill for CustomEvent implemetation. Allow to create a dispatchable event
+ * in Node, support only preventDefault()
+ */
 class CustomEventPolyfill implements CustomEvent {
 	detail: any;
 	timeStamp: number;
@@ -22,9 +25,16 @@ class CustomEventPolyfill implements CustomEvent {
 	CAPTURING_PHASE: number;
 	AT_TARGET: number;
 	BUBBLING_PHASE: number;
-	stopImmediatePropagation() {}
-	stopPropagation() {}
-	preventDefault() {}
+	stopImmediatePropagation() {
+		this.stopPropagation();
+	}
+	stopPropagation() {
+	}
+	preventDefault() {
+		if (this.cancelable) {
+			this.defaultPrevented = true;
+		}
+	}
 	initEvent() {}
 	initCustomEvent() {}
 	/**

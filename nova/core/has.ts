@@ -3,7 +3,9 @@ const tokenRegExp = /([^?]+)\?([^:]+):(.*)/g;
 
 interface Has {
 	(name: string): any;
-	add?(key: string, value: any, force?: boolean): void;
+	add(key: string, value: any, force?: boolean): void;
+	load(moduleName: string, parentRequire: Function, onLoad: (value?: any) => void): void
+	normalize(moduleName: string, normalize: (moduleName: string) => string): string
 }
 
 /**
@@ -12,7 +14,7 @@ interface Has {
  * has!the-test?when-true-module:when-false-module
  */
 class HasPlugin implements AMDPlugin {
-	private hasCache: {[index: string]: any} = {};
+	private hasCache: {[key: string]: any} = {};
 
 	/**
 	 * add the status of a feature to the plugin
@@ -64,8 +66,8 @@ var has: Has = <Has> function(key: string): any {
 	return plugin.has(key);
 };
 has.add = plugin.add.bind(plugin);
-(<any> has).load = plugin.load.bind(plugin);
-(<any> has).normalize = plugin.normalize.bind(plugin);
+has.load = plugin.load.bind(plugin);
+has.normalize = plugin.normalize.bind(plugin);
 
 /** add feature detection for the running environment */
 has.add('browser-host', typeof this.window !== 'undefined' && typeof this.document !== 'undefined' && window.document === document);

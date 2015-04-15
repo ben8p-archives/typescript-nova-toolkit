@@ -30,7 +30,7 @@ class Evented implements EventTarget {
 	}
 	/**
 	 * dispatch a event to the event bus
-	 * does not support cancelable/bubbles/preventDefault()/stopPropagation()
+	 * does not execute other handlers if preventDefault() is called on the event
 	 * @param	event	the event to dispatch
 	 * @return	boolean
 	 */
@@ -38,6 +38,7 @@ class Evented implements EventTarget {
 		var handlers = <Function[]> this.events[event.type];
 		if (!handlers || handlers.length === 0) { return true; }
 		handlers.forEach((handler) => {
+			if (event.defaultPrevented) { return; }
 			if (typeof handler === 'function') {
 				handler(event);
 			}

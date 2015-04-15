@@ -60,6 +60,25 @@ registerSuite(function () {
 				}));
 				bus.dispatchEvent(new CustomEvent('bar', {detail: ['1', [1, 2, 3], {isBar: true}]}));
 			},
+			'cancel event': function() {
+				var dfd = this.async(200);
+				var result: string[] = [];
+
+				var event = bus.when('barbaz');
+				event.then((evt: CustomEvent) => {
+					result.push('h1');
+					evt.preventDefault();
+				});
+				event.then((evt: CustomEvent) => {
+					result.push('h2');
+				});
+
+				bus.dispatchEvent(new CustomEvent('barbaz', {bubbles: true, cancelable: true}));
+
+				setTimeout(dfd.callback(() => {
+					assert.deepEqual(result, ['h1']);
+				}), 150);
+			},
 			'once()': function() {
 				var dfd = this.async(200);
 				var result: string[] = [];
