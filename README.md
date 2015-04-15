@@ -1,5 +1,7 @@
 # about nova-framework
--> ![logo](https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png) <-  
+<p align="center">
+  ![logo](https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png)
+</p>
 nova-framework aims is to be the next generation framework.  
 With no frills it goes straight to the goal: facilitate your journey through your webapp's development.  
 It is built around [typescript](http://www.typescriptlang.org/) technology to offer you the best experience and reduce the learning curve.  
