@@ -1,4 +1,5 @@
 # about nova-framework
+-> ![logo](https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png) <-  
 nova-framework aims is to be the next generation framework.  
 With no frills it goes straight to the goal: facilitate your journey through your webapp's development.  
 It is built around [typescript](http://www.typescriptlang.org/) technology to offer you the best experience and reduce the learning curve.  
@@ -59,8 +60,8 @@ Note: Some tests will be ignored
 
 # note for windows users
 You will have to add ".cmd" to every command:
-- ```./node_modules/.bin/grunt.cmd XXX```  
-- ```./node_modules/.bin/intern-client.cmd XXX```
+- ```node_modules\.bin\grunt.cmd XXX```  
+- ```node_modules\.bin\intern-client.cmd XXX```
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
