@@ -17,7 +17,7 @@ function parse(template: string, placeHolders?: {[name: string]: any}): IParse {
 
 	//first of all, we process the palce holders
 	if (placeHolders) {
-		template = stringUtil.template(template, placeHolders);
+		template = stringUtil.interpolate(template, placeHolders);
 	}
 
 	PLACE_HOLDER.innerHTML = template;

@@ -12,13 +12,13 @@ registerSuite(function () {
 		'.template': function() {
 			let test = 'hello ${world} ! Current date is ${now}';
 			let today = (new Date()).toString();
-			let newString = stringUtil.template(test, {
+			let newString = stringUtil.interpolate(test, {
 				world: 'WORLD',
 				now: today
 			});
 			assert.equal(newString, 'hello WORLD ! Current date is ' + today);
 
-			newString = stringUtil.template(test, {
+			newString = stringUtil.interpolate(test, {
 				world: 'BAR'
 			});
 			assert.equal(newString, 'hello BAR ! Current date is ${now}');
