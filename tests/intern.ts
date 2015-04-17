@@ -11,7 +11,8 @@ var tests = {
 		'tests/core/xhr',
 		'tests/dom/create',
 		'tests/dom/insert',
-		'tests/dom/style'
+		'tests/dom/style',
+		'tests/template/parse'
 	]
 };
 

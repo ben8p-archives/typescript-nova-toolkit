@@ -6,7 +6,7 @@ import has = require('nova/core/has');
 
 registerSuite(function () {
 	var suite = {
-		name: 'nova/dom/insert',
+		name: 'nova/dom/style',
 
 		beforeEach: function () {},
 		'style': {
