@@ -13,6 +13,7 @@ var tests = {
 		'tests/dom/class',
 		'tests/dom/create',
 		'tests/dom/insert',
+		'tests/dom/ready',
 		'tests/dom/style',
 		'tests/template/parse'
 	]

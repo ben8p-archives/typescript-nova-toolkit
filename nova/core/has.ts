@@ -1,4 +1,4 @@
-import AMDPlugin = require('./AMDPlugin.d');
+import AMDPlugin = require('../AMDPlugin.d');
 const tokenRegExp = /([^?]+)\?([^:]+):(.*)/g;
 
 interface Has {
