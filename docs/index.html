@@ -66,7 +66,10 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="about-nova-framework">about nova-framework</h1>
-				<p>nova-framework aims is to be the next generation framework.<br>With no frills it goes straight to the goal: facilitate your journey through your webapp&#39;s development.<br>It is built around <a href="http://www.typescriptlang.org/">typescript</a> technology to offer you the best experience and reduce the learning curve.<br>Because the development is 100% test driven, every functionality is safe to use, regression issues are memories.<br>With nova-framework we want to smooth your developer life so you can focus on your ultimate goal : building your product.</p>
+				<p><p align="center">
+						<img src="https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png" title="nova" alt="nova"/>
+					</p>
+				nova-framework aims is to be the next generation framework.<br>With no frills it goes straight to the goal: facilitate your journey through your webapp&#39;s development.<br>It is built around <a href="http://www.typescriptlang.org/">typescript</a> technology to offer you the best experience and reduce the learning curve.<br>Because the development is 100% test driven, every functionality is safe to use, regression issues are memories.<br>With nova-framework we want to smooth your developer life so you can focus on your ultimate goal : building your product.</p>
 				<h1 id="environment-support">environment support</h1>
 				<ul>
 					<li>Chrome</li>
@@ -125,8 +128,8 @@
 				<h1 id="note-for-windows-users">note for windows users</h1>
 				<p>You will have to add &quot;.cmd&quot; to every command:</p>
 				<ul>
-					<li><code>./node_modules/.bin/grunt.cmd XXX</code>  </li>
-					<li><code>./node_modules/.bin/intern-client.cmd XXX</code></li>
+					<li><code>node_modules\.bin\grunt.cmd XXX</code>  </li>
+					<li><code>node_modules\.bin\intern-client.cmd XXX</code></li>
 				</ul>
 				<h1 id="releasing">releasing</h1>
 				<p>You can release the full toolkit by running the task <code>./node_modules/.bin/grunt release</code><br>This will produce a compressed version of each files.<br>You may want to produce a single javascript containing only the modules you need in your application.<br>This can be achieved by add options to the command line: <code>node_modules/.bin/grunt release --build-config=module/to/build</code><br>For instance, if the main loader of your application is &quot;./my/own/application.js&quot; the task should be : <code>node_modules/.bin/grunt release --build-config=my/own/application</code>
@@ -202,13 +205,25 @@
 						<a href="modules/_core_xhr_.html">"core/xhr"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="modules/_dom_attribute_.html">"dom/attribute"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_dom_class_.html">"dom/class"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="modules/_dom_create_.html">"dom/create"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_dom_insert_.html">"dom/insert"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="modules/_dom_ready_.html">"dom/ready"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="modules/_dom_style_.html">"dom/style"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_template_parse_.html">"template/parse"</a>
 					</li>
 				</ul>
 			</nav>
