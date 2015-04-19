@@ -43,7 +43,7 @@ export function set(element: HTMLElement, attributes: {[name: string]: any}): HT
  * remove attributes of a domNode
  */
 export function remove(element: HTMLElement, attributes: string[]|string): HTMLElement {
-	if (!(attributes instanceof Array)) {
+	if (!((<any> attributes) instanceof Array)) {
 		attributes = <string[]> [attributes];
 	}
 	(<string[]> attributes).forEach((attribute) => {

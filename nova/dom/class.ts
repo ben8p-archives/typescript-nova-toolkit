@@ -11,7 +11,7 @@ function getFromCache(className: string): RegExp {
 
 function getClassNames(classNames: string[]|string): string[] {
 	//convert string to array
-	if (!(classNames instanceof Array)) {
+	if (!((<any> classNames) instanceof Array)) {
 		classNames = (<string> classNames).split(' ');
 	}
 	return <string[]> classNames;
