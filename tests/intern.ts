@@ -9,6 +9,7 @@ var tests = {
 		'tests/core/object',
 		'tests/core/string',
 		'tests/core/xhr',
+		'tests/dom/attribute',
 		'tests/dom/class',
 		'tests/dom/create',
 		'tests/dom/insert',

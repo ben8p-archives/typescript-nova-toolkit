@@ -1,5 +1,5 @@
 /**
- * helper for update dom nodes styles
+ * helper for updating dom nodes styles
  */
 
 interface IStyleElement {

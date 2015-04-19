@@ -1,5 +1,5 @@
 /**
- * helper for update dom nodes classes
+ * helper for updating dom nodes classes
  */
 const SPACES = /\s+/g;
 var cache: {[index: string]: RegExp} = {};
