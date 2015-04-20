@@ -10,7 +10,7 @@ module.exports = (grunt) ->
             sourceMap: false
         default:
             src: ['nova/**/*.ts', 'tests/**/*.ts']
-            html: ['nova/**/*.html', 'tests/**/*.html']
+            html: ['nova/**/*.html', 'tests/**/*.html', 'nova/**/*.css', 'tests/**/*.css']
     typedoc:
         default:
             options:
@@ -42,7 +42,7 @@ module.exports = (grunt) ->
             path: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
             options:
                 delay: 500
-    clean: ['nova/**/*.js', 'tests/**/*.js']
+    clean: ['nova/**/*.js', 'tests/**/*.js', 'nova/**/*.html.ts', 'tests/**/*.html.ts', 'nova/**/*.css.ts', 'tests/**/*.css.ts']
     requirejs:
         release:
             options:
