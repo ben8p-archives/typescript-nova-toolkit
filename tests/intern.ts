@@ -14,7 +14,9 @@ var tests = {
 		'tests/dom/create',
 		'tests/dom/insert',
 		'tests/dom/ready',
+		'tests/dom/remove',
 		'tests/dom/style',
+		'tests/template/css',
 		'tests/template/parse'
 	]
 };
