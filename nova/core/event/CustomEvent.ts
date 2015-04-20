@@ -56,6 +56,17 @@ class CustomEventPolyfill implements CustomEvent {
 			let customEvent: CustomEvent = <CustomEvent> document.createEvent('CustomEvent');
 			properties = properties || <EventProperties> {};
 			customEvent.initCustomEvent(type, properties.bubbles, properties.cancelable, properties.detail);
+
+			//fix for ie
+			var preventDefaultNative = customEvent.preventDefault.bind(customEvent);
+			customEvent.preventDefault = function() {
+				preventDefaultNative();
+				if (customEvent.cancelable && !customEvent.defaultPrevented) {
+					Object.defineProperty(customEvent, 'defaultPrevented', {get: function () {return true; }});
+				}
+
+			};
+
 			return <any> customEvent;
 		}
 
