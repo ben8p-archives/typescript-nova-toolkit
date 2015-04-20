@@ -59,7 +59,7 @@ registerSuite(function () {
 				attribute.remove(div, ['value', 'tabIndex', 'className', 'data-foo']);
 				attribute.remove(div, 'innerHTML');
 
-				assert.equal(attribute.get(div, 'value'), null);
+				assert.equal(attribute.get(div, 'value'), '');
 				assert.equal(attribute.get(div, 'tabIndex'), null);
 				assert.equal(attribute.get(div, 'tabindex'), null);
 				assert.equal(attribute.get(div, 'data-foo'), null);

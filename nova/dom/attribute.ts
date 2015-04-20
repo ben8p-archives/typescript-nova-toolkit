@@ -28,7 +28,7 @@ export function set(element: HTMLElement, attributes: {[name: string]: any}): HT
 			name = getRealAttribute(name);
 
 			if (DOM_PROPERTIES[name] === true) {
-				(<any> element)[name] = value;
+				(<any> element)[name] = value === null || value === undefined ? '' : value;
 			}  else if (value === null || value === undefined) {
 				element.removeAttribute(name);
 			} else {
@@ -50,7 +50,7 @@ export function remove(element: HTMLElement, attributes: string[]|string): HTMLE
 		attribute = getRealAttribute(attribute);
 
 		if (DOM_PROPERTIES[attribute] === true) {
-			(<any> element)[attribute] = null;
+			(<any> element)[attribute] = '';
 		}  else {
 			element.removeAttribute(attribute);
 		}
