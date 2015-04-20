@@ -18,7 +18,6 @@ class PromisePolyfill {
 	}
 	/**
 	 * return a Promise which will be resolved when All values are resolved
-	 *
 	 * @param	values	anything
 	 * @return			a promise (resolved or not)
 	 */
@@ -50,7 +49,6 @@ class PromisePolyfill {
 	}
 	/**
 	 * Return a Promise which will be resolved when one of the values is resolved
-	 *
 	 * @param	values	anything
 	 * @return			a promise (resolved or not)
 	 */
@@ -75,7 +73,6 @@ class PromisePolyfill {
 	/**
 	 * Instant resolved promise if @value is not a Promise itself
 	 * Otherwise resolved when @value is resolved
-	 *
 	 * @param	value	anything
 	 * @return			a promise (resolved or not)
 	 */
@@ -94,7 +91,6 @@ class PromisePolyfill {
 	/**
 	 * Instant rejected promise if @value is not a Promise itself
 	 * Otherwise rejected when @value is rejected
-	 *
 	 * @param	value	anything
 	 * @return			a promise (rejected or not)
 	 */

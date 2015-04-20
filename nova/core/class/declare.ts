@@ -56,7 +56,6 @@ let computeMethodNames = function (target: any): void {
 
 /**
  * linearize and combine all class and subclass in order to create one extended Class
- *
  * @param	base			The base class
  * @param	superclasses	an array of class mixins
  * @return					a class

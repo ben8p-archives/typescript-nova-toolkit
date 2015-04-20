@@ -1,6 +1,5 @@
 /**
  * implemation of es6 Object.assign
- *
  * @param	target	the object which will receive new attributes
  * @param	sources	sources which will be combined into target
  * @return			target (modified by reference)

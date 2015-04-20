@@ -3,7 +3,6 @@ let counter: number = 0;
 /**
  * C3 Method Resolution Order (see http: //www.python.org/download/releases/2.3/mro/)
  * code from dojo toolkit
- *
  * @param	bases	an array of class (may contain subclasses)
  * @return			an array containing linearized classes
  */
