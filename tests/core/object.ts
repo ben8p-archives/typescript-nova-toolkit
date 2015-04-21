@@ -67,6 +67,170 @@ registerSuite(function () {
 				assert.equal((<any> object1).b, object2.b);
 				assert.equal((<any> object1).c, object3.c);
 			}
+		},
+		'.forEach': function() {
+			var objectToIterate: {[index: string]: any} = {
+					thing1: true,
+					thing2: true,
+					thing3: true
+				},
+				allTrue = true,
+				callback = function(element: any, key: string) {
+					//Set the allTrue variable to the combined result of previous iterations. If one fails, all fail automatically.
+					allTrue = allTrue && objectToIterate[key];
+				};
+
+			object.forEach(objectToIterate, callback);
+
+			assert.equal(allTrue, true, 'Object.forEach should have iterated over all properties and generated a truthy result.');
+		},
+		'.every': function() {
+			var foo: {[index: string]: any} = {
+				one: 128,
+				two: 'bbb',
+				three: 512
+			};
+
+			assert.equal(
+				object.every(foo, function(element, key, fooObject) {
+					assert.equal(Object, fooObject.constructor, '3rd argument is expected to be an object');
+					if (key === 'two') {
+						assert.equal(element, foo['two'], 'unexpected value');
+					}
+					return true;
+				}),
+				true,
+				'Object.every has failed (1)'
+			);
+
+			assert.equal(
+				object.every(foo, function(element, key) {
+					switch (key) {
+						case 'one':
+							assert.equal(element, foo['one'], 'unexpected value');
+							return true;
+						case 'two':
+							assert.equal(element, foo['two'], 'unexpected value');
+							return true;
+						case 'three':
+							assert.equal(element, foo['three'], 'unexpected value');
+							return true;
+						default:
+							return false;
+					}
+				}),
+				true,
+				'Object.every has failed (2)'
+			);
+
+			assert.equal(
+				object.every(foo, function(element, key) {
+					switch (key) {
+						case 'one':
+							assert.equal(element, foo['one'], 'unexpected value');
+							return true;
+						case 'two':
+							assert.equal(element, foo['two'], 'unexpected value');
+							return true;
+						case 'three':
+							assert.equal(element, foo['three'], 'unexpected value');
+							return false;
+						default:
+							return false;
+					}
+				}),
+				false,
+				'Object.every has failed (3)'
+			);
+		},
+		'.some': function() {
+			var foo: {[index: string]: any} = {
+				one: 128,
+				two: 'bbb',
+				three: 512
+			};
+			assert.equal(
+				object.some(foo, function() {
+					return true;
+				}),
+				true,
+				'object.some has failed (1)'
+			);
+
+			assert.equal(
+				object.some(foo, function() {
+					return false;
+				}),
+				false,
+				'object.some has failed (2)'
+			);
+
+			assert.equal(
+				object.some(foo, function(element, key, fooObject) {
+					assert.equal(Object, fooObject.constructor, '3rd argument is expected to be an object');
+					if (key === 'two') {
+						assert.equal(element, foo['two'], 'unexpected value');
+					}
+					return true;
+				}),
+				true,
+				'object.some has failed (3)'
+			);
+		},
+		'.filter': function() {
+			var foo: {[index: string]: any} = {
+				one: 'foo',
+				two: 'bar',
+				three: 10
+			};
+			assert.deepEqual(
+				{one: 'foo'},
+				object.filter(foo, function(dummyElement, key) {
+					return key === 'one';
+				}),
+				'object.filter has failed (1)'
+			);
+
+			assert.deepEqual(
+				{one: 'foo'},
+				object.filter(foo, function(element) {
+					return element === 'foo';
+				}),
+				'object.filter has failed (2)'
+			);
+
+			assert.deepEqual(
+				{},
+				object.filter(foo, function() {
+					return false;
+				}),
+				'object.filter has failed (3)'
+			);
+
+			assert.deepEqual(
+				{three: 10},
+				object.filter(foo, function(element) {
+					return typeof element === 'number';
+				}),
+				'object.filter has failed (4)'
+			);
+
+		},
+		'.map': function() {
+			assert.deepEqual(
+				{},
+				object.map({}, function() {
+					return true;
+				}),
+				'object.map has failed (1)'
+			);
+			assert.deepEqual(
+				{cat: 'catvalue', dog: 'dogvalue', mouse: 'mousevalue'},
+				object.map({cat: 0, dog: 1, mouse: 2}, function(dummyElement, key) {
+					return key + 'value';
+				}),
+				'object.map has failed (2)'
+			);
 		}
 	};
 });

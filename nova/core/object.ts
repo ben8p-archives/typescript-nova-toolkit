@@ -24,3 +24,81 @@ export function assign(target: Object, ...sources: Object[]): Object {
 
 	return to;
 }
+
+function everyOrSome(some: boolean, object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => any, thisArg?: any): boolean {
+	var result: any;
+	for (let key in object) {
+		if (object.hasOwnProperty(key)) {
+			if (thisArg) {
+				result = !callback.call(thisArg, object[key], key, object);
+			} else {
+				result = !callback(object[key], key, object);
+			}
+			if ((some ? 1 : 0) ^ result) { //this is an bitwise XOR
+				return !result;
+			}
+		}
+	}
+	return !some; //!some == every
+}
+
+/** clone of Array.forEach but for Objects */
+export function forEach(object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => void, thisArg?: any): void {
+	if (object) {
+		for (let key in object) {
+			if (object.hasOwnProperty(key)) {
+				let value = object[key];
+				if (thisArg) {
+					callback.call(thisArg, value, key, object);
+				} else {
+					callback(value, key, object);
+				}
+			}
+		}
+	}
+}
+/** clone of Array.map but for Objects */
+export function map(object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => any, thisArg?: any): {[index: string]: any} {
+	var key: string;
+	var out: {[index: string]: any} = {};
+	for (key in object) {
+		if (object.hasOwnProperty(key)) {
+			if (thisArg) {
+				out[key] = callback.call(thisArg, object[key], key, object);
+			} else {
+				out[key] = callback(object[key], key, object);
+			}
+		}
+	}
+	return out;
+}
+/** clone of Array.some but for Objects */
+export function some(object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => any, thisArg?: any): boolean {
+	return everyOrSome(true, object, callback, thisArg);
+}
+
+/** clone of Array.every but for Objects */
+export function every(object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => any, thisArg?: any): boolean {
+	return everyOrSome(false, object, callback, thisArg);
+}
+
+/** clone of Array.filter but for Objects */
+export function filter(object: {[index: string]: any}, callback: (value: any, key: string|number, object: {[index: string]: any}) => any, thisArg?: any): {[index: string]: any} {
+	var out: {[index: string]: any} = {};
+
+	for (let key in object) {
+		if (object.hasOwnProperty(key)) {
+			let value = object[key];
+			var result: any;
+			if (thisArg) {
+				result = callback.call(thisArg, value, key, object);
+			} else {
+				result = callback(value, key, object);
+			}
+			if (result) {
+				out[key] = value;
+			}
+		}
+	}
+	return out;
+}
