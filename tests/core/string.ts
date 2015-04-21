@@ -29,6 +29,25 @@ registerSuite(function () {
 			assert.equal(stringUtil.escape(testString), targetString, 'The string should have been escaped properly');
 		},
 
+		'String repeat': function() {
+			var testString = 'foo',
+				targetString = 'foofoofoo';
+			assert.equal(stringUtil.repeat(testString, 3), targetString, 'The string should have been repeated properly');
+		},
+
+		'String pad': function() {
+			var testString = 'foo',
+				targetString = '+++foo';
+			assert.equal(stringUtil.pad(testString, '+', 6), targetString, 'The string should have been repeated properly');
+
+			targetString = 'foo+++';
+			assert.equal(stringUtil.pad(testString, '+', 6, true), targetString, 'The string should have been repeated properly');
+
+			targetString = 'foo';
+			assert.equal(stringUtil.pad(testString, '+', 1), targetString, 'The string should have been repeated properly');
+		},
+
+
 		'String unescape': function() {
 			var testString = '&#60;',
 				targetString = '<';
