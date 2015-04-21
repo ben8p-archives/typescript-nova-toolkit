@@ -73,5 +73,6 @@ has.normalize = plugin.normalize.bind(plugin);
 has.add('browser-host', typeof this.window !== 'undefined' && typeof this.document !== 'undefined' && window.document === document);
 has.add('node-host', typeof this.process === 'object' && this.process.versions && this.process.versions.node);
 has.add('amd', !!(typeof this.window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));
+has.add('cookie', navigator.cookieEnabled);
 
 export = has;
