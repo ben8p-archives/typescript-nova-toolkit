@@ -27,6 +27,11 @@ With nova-framework we want to smooth your developer life so you can focus on yo
 - Dom events (not in NodeJs)
 - feature detection
 - string template substitution
+- Array utils transposed to objects
+- enhancement for browser Storages
+- css injection
+- debouncing and throttling
+- ...a lot more
 
 # development dependencies
 - [nodejs](https://nodejs.org/), for all kind of things
