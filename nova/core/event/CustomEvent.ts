@@ -32,6 +32,7 @@ class CustomEventPolyfill implements CustomEvent {
 	}
 	preventDefault() {
 		if (this.cancelable) {
+			this.cancelable = false;
 			this.defaultPrevented = true;
 		}
 	}
@@ -62,6 +63,7 @@ class CustomEventPolyfill implements CustomEvent {
 			customEvent.preventDefault = function() {
 				preventDefaultNative();
 				if (customEvent.cancelable && !customEvent.defaultPrevented) {
+					Object.defineProperty(customEvent, 'cancelable', {get: function () {return false; }});
 					Object.defineProperty(customEvent, 'defaultPrevented', {get: function () {return true; }});
 				}
 
