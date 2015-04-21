@@ -16,6 +16,7 @@
     "files": [
         "./nova/AMDPlugin.d.ts",
         "./nova/const/HTTP_STATUS.ts",
+        "./nova/const/KEY.ts",
         "./nova/core/class/Base.ts",
         "./nova/core/class/Evented.ts",
         "./nova/core/class/c3mro.ts",
