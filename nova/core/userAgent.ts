@@ -129,6 +129,6 @@ grabInfo(navigator.userAgent);
 var main = <UserAgentParser> function(key: string): any {
 	return has(key);
 };
-main.process = grabInfo;
+main.process = grabInfo; //usefull for unit testing
 
 export = main;
