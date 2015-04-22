@@ -1,6 +1,6 @@
 import AMDPlugin = require('../AMDPlugin.d');
 const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
-const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g
+const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g;
 var cache: {[index: string]: RegExp} = {};
 
 function getFromCache(className: string): RegExp {
