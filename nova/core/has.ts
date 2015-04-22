@@ -20,7 +20,7 @@ class HasPlugin implements AMDPlugin {
 	 * add the status of a feature to the plugin
 	 */
 	add(key: string, value: any, force?: boolean): void {
-		if (!force && this.hasCache[key]) { return; }
+		if (!force && this.hasCache[key] && this.hasCache[key] !== undefined) { return; }
 		this.hasCache[key] = value;
 	}
 
