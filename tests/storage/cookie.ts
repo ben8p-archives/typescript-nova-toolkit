@@ -12,6 +12,7 @@ registerSuite(function () {
 			storage.clear();
 			this.item1 = 'bar';
 			this.item2 = 'foo';
+			this.item3 = 'baz';
 		},
 		'storage': {
 			'set and get an item': function() {
@@ -21,9 +22,9 @@ registerSuite(function () {
 
 				assert.equal(storage.length, 3, 'length is wrong');
 
-				assert.deepEqual(storage.getItem('test1'), this.parent.parent.item1, 'Item set or get did not work');
-				assert.equal(storage.getItem('test2'), this.parent.parent.item2, 'Item set or get did not work');
-				assert.equal(storage.getItem('test3'), this.parent.parent.item3, 'Item set or get did not work');
+				assert.deepEqual(storage.getItem('test1'), this.parent.parent.item1, 'Item set or get did not work 1');
+				assert.equal(storage.getItem('test2'), this.parent.parent.item2, 'Item set or get did not work 2');
+				assert.equal(storage.getItem('test3'), this.parent.parent.item3, 'Item set or get did not work 3');
 
 				// We cannot test for keys since ordering is implemented different between browsers
 				// we can however test that keys are available or null
