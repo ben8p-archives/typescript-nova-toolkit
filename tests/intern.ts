@@ -2,6 +2,7 @@ var tests = {
 	suites: [
 		'tests/core/class/c3mro',
 		'tests/core/class/declare',
+		'tests/core/class/Stateful',
 		'tests/core/has',
 		'tests/core/promise/Deferred',
 		'tests/core/promise/Promise',

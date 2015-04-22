@@ -1,8 +1,10 @@
+import Stateful = require('./Stateful');
+
 /**
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
  */
-class Base {
+class Base extends Stateful {
 	/**
 	 * call the superclass method
 	 * @param	args	the arguments object received by the current method
