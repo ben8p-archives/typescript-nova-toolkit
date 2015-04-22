@@ -1,12 +1,11 @@
-# about nova-framework
+# about nova-toolkit
 <p align="center">
 	<img src="https://raw.githubusercontent.com/ben8p/nova-toolkit/gh-pages/logo.png" title="nova" alt="nova"/>
 </p>
-nova-framework aims is to be the next generation framework.  
-With no frills it goes straight to the goal: facilitate your journey through your webapp's development.  
+With no frills nova-toolkit goes straight to the goal: facilitate your journey through your webapp's development.  
 It is built around [typescript](http://www.typescriptlang.org/) technology to offer you the best experience and reduce the learning curve.  
 Because the development is 100% test driven, every functionality is safe to use, regression issues are memories.  
-With nova-framework we want to smooth your developer life so you can focus on your ultimate goal : building your product.
+With nova-toolkit we want to smooth your developer life so you can focus on your ultimate goal : building your product.
 
 # environment support
 - Chrome
