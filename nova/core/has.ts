@@ -1,5 +1,12 @@
 import AMDPlugin = require('../AMDPlugin.d');
-const tokenRegExp = /([^?]+)\?([^:]+):(.*)/g;
+const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
+const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g
+var cache: {[index: string]: RegExp} = {};
+
+function getFromCache(className: string): RegExp {
+	cache[className] = cache[className] || new RegExp('\\b' + className + '\\b', 'g');
+	return cache[className];
+}
 
 interface Has {
 	(name: string): any;
@@ -16,12 +23,31 @@ interface Has {
 class HasPlugin implements AMDPlugin {
 	private hasCache: {[key: string]: any} = {};
 
+	private htmlTag: Node = document && document.querySelector('html');
+
 	/**
 	 * add the status of a feature to the plugin
 	 */
 	add(key: string, value: any, force?: boolean): void {
 		if (!force && this.hasCache[key] && this.hasCache[key] !== undefined) { return; }
+
+		var originalValue = this.hasCache[key];
 		this.hasCache[key] = value;
+
+		if (this.htmlTag) {
+			let classNames = (<HTMLElement> this.htmlTag).className;
+			if (originalValue) { //remove previous classes
+				originalValue = [key, originalValue.toString().replace(CLEANUP_REGEXP, '-')].join('-');
+				classNames = classNames.replace(getFromCache(originalValue), '');
+				classNames = classNames.replace(getFromCache(key), '');
+			}
+			if (value) { //add new one
+				value = value !== true ? [key, value.toString().replace(CLEANUP_REGEXP, '-')].join('-') : '';
+				classNames = [classNames, key,  value].join(' ');
+			}
+			(<HTMLElement> this.htmlTag).className = classNames;
+		}
+
 	}
 
 	/**
@@ -47,8 +73,8 @@ class HasPlugin implements AMDPlugin {
 	normalize(moduleName: string, normalize: (moduleName: string) => string): string {
 		// has!the-test?when-true-module:when-false-module
 		// tokens  1         2                3
-		let tokens = tokenRegExp.exec(moduleName);
-		tokenRegExp.lastIndex = 0; //reset the lastIndex due to a bug (or feature in chrome)
+		let tokens = TOKEN_REGEXP.exec(moduleName);
+		TOKEN_REGEXP.lastIndex = 0; //reset the lastIndex due to a bug (or feature in chrome)
 		if (!tokens) {
 			return null;
 		}

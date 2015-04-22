@@ -17,7 +17,9 @@ function grabInfo(ua: string) {
 		return (match && match.length > 1 && match[1]) || versionIdentifier || true;
 	}
 
-	var iosdevice = getVersion(/(ipod|iphone|ipad)/i).toString().toLowerCase();
+	var iosdeviceMatch = ua.match(/(ipod|iphone|ipad)/i);
+	var iosdevice = iosdeviceMatch && iosdeviceMatch[1].toLowerCase();
+
 	var likeAndroid = /like android/i.test(ua);
 	var android = !likeAndroid && /android/i.test(ua);
 

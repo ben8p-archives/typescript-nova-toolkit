@@ -32,11 +32,23 @@ registerSuite(function () {
 				test = require('./testResources/nok');
 			}
 			assert.equal(test, 'ok');
+		},
+		'html tag update': function() {
+			var htmlTag = document.querySelector('html');
+			has.add('has-this-feature', true);
+			has.add('not-this-feature', false);
+			has.add('this-feature-version', '5');
+
+			assert.isTrue((<HTMLElement> htmlTag).className.indexOf('has-this-feature') > -1);
+			assert.isTrue((<HTMLElement> htmlTag).className.indexOf('not-this-feature') === -1);
+			assert.isTrue((<HTMLElement> htmlTag).className.indexOf('this-feature-version') > -1);
 		}
+
 	};
 	if (has('node-host')) {
 		delete suite.plugin;
-		console.warn('plugin test skipped because of NodeJs');
+		delete suite['html tag update'];
+		console.warn('plugin and "html tag update" test skipped because of NodeJs');
 	}
 	return suite;
 });
