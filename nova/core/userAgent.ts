@@ -1,3 +1,8 @@
+/**
+ * loading this module will populate the html tag with browser version
+ * it will also all browser sniffing using has
+ * this module export has() method
+ */
 import has = require('./has');
 
 //regular expresions copied from https://github.com/ded/bowser

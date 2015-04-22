@@ -1,3 +1,9 @@
+/**
+ * Feature detection module.
+ * Add a convenient way to populate available feature
+ * Also populate HTML tag of the page
+ */
+
 import AMDPlugin = require('../AMDPlugin.d');
 const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
 const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g;
@@ -10,7 +16,7 @@ function getFromCache(className: string): RegExp {
 
 interface Has {
 	(name: string): any;
-	add(key: string, value: any, force?: boolean): void;
+	add(key: string, value: boolean|string|number, force?: boolean): void;
 	load(moduleName: string, parentRequire: Function, onLoad: (value?: any) => void): void
 	normalize(moduleName: string, normalize: (moduleName: string) => string): string
 }
@@ -28,7 +34,7 @@ class HasPlugin implements AMDPlugin {
 	/**
 	 * add the status of a feature to the plugin
 	 */
-	add(key: string, value: any, force?: boolean): void {
+	add(key: string, value: boolean|string|number, force?: boolean): void {
 		if (!force && this.hasCache[key] && this.hasCache[key] !== undefined) { return; }
 
 		var originalValue = this.hasCache[key];
