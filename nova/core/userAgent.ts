@@ -14,12 +14,13 @@ function grabInfo(ua: string) {
 		versionIdentifier = null;
 	}
 
-	function getVersion(regex?: RegExp): string|boolean {
+	function getVersion(regex?: RegExp, fallbacktoDefault?: boolean): string|boolean {
+		var defaultValue = fallbacktoDefault === false || versionIdentifier || true;
 		if (!regex) {
-			return versionIdentifier || true;
+			return defaultValue;
 		}
 		var match = ua.match(regex);
-		return (match && match.length > 1 && match[1]) || versionIdentifier || true;
+		return (match && match.length > 1 && match[1]) || defaultValue;
 	}
 
 	var iosdeviceMatch = ua.match(/(ipod|iphone|ipad)/i);
@@ -33,51 +34,39 @@ function grabInfo(ua: string) {
 
 	if (/opera|opr/i.test(ua)) {
 		has.add('opera', versionIdentifier || getVersion(/(?:opera|opr)[\s\/](\d+(\.\d+)?)/i));
-	}
-	if (/windows phone/i.test(ua)) {
+	} else if (/windows phone/i.test(ua)) {
 		has.add('iemobile', getVersion(/iemobile\/(\d+(\.\d+)?)/i));
-	}
-	if (/msie|trident/i.test(ua)) {
+	} else if (/msie|trident/i.test(ua) && !has('iemobile')) {
 		has.add('ie', getVersion(/(?:msie |rv:)(\d+(\.\d+)?)/i));
-	}
-	if (/chrome|crios|crmo/i.test(ua)) {
+	} else if (/chrome|crios|crmo/i.test(ua) && !has('opera')) {
 		has.add('chrome', getVersion(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i));
-	}
-	if (iosdevice) {
-		has.add(iosdevice, getVersion());
-	}
-	if (/sailfish/i.test(ua)) {
+	} else if (/sailfish/i.test(ua)) {
 		has.add('sailfish', getVersion(/sailfish\s?browser\/(\d+(\.\d+)?)/i));
-	}
-	if (/seamonkey\//i.test(ua)) {
+	} else if (/seamonkey\//i.test(ua)) {
 		has.add('seamonkey', getVersion(/seamonkey\/(\d+(\.\d+)?)/i));
-	}
-	if (/firefox|iceweasel/i.test(ua)) {
+	} else if (/firefox|iceweasel/i.test(ua) && !has('seamonkey') && !has('sailfish')) {
 		has.add('firefox', getVersion(/(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i));
 		if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
 			has.add('firefoxos', getVersion());
 		}
-	}
-	if (/silk/i.test(ua)) {
+	} else if (/silk/i.test(ua)) {
 		has.add('silk', getVersion(/silk\/(\d+(\.\d+)?)/i));
-	}
-	if (/phantom/i.test(ua)) {
+	} else if (/phantom/i.test(ua)) {
 		has.add('phantomjs', getVersion(/phantomjs\/(\d+(\.\d+)?)/i));
-	}
-	if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
+	} else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
 		has.add('blackberry', getVersion(/blackberry[\d]+\/(\d+(\.\d+)?)/i));
-	}
-	if (/(web|hpw)os/i.test(ua)) {
+	} else if (/(web|hpw)os/i.test(ua)) {
 		has.add('webosbrowser', getVersion(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i));
-	}
-	if (/bada/i.test(ua)) {
+	} else if (/bada/i.test(ua)) {
 		has.add('dolfin', getVersion(/dolfin\/(\d+(\.\d+)?)/i));
-	}
-	if (/tizen/i.test(ua)) {
+	} else if (/tizen/i.test(ua)) {
 		has.add('tizenbrowser', getVersion(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i));
-	}
-	if (/safari/i.test(ua)) {
+	} else if (/safari/i.test(ua) && !has('opera') && !iosdevice && !android) {
 		has.add('safari', getVersion());
+	}
+
+	if (iosdevice) {
+		has.add(iosdevice, getVersion());
 	}
 
 	// set webkit or gecko flag for browsers based on these engines
@@ -90,7 +79,8 @@ function grabInfo(ua: string) {
 
 	// OS version extraction
 	if (iosdevice) {
-		has.add('ios', getVersion(/os (\d+([_\s]\d+)*) like mac os x/i).toString().replace(/[_\s]/g, '.'));
+		let version = getVersion(/os (\d+([_\s]\d+)*) like mac os x/i, false);
+		has.add('ios', version === true || version.toString().replace(/[_\s]/g, '.'));
 	}
 	if (android || has('silk')) {
 		has.add('android', getVersion(/android[ \/-](\d+(\.\d+)*)/i));
@@ -102,7 +92,7 @@ function grabInfo(ua: string) {
 		has.add('webos', getVersion(/(?:web|hpw)os\/(\d+(\.\d+)*)/i));
 	}
 	if (has('blackberry')) {
-		has.add('rim', getVersion(/rim\stablet\sos\s(\d+(\.\d+)*)/i));
+		has.add('rim', getVersion(/rim\stablet\sos\s(\d+(\.\d+)*)/i, false));
 	}
 	if (has('dolfin')) {
 		has.add('bada', getVersion(/bada\/(\d+(\.\d+)*)/i));

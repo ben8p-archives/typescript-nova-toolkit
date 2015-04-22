@@ -336,6 +336,7 @@ registerSuite(function () {
 				},
 				'Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3': {
 					iphone: '3.0',
+					ios: true,
 					mobile: true,
 					webkit: true
 				},
@@ -347,6 +348,7 @@ registerSuite(function () {
 				},
 				'Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_5_2; en-gb) AppleWebKit/526+ (KHTML, like Gecko) Version/3.1 iPhone': {
 					iphone: '3.1',
+					ios: true,
 					mobile: true,
 					webkit: true
 				},
@@ -400,16 +402,19 @@ registerSuite(function () {
 				},
 				'Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/4A93 Safari/419.3': {
 					ipod: '3.0',
+					ios: true,
 					mobile: true,
 					webkit: true
 				},
 				'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.1.0.4633 Mobile Safari/537.10+': {
 					blackberry: '10.1',
+					rim: true,
 					webkit: true,
 					mobile: true
 				},
 				'Mozilla/5.0 (BB10; Kbd) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.1.0.1429 Mobile Safari/537.10+': {
 					blackberry: '10.1',
+					rim: true,
 					webkit: true,
 					mobile: true
 				},
@@ -427,29 +432,35 @@ registerSuite(function () {
 				},
 				'Mozilla/5.0 (BlackBerry; U; BlackBerry 9900; en) AppleWebKit/534.11+ (KHTML, like Gecko) Version/7.1.0.346 Mobile Safari/534.11+': {
 					blackberry: '7.1',
+					rim: true,
 					webkit: true,
 					mobile: true
 				},
 				'Mozilla/5.0 (BlackBerry; U; BlackBerry 9360; en) AppleWebKit/534.11+ (KHTML, like Gecko) Version/7.0.0.530 Mobile Safari/534.11+': {
 					blackberry: '7.0',
+					rim: true,
 					webkit: true,
 					mobile: true
 				},
 				'Mozilla/5.0 (BlackBerry; U; BlackBerry 9800; en-US) AppleWebKit/534.8+ (KHTML, like Gecko) Version/6.0.0.450 Mobile Safari/534.8+': {
 					blackberry: '6.0',
+					rim: true,
 					webkit: true,
 					mobile: true
 				},
 				'BlackBerry9800/5.0.0.862 Profile/MIDP-2.1 Configuration/CLDC-1.1 VendorID/331 UNTRUSTED/1.0 3gpp-gba': {
 					blackberry: '5.0',
+					rim: true,
 					mobile: true
 				},
 				'BlackBerry8320/4.5.0.52 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/179': {
 					blackberry: '4.5',
+					rim: true,
 					mobile: true
 				},
 				'BlackBerry8700/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/179': {
 					blackberry: '4.1',
+					rim: true,
 					mobile: true
 				},
 				'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920; Vodafone)': {
