@@ -1,8 +1,8 @@
-/// <reference path='../../../node_modules/intern/typings/intern/intern.d.ts' />
+/// <reference path='../../node_modules/intern/typings/intern/intern.d.ts' />
 
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import Stateful = require('nova/core/class/Stateful');
+import Stateful = require('nova/class/Stateful');
 
 class Foo extends Stateful {
 	foo: string; //used for defining the interface
@@ -28,7 +28,7 @@ class Bar extends Stateful {
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/class/Stateful',
+		name: 'nova/class/Stateful',
 
 		beforeEach: function () {
 		},

@@ -1,4 +1,4 @@
-import Deferred = require('./promise/Deferred');
+import Deferred = require('../promise/Deferred');
 import xhrInterface = require('./xhr.d');
 
 /** interface used to defined how options should look like */

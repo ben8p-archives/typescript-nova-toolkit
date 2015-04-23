@@ -1,9 +1,9 @@
-/// <reference path='../../../node_modules/intern/typings/intern/intern.d.ts' />
+/// <reference path='../../node_modules/intern/typings/intern/intern.d.ts' />
 
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import declareClass = require('nova/core/class/declare');
-import Base = require('nova/core/class/Base');
+import declareClass = require('nova/class/declare');
+import Base = require('nova/class/Base');
 var results: any[] = [];
 
 interface IFoo {
@@ -44,7 +44,7 @@ var BazClass2 = declareClass(Baz, [ Bar, Foo ]);
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/class/declare',
+		name: 'nova/class/declare',
 
 		beforeEach: function () {
 		},

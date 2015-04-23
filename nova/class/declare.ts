@@ -1,5 +1,5 @@
 import c3mro = require('./c3mro');
-import object = require('../object');
+import object = require('../core/object');
 
 /** Quick access to native Function constructor */
 let defaultConstructor: any = new Function();

@@ -1,12 +1,12 @@
-/// <reference path="../../../node_modules/intern/typings/intern/intern.d.ts" />
+/// <reference path="../../node_modules/intern/typings/intern/intern.d.ts" />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import Promise = require('nova/core/promise/Promise');
-import Deferred = require('nova/core/promise/Deferred');
+import Promise = require('nova/promise/Promise');
+import Deferred = require('nova/promise/Deferred');
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/promise/Promise',
+		name: 'nova/promise/Promise',
 
 		beforeEach: function () {
 		},

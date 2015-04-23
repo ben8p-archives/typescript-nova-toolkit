@@ -1,4 +1,4 @@
-import Evented = require('./class/Evented');
+import Evented = require('../class/Evented');
 
 /** interface for events returned when() and once() */
 interface IRootEvent {

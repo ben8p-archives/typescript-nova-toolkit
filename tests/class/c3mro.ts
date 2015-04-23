@@ -1,7 +1,7 @@
-/// <reference path='../../../node_modules/intern/typings/intern/intern.d.ts' />
+/// <reference path='../../node_modules/intern/typings/intern/intern.d.ts' />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import c3mro = require('nova/core/class/c3mro');
+import c3mro = require('nova/class/c3mro');
 
 class Bar {}
 class Foo {}
@@ -9,7 +9,7 @@ class Baz {}
 
 registerSuite(function () {
 	return {
-		name: 'nova/core/class/c3mro',
+		name: 'nova/class/c3mro',
 
 		beforeEach: function () {
 		},
