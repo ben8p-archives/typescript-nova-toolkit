@@ -22,7 +22,7 @@ interface XhrFinalOptions extends XhrOptions {
 enum method {GET, POST, DELETE, PUT};
 
 /**
- * return true is the value is an object
+ * return true if the value is an object
  * @param	value	anything to test
  * @return	a boolean
  */
