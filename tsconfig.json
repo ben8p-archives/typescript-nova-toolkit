@@ -16,6 +16,7 @@
     "files": [
         "./nova/AMDPlugin.d.ts",
         "./nova/class/Base.ts",
+        "./nova/class/Disposable.ts",
         "./nova/class/Evented.ts",
         "./nova/class/Stateful.ts",
         "./nova/class/c3mro.ts",
@@ -49,6 +50,7 @@
         "./nova/storage/session.ts",
         "./nova/template/css.ts",
         "./nova/template/parse.ts",
+        "./tests/class/Disposable.ts",
         "./tests/class/Stateful.ts",
         "./tests/class/c3mro.ts",
         "./tests/class/declare.ts",
