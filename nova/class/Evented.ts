@@ -9,8 +9,8 @@ class Evented implements EventTarget {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	removeEventListener(type: string, listener: Function) {
-		var handlers = <Function[]> this.events[type];
+	removeEventListener(type: string, listener: EventListenerObject) {
+		var handlers = <EventListenerObject[]> this.events[type];
 		handlers.some((handler, index) => {
 			if (handler === listener) {
 				handlers[index] = null;
@@ -24,7 +24,7 @@ class Evented implements EventTarget {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	addEventListener(type: string, listener: Function) {
+	addEventListener(type: string, listener: EventListenerObject) {
 		this.events[type] = this.events[type] || [];
 		this.events[type].push(listener);
 	}

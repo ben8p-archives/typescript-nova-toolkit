@@ -7,7 +7,7 @@
 function throttle(callback: Function, wait? : number): Function {
 	var canRun: boolean = true,
 		lastIgnoredCall: any = null,
-		tailTimeoutHandle: number = null;
+		tailTimeoutHandle: any = null;
 	wait = wait || 100;
 	return function() {
 		if (!canRun) {

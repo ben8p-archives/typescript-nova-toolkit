@@ -21,6 +21,6 @@
     "grunt-typedoc": "^0.2.2",
     "intern": "^2.2.2",
     "tslint": "^2.1.1",
-    "typescript": "https://github.com/Arnavion/typescript-github/tarball/2015-04-02-b18dd53242df31163390c411ac7ab5e9c282fea2"
+    "typescript": "^1.5.0"
   }
 }

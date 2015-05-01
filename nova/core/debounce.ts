@@ -4,7 +4,7 @@
  * for rapidly-firing events such as window.resize, node.mousemove and so on.
  */
 function debounce(callback: Function, wait? : number): Function {
-	var timer: number;
+	var timer: any;
 	wait = wait || 100;
 	return function() {
 		if (timer) {clearTimeout(timer); }

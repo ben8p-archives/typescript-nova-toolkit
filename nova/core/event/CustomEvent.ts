@@ -13,6 +13,7 @@ class CustomEventPolyfill implements CustomEvent {
 	detail: any;
 	timeStamp: number;
 	defaultPrevented: boolean;
+	returnValue: boolean;
 	isTrusted: boolean;
 	currentTarget: HTMLElement;
 	cancelBubble: boolean;

@@ -59,7 +59,9 @@ function xhr(options: XhrFinalOptions): Deferred {
 			}
 		}
 	}
-
+	if (options.handleAs === handleAs.BLOB) {
+		request.responseType = 'blob';
+	}
 	if (options.withCredentials) {
 		request.withCredentials = options.withCredentials;
 	}
@@ -69,14 +71,20 @@ function xhr(options: XhrFinalOptions): Deferred {
 	request.addEventListener('load', (event) => {
 		let response: xhrInterface.TextResponse = {
 			status: request.status,
-			response: request.responseText
+			response: options.handleAs === handleAs.BLOB ? '' : request.responseText
 		};
 		let responseJson: xhrInterface.JsonResponse;
+		let responseBlob: xhrInterface.BlobResponse;
 		let responseXml: xhrInterface.XmlResponse;
 		if (options.handleAs === handleAs.JSON) {
 			responseJson = {
 				status: request.status,
 				response: JSON.parse(response.response)
+			};
+		} else if (options.handleAs === handleAs.BLOB) {
+			responseBlob = {
+				status: request.status,
+				response: request.response
 			};
 		} else if (options.handleAs === handleAs.XML) {
 			var xmlDocument = request.responseXML;
@@ -89,7 +97,7 @@ function xhr(options: XhrFinalOptions): Deferred {
 				response: xmlDocument
 			};
 		}
-		deferred.resolve(responseJson || responseXml || response);
+		deferred.resolve(responseJson || responseBlob || responseXml || response);
 	}, false);
 	request.addEventListener('error', () => {
 		deferred.reject(<xhrInterface.TextResponse> {
@@ -108,7 +116,7 @@ function xhr(options: XhrFinalOptions): Deferred {
 }
 
 /** types of data we will return */
-export enum handleAs {JSON, XML, TEXT};
+export enum handleAs {JSON, XML, TEXT, BLOB};
 /**
  * convert an object into a query string
  * @param	object		will be the query

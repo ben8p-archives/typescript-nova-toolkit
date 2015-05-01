@@ -57,6 +57,17 @@ registerSuite(function () {
 				}));
 
 			},
+			'get blob': function() {
+				var dfd = this.async(1000);
+				xhr.get({
+					url: (<any> require).toUrl('./testResources/foo.txt'),
+					handleAs: xhr.handleAs.BLOB,
+					query: 'baz=true'
+				}).then(dfd.callback((e: xhrInterface.BlobResponse) => {
+					assert.isTrue(e.response.size > 0);
+				}));
+
+			},
 			'get xml': function() {
 				var dfd = this.async(1000);
 				xhr.get({

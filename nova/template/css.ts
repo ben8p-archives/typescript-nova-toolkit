@@ -41,10 +41,10 @@ export function inject(text: string, basePath?: string) {
 			text = text.replace(URL, basePathReplace);
 		}
 
-		if (styleTag.styleSheet) {
-			//for IE
-			(<any> styleTag.styleSheet).cssText += text;
-		} else {
-			styleTag.appendChild(document.createTextNode(text));
-		}
+		// if (styleTag.styleSheet) {
+		// 	//for IE
+		// 	(<any> styleTag.styleSheet).cssText += text;
+		// } else {
+		styleTag.appendChild(document.createTextNode(text));
+		// }
 	}

@@ -13,3 +13,8 @@ export interface TextResponse {
 	status: number;
 	response: string;
 }
+/** interface for response when handled as BLOB */
+export interface BlobResponse {
+	status: number;
+	response: Blob;
+}
