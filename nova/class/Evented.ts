@@ -2,14 +2,20 @@
  * represent an evented class
  * implements EventTarget interface
  */
-class Evented implements EventTarget {
+
+export interface Interface {
+	removeEventListener?(type: string, listener: EventListenerObject): void;
+	addEventListener?(type: string, listener: EventListenerObject): void;
+	dispatchEvent?(event: Event): boolean;
+}
+export class Class implements EventTarget, Interface {
 	private events: any = {};
 	/**
 	 * detach a handler from an event type in the event bus
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	removeEventListener(type: string, listener: EventListenerObject) {
+	removeEventListener(type: string, listener: EventListenerObject): void {
 		var handlers = <EventListenerObject[]> this.events[type];
 		handlers.some((handler, index) => {
 			if (handler === listener) {
@@ -24,7 +30,7 @@ class Evented implements EventTarget {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	addEventListener(type: string, listener: EventListenerObject) {
+	addEventListener(type: string, listener: EventListenerObject): void {
 		this.events[type] = this.events[type] || [];
 		this.events[type].push(listener);
 	}
@@ -46,5 +52,3 @@ class Evented implements EventTarget {
 		return true;
 	}
 }
-
-export = Evented;

@@ -4,7 +4,10 @@ import Stateful = require('./Stateful');
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
  */
-class Base extends Stateful {
+export interface Interface {
+	super?(args: IArguments): Function;
+}
+export class Class extends Stateful.Class {
 	/**
 	 * call the superclass method
 	 * @param	args	the arguments object received by the current method
@@ -42,4 +45,3 @@ class Base extends Stateful {
 		}
 	}
 }
-export = Base;

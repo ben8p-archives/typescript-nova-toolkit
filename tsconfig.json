@@ -19,6 +19,7 @@
         "./nova/class/CustomEvent.ts",
         "./nova/class/Disposable.ts",
         "./nova/class/Evented.ts",
+        "./nova/class/SingletonBase.ts",
         "./nova/class/Stateful.ts",
         "./nova/class/c3mro.ts",
         "./nova/class/declare.ts",

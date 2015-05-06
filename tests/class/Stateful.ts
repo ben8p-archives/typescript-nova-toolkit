@@ -4,7 +4,7 @@ import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import Stateful = require('nova/class/Stateful');
 
-class Foo extends Stateful {
+class Foo extends Stateful.Class {
 	foo: string; //used for defining the interface
 	private _foo: string = 'foo'; //used for saving values
 	getFoo(): string {
@@ -15,7 +15,7 @@ class Foo extends Stateful {
 	}
 };
 
-class Bar extends Stateful {
+class Bar extends Stateful.Class {
 	bar: string = 'foo'; //used for defining the interface
 	private _bar: string; //used for saving values
 	getBar(): string {

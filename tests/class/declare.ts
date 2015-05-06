@@ -9,7 +9,7 @@ var results: any[] = [];
 interface IFoo {
 	log(): void;
 }
-class Foo extends Base implements IFoo {
+class Foo extends Base.Class implements IFoo {
 	foo: boolean = true;
 	log(): void {
 		results.push('foo');
@@ -23,7 +23,7 @@ class Foo extends Base implements IFoo {
 interface IBar {
 	log(): void;
 }
-class Bar extends Base implements IBar {
+class Bar extends Base.Class implements IBar {
 	bar: boolean = true;
 	log(): void {
 		results.push('bar');
@@ -32,7 +32,7 @@ class Bar extends Base implements IBar {
 	}
 }
 
-class Baz extends Base implements IFoo, IBar {
+class Baz extends Base.Class implements IFoo, IBar {
 	baz: boolean = true;
 	log(): void {
 		results.push('baz');

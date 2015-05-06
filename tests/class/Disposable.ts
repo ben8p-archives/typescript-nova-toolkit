@@ -14,7 +14,7 @@ registerSuite(function () {
 
 		'.dispose': function() {
 			var dfd = this.async(250);
-			var disposable = new Disposable();
+			var disposable = new Disposable.Class();
 			var results: any[] = [];
 			var expected: any[] = ['test1', 'test2']; //test3 and test4 should not be there because we stop the timeout/interval
 			var test1: any = {
@@ -34,14 +34,14 @@ registerSuite(function () {
 				results.push('test4');
 			}, 100);
 
-			disposable.add(test1, test2, test3, test4);
+			disposable.own(test1, test2, test3, test4);
 
 			if (has('browser-host')) {
 				var div = document.createElement('div');
 				div.id = 'disposeTest';
 				document.body.appendChild(div);
 				assert.isNotNull(document.getElementById('disposeTest'));
-				disposable.add(div);
+				disposable.own(div);
 			}
 
 			disposable.dispose();

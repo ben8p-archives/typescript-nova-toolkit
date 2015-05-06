@@ -3,12 +3,15 @@
  * It act as a store, collect all items that you want to destroy
  * And clean then when you call dispose()
  */
-
-class Disposable {
+export interface Interface {
+	own?(...items: any[]): void;
+	dispose?(): boolean;
+}
+export class Class implements Interface{
 	private disposable: any[] = [];
 
 	/** add items to the disposable array */
-	add(...items: any[]): void {
+	own(...items: any[]): void {
 		this.disposable = this.disposable.concat(items);
 	}
 
@@ -44,4 +47,3 @@ class Disposable {
 		return disposed;
 	}
 }
-export = Disposable;

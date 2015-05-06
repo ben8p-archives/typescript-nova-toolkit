@@ -90,7 +90,7 @@ class InternalEvent {
 }
 
 /** implementation of the bus for publish/subscribe pattern */
-let eventBus = new Evented();
+let eventBus = new Evented.Class();
 
 /**
  * prepare an event to receive handlers

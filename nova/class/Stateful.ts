@@ -3,7 +3,9 @@
  */
 
 const SETTER_GETTER_SEARCH = /(s|g)et([A-Z])([a-zA-Z0-9]+)/;
-class Stateful {
+export interface Interface {
+}
+export class Class implements Interface {
 	constructor() {
 		var key: string;
 		var instance: {[key: string]: any} = <any> this;
@@ -36,4 +38,3 @@ class Stateful {
 		}
 	}
 }
-export = Stateful;
