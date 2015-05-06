@@ -175,6 +175,18 @@ registerSuite(function () {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
 				}));
 
+			},
+			'download': function() {
+				var dfd = this.async(1000);
+				xhr.download({
+					url: (<any> require).toUrl('./testResources/foo.txt'),
+					filename: 'foo.txt',
+					query: 'baz=true',
+					method: xhr.method.GET
+				}).then(dfd.callback((e: xhrInterface.BlobResponse) => {
+					assert.isTrue(e.response.size > 0);
+				}));
+
 			}
 		}
 	};

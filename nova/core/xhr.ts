@@ -1,10 +1,12 @@
 import Deferred = require('../promise/Deferred');
 import xhrInterface = require('./xhr.d');
+import has = require('./has');
 
-/** interface used to defined how options should look like */
-export interface XhrOptions {
+has.add('saveOrOpenBlob', !!(has('browser-host') && navigator.msSaveOrOpenBlob));
+has.add('URL', !!(has('browser-host') && (<any> window).URL));
+
+interface XhrBaseOptions {
 	url: string;
-	handleAs?: handleAs;
 	timeout?: number;
 	query?: any;
 	post?: any;
@@ -13,13 +15,22 @@ export interface XhrOptions {
 	password?: string;
 	headers?: string[];
 }
+export interface XhrDownloadOptions extends XhrBaseOptions {
+	filename: string;
+	method?: method;
+}
+
+/** interface used to defined how options should look like */
+export interface XhrOptions extends XhrBaseOptions {
+	handleAs?: handleAs;
+}
 /** interface used to defined how options should look like when including xhr method */
 interface XhrFinalOptions extends XhrOptions {
-	method: method
+	method?: method
 }
 
 /** enum of supported protocols */
-enum method {GET, POST, DELETE, PUT};
+export enum method {GET, POST, DELETE, PUT};
 
 /**
  * return true if the value is an object
@@ -59,13 +70,13 @@ function xhr(options: XhrFinalOptions): Deferred {
 			}
 		}
 	}
-	if (options.handleAs === handleAs.BLOB) {
-		request.responseType = 'blob';
-	}
 	if (options.withCredentials) {
 		request.withCredentials = options.withCredentials;
 	}
 	request.open(method[options.method], url, true, options.user || undefined, options.password || undefined);
+	if (options.handleAs === handleAs.BLOB) {
+		request.responseType = 'blob';
+	}
 	request.timeout = options.timeout || 0;
 
 	request.addEventListener('load', (event) => {
@@ -187,4 +198,27 @@ export function del(options: XhrOptions): Deferred {
 export function put(options: XhrOptions): Deferred {
 	(<XhrFinalOptions> options).method = method.PUT;
 	return xhr(<XhrFinalOptions> options);
+}
+/**
+ * trigger a file download
+ * @param	options		xhr options, see interface
+ * @return				promise resolved when the query is done
+ */
+export function download(options: XhrDownloadOptions): Deferred {
+	options.method = options.method || method.GET;
+	(<XhrFinalOptions> options).handleAs = handleAs.BLOB;
+	var result: Deferred = xhr(<XhrFinalOptions> options);
+	result.then((data: any) => {
+		if (has('saveOrOpenBlob')) {
+			navigator.msSaveOrOpenBlob(data.response, options.filename);
+		} else if (has('URL')) {
+			var link = document.createElement('a');
+			link.href = URL.createObjectURL(data.response);
+			(<any> link).download = options.filename;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}
+	});
+	return result;
 }
