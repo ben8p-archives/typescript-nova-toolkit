@@ -1,4 +1,4 @@
-import has = require('../has');
+import has = require('../core/has');
 /** interface for event properties */
 interface EventProperties {
 	bubbles?: boolean;

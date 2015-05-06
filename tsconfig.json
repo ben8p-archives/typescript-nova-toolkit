@@ -16,6 +16,7 @@
     "files": [
         "./nova/AMDPlugin.d.ts",
         "./nova/class/Base.ts",
+        "./nova/class/CustomEvent.ts",
         "./nova/class/Disposable.ts",
         "./nova/class/Evented.ts",
         "./nova/class/Stateful.ts",
@@ -26,7 +27,6 @@
         "./nova/core/date.ts",
         "./nova/core/debounce.ts",
         "./nova/core/event.ts",
-        "./nova/core/event/CustomEvent.ts",
         "./nova/core/has.ts",
         "./nova/core/object.ts",
         "./nova/core/string.ts",
@@ -42,6 +42,7 @@
         "./nova/dom/ready.ts",
         "./nova/dom/remove.ts",
         "./nova/dom/style.ts",
+        "./nova/dom/window.ts",
         "./nova/promise/Deferred.ts",
         "./nova/promise/Promise.ts",
         "./nova/storage/api/Storage.ts",
