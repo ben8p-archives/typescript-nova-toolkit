@@ -8,6 +8,8 @@ module.exports = (grunt) ->
             module: 'amd'
             noImplicitAny: true
             sourceMap: false
+            htmlModuleTemplate: 'static.<%= filename %>'
+            htmlVarTemplate: 'data'
         default:
             src: ['nova/**/*.ts', 'tests/**/*.ts']
             html: ['nova/**/*.html', 'tests/**/*.html', 'nova/**/*.css', 'tests/**/*.css']
