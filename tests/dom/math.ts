@@ -10,11 +10,6 @@ registerSuite(function () {
 
 		beforeEach: function () {},
 		'math': {
-			'.getViewPortSize': function() {
-				var size = math.getViewportSize();
-				assert.isTrue(size.width > 0);
-				assert.isTrue(size.height > 0);
-			},
 			'.getPosition': function() {
 				var div = document.createElement('div');
 				div.style.position = 'relative';

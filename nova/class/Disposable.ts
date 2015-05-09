@@ -7,7 +7,7 @@ export interface Interface {
 	own?(...items: any[]): void;
 	dispose?(): boolean;
 }
-export class Class implements Interface{
+export class Class implements Interface {
 	private disposable: any[] = [];
 
 	/** add items to the disposable array */
@@ -21,7 +21,7 @@ export class Class implements Interface{
 	 */
 	dispose(): boolean {
 		var disposed = true;
-		this.disposable.forEach((item: any) => {
+		this.disposable.forEach((item: any, index: number) => {
 			var processed = false;
 			if (item && typeof item === 'object') {
 				if (item.tagName && item.parentNode) { //a node, attached to the dom
@@ -39,8 +39,9 @@ export class Class implements Interface{
 				clearTimeout(item);
 				processed = true;
 			}
-
-			if (!processed && disposed) {
+			if (processed) {
+				this.disposable[index] = null;
+			} else if (!processed && disposed) {
 				disposed = false;
 			}
 		});

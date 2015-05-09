@@ -12,10 +12,6 @@ interface IPositionElement {
 		top: number
 	}
 }
-interface IViewportElement {
-	width: number
-	height: number
-}
 interface IBoxElement {
 	margin: {
 		left: number
@@ -104,12 +100,4 @@ export function getPosition(element: HTMLElement, includeScroll?: boolean): IPos
 		}
 	};
 	return box;
-}
-
-/** return the viewport size */
-export function getViewportSize(): IViewportElement {
-	return <IViewportElement> {
-		width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-		height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
-	};
 }

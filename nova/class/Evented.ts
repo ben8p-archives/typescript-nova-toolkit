@@ -4,9 +4,9 @@
  */
 
 export interface Interface {
-	removeEventListener?(type: string, listener: EventListenerObject): void;
-	addEventListener?(type: string, listener: EventListenerObject): void;
-	dispatchEvent?(event: Event): boolean;
+	removeEventListener(type: string, listener: EventListener): void;
+	addEventListener(type: string, listener: EventListener): void;
+	dispatchEvent(event: Event): boolean;
 }
 export class Class implements EventTarget, Interface {
 	private events: any = {};
@@ -15,8 +15,8 @@ export class Class implements EventTarget, Interface {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	removeEventListener(type: string, listener: EventListenerObject): void {
-		var handlers = <EventListenerObject[]> this.events[type];
+	removeEventListener(type: string, listener: EventListener): void {
+		var handlers = <EventListener[]> this.events[type];
 		handlers.some((handler, index) => {
 			if (handler === listener) {
 				handlers[index] = null;
@@ -30,7 +30,7 @@ export class Class implements EventTarget, Interface {
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
-	addEventListener(type: string, listener: EventListenerObject): void {
+	addEventListener(type: string, listener: EventListener): void {
 		this.events[type] = this.events[type] || [];
 		this.events[type].push(listener);
 	}

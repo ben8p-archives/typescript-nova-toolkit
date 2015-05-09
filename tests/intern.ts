@@ -1,7 +1,7 @@
 var tests = {
 	suites: [
 		'tests/class/c3mro',
-		'tests/class/declare',
+		'tests/class/extends',
 		'tests/class/Stateful',
 		'tests/core/has',
 		'tests/core/debounce',
@@ -18,6 +18,7 @@ var tests = {
 		'tests/dom/ready',
 		'tests/dom/remove',
 		'tests/dom/style',
+		'tests/dom/window',
 		'tests/promise/Deferred',
 		'tests/promise/Promise',
 		'tests/storage/cookie',

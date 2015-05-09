@@ -26,14 +26,15 @@ export function linearize (bases: any[]): any[] {
 		} else if (Object.prototype.toString.call(base) !== '[object Function]') {
 			throw 'mixin #' + i + ' is not a callable constructor.';
 		}
-		linearizedBases = base._meta ? base._meta.bases : [base];
+		linearizedBases = base.__meta__ ? base.__meta__.linearized.concat([base]) : [base];
 		top = 0;
 		// add bases to the name map
 		for (j = linearizedBases.length - 1; j >= 0; --j) {
 			linearizedPrototype = linearizedBases[j].prototype;
-			linearizedPrototype.declaredClass = 'novaClass_' + (counter++);
+			//linearizedPrototype.classId = linearizedPrototype.classId || 'novaClass_' + (counter++);
+			linearizedBases[j].classId = linearizedBases[j].classId || 'novaClass_' + (counter++);
 
-			name = linearizedPrototype.declaredClass;
+			name = linearizedBases[j].classId;
 			if (!nameMap.hasOwnProperty(name)) {
 				nameMap[name] = {
 					count: 0,
@@ -86,8 +87,8 @@ export function linearize (bases: any[]): any[] {
 	// calculate the superclass offset
 	base = bases[0];
 	result[0] = base ?
-		base._meta && base === result[result.length - base._meta.bases.length] ?
-		base._meta.bases.length : 1 : 0;
+		base.__meta__ && base === result[result.length - base.__meta__.linearized.length] ?
+		base.__meta__.linearized.length : 1 : 0;
 
 	return result;
 }
