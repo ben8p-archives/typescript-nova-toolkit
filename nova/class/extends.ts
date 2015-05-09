@@ -18,7 +18,7 @@ let computeMethodNames = function (target: any): void {
 
 };
 
-/** provide a custom extend method for class extends (ES6 Class) */
+/** provide a custom extend method for class (ES6 Class). See how typescript implement Class inheritance */
 this.__extends = function(base: any, mixin: any) {
 	extend(base, [mixin]);
 };
