@@ -1,5 +1,3 @@
-import Stateful = require('./Stateful');
-
 /**
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
@@ -7,7 +5,7 @@ import Stateful = require('./Stateful');
 export interface Interface {
 }
 
-export class Class extends Stateful.Class implements Interface {
+export class Class implements Interface {
 	/** execute all constructor form all mixins */
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
@@ -24,7 +22,6 @@ export class Class extends Stateful.Class implements Interface {
 				}
 			}
 		}
-		super();
 		delete (<any> this.constructor)._running;
 		this.postConstructor();
 	}

@@ -1,12 +1,12 @@
 /**
  * Stateful class links getters and setters to properties
  */
-
+import Base = require('./Base');
 const SETTER_GETTER_SEARCH = /(s|g)et([A-Z])([a-zA-Z0-9]+)/;
 export interface Interface {
 }
-export class Class implements Interface {
-	constructor() {
+export class Class extends Base.Class implements Interface {
+	protected postConstructor() {
 		var key: string;
 		var instance: {[key: string]: any} = <any> this;
 
@@ -27,6 +27,7 @@ export class Class implements Interface {
 				toAdd[property].set = value.bind(this);
 			}
 		}
+
 		//define the properties
 		for (let property in toAdd) {
 			var propertyValue: any = instance[property];
