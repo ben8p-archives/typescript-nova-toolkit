@@ -1,14 +1,9 @@
+import Interface = require('./Evented.d');
 /**
  * represent an evented class
  * implements EventTarget interface
  */
-
-export interface Interface {
-	removeEventListener(type: string, listener: EventListener): void;
-	addEventListener(type: string, listener: EventListener): void;
-	dispatchEvent(event: Event): boolean;
-}
-export class Class implements EventTarget, Interface {
+class Evented implements EventTarget, Interface {
 	private events: any = {};
 	/**
 	 * detach a handler from an event type in the event bus
@@ -52,3 +47,4 @@ export class Class implements EventTarget, Interface {
 		return true;
 	}
 }
+export = Evented;

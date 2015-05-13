@@ -1,9 +1,29 @@
 import Deferred = require('../promise/Deferred');
-import xhrInterface = require('./xhr.d');
 import has = require('./has');
 
 has.add('saveOrOpenBlob', !!(has('browser-host') && navigator.msSaveOrOpenBlob));
 has.add('URL', !!(has('browser-host') && (<any> window).URL));
+
+/** interface for response when handled as JSON */
+export interface JsonResponse {
+	status: number;
+	response: any;
+}
+/** interface for response when handled as XML */
+export interface XmlResponse {
+	status: number;
+	response: XMLDocument;
+}
+/** interface for response when handled as TEXT */
+export interface TextResponse {
+	status: number;
+	response: string;
+}
+/** interface for response when handled as BLOB */
+export interface BlobResponse {
+	status: number;
+	response: Blob;
+}
 
 interface XhrBaseOptions {
 	url: string;
@@ -80,13 +100,13 @@ function xhr(options: XhrFinalOptions): Deferred {
 	request.timeout = options.timeout || 0;
 
 	request.addEventListener('load', (event) => {
-		let response: xhrInterface.TextResponse = {
+		let response: TextResponse = {
 			status: request.status,
 			response: options.handleAs === handleAs.BLOB ? '' : request.responseText
 		};
-		let responseJson: xhrInterface.JsonResponse;
-		let responseBlob: xhrInterface.BlobResponse;
-		let responseXml: xhrInterface.XmlResponse;
+		let responseJson: JsonResponse;
+		let responseBlob: BlobResponse;
+		let responseXml: XmlResponse;
 		if (options.handleAs === handleAs.JSON) {
 			responseJson = {
 				status: request.status,
@@ -111,7 +131,7 @@ function xhr(options: XhrFinalOptions): Deferred {
 		deferred.resolve(responseJson || responseBlob || responseXml || response);
 	}, false);
 	request.addEventListener('error', () => {
-		deferred.reject(<xhrInterface.TextResponse> {
+		deferred.reject(<TextResponse> {
 			status: request.status,
 			response: request.responseText
 		});

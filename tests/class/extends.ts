@@ -9,7 +9,7 @@ var results: any[] = [];
 interface IFoo {
 	log(): void;
 }
-class Foo extends Base.Class implements IFoo {
+class Foo extends Base implements IFoo {
 	foo: boolean = true;
 	log(): void {
 		results.push('foo');
@@ -24,7 +24,7 @@ class Foo extends Base.Class implements IFoo {
 interface IBar {
 	log(): void;
 }
-class Bar extends Base.Class implements IBar {
+class Bar extends Base implements IBar {
 	bar: boolean = true;
 	log(): void {
 		results.push('bar');
@@ -33,14 +33,14 @@ class Bar extends Base.Class implements IBar {
 	}
 }
 
-class Baz1 extends Base.Class implements IFoo, IBar {
+class Baz1 extends Base implements IFoo, IBar {
 	baz: boolean = true;
 	log(): void {
 		results.push('baz');
 		this.super(arguments);
 	}
 }
-class Baz2 extends Base.Class implements IFoo, IBar {
+class Baz2 extends Base implements IFoo, IBar {
 	baz: boolean = true;
 	log(): void {
 		results.push('baz');
@@ -118,6 +118,17 @@ registerSuite(function () {
 				assert.deepEqual(expected, results);
 				assert.isTrue((<any> baz5).foo);
 				assert.isTrue((<any> baz5).baz5);
+			},
+			'instanceof': function() {
+				var baz1 = new Baz1();
+				assert.isTrue(baz1.isInstanceOf(Foo));
+				assert.isTrue(baz1.isInstanceOf(Bar));
+				assert.isFalse(baz1.isInstanceOf(Baz2));
+				var baz5 = new Baz5();
+				assert.isTrue(baz5.isInstanceOf(Baz1));
+				assert.isTrue(baz5.isInstanceOf(Bar));
+				assert.isTrue(baz5.isInstanceOf(Foo));
+				assert.isFalse(baz5.isInstanceOf(Baz2));
 			},
 			'invalid linearization': function() {
 				try {

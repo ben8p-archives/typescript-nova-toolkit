@@ -1,11 +1,9 @@
+import Base = require('./Base');
+const SETTER_GETTER_SEARCH = /(s|g)et([A-Z])([a-zA-Z0-9]+)/;
 /**
  * Stateful class links getters and setters to properties
  */
-import Base = require('./Base');
-const SETTER_GETTER_SEARCH = /(s|g)et([A-Z])([a-zA-Z0-9]+)/;
-export interface Interface {
-}
-export class Class extends Base.Class implements Interface {
+class Statefull extends Base {
 	protected postConstructor() {
 		var key: string;
 		var instance: {[key: string]: any} = <any> this;
@@ -39,3 +37,4 @@ export class Class extends Base.Class implements Interface {
 		}
 	}
 }
+export = Statefull;

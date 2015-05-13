@@ -1,12 +1,11 @@
 import Base = require('./Base');
 import Disposable = require('./Disposable');
+import DisposableInterface = require('./Disposable.d');
 import extendsClass = require('./extends');
 import event = require('../core/event');
 
-export interface Interface extends Base.Interface, Disposable.Interface {
-}
 /** A Singleton class is a Class which will automatically be disposed when the page is unloaded */
-export class Class extends Base.Class implements Interface {
+class SingletonBase extends Base implements DisposableInterface {
 	/** map Disposable method */
 	own: (...items: any[]) => void;
 	/** map Disposable method */
@@ -19,4 +18,5 @@ export class Class extends Base.Class implements Interface {
 		);
 	}
 }
-extendsClass(Class, [Disposable.Class]);
+extendsClass(SingletonBase, [Disposable]);
+export = SingletonBase;

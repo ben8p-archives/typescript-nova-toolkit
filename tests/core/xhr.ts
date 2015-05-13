@@ -2,7 +2,6 @@
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
 import xhr = require('nova/core/xhr');
-import xhrInterface = require('nova/core/xhr.d');
 import has = require('nova/core/has');
 
 registerSuite(function () {
@@ -41,7 +40,7 @@ registerSuite(function () {
 					query: {
 						bar: 'baz'
 					}
-				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhr.JsonResponse) => {
 					assert.isTrue(e.response.ok);
 				}));
 
@@ -52,7 +51,7 @@ registerSuite(function () {
 					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT,
 					query: 'baz=true'
-				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhr.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
 				}));
 
@@ -63,7 +62,7 @@ registerSuite(function () {
 					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.BLOB,
 					query: 'baz=true'
-				}).then(dfd.callback((e: xhrInterface.BlobResponse) => {
+				}).then(dfd.callback((e: xhr.BlobResponse) => {
 					assert.isTrue(e.response.size > 0);
 				}));
 
@@ -73,7 +72,7 @@ registerSuite(function () {
 				xhr.get({
 					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhr.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
 				}));
 
@@ -89,7 +88,7 @@ registerSuite(function () {
 					post: {
 						foo: 'bar'
 					}
-				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhr.JsonResponse) => {
 					assert.isTrue(e.response.ok);
 				}));
 
@@ -101,7 +100,7 @@ registerSuite(function () {
 					handleAs: xhr.handleAs.TEXT,
 					query: '?bar=true',
 					post: '?baz=true'
-				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhr.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
 				}));
 
@@ -111,7 +110,7 @@ registerSuite(function () {
 				xhr.post({
 					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhr.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
 				}));
 
@@ -121,7 +120,7 @@ registerSuite(function () {
 				xhr.put({
 					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON
-				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhr.JsonResponse) => {
 					assert.isTrue(e.response.ok);
 				}));
 
@@ -131,7 +130,7 @@ registerSuite(function () {
 				xhr.put({
 					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT
-				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhr.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
 				}));
 
@@ -141,7 +140,7 @@ registerSuite(function () {
 				xhr.put({
 					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhr.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
 				}));
 
@@ -151,7 +150,7 @@ registerSuite(function () {
 				xhr.del({
 					url: (<any> require).toUrl('./testResources/foo.json'),
 					handleAs: xhr.handleAs.JSON
-				}).then(dfd.callback((e: xhrInterface.JsonResponse) => {
+				}).then(dfd.callback((e: xhr.JsonResponse) => {
 					assert.isTrue(e.response.ok);
 				}));
 
@@ -161,7 +160,7 @@ registerSuite(function () {
 				xhr.del({
 					url: (<any> require).toUrl('./testResources/foo.txt'),
 					handleAs: xhr.handleAs.TEXT
-				}).then(dfd.callback((e: xhrInterface.TextResponse) => {
+				}).then(dfd.callback((e: xhr.TextResponse) => {
 					assert.isTrue(e.response.indexOf('foo') >= 0);
 				}));
 
@@ -171,7 +170,7 @@ registerSuite(function () {
 				xhr.del({
 					url: (<any> require).toUrl('./testResources/foo.xml'),
 					handleAs: xhr.handleAs.XML
-				}).then(dfd.callback((e: xhrInterface.XmlResponse) => {
+				}).then(dfd.callback((e: xhr.XmlResponse) => {
 					assert.equal(e.response.getElementsByTagName('foo')[0].textContent, 'true');
 				}));
 
@@ -183,7 +182,7 @@ registerSuite(function () {
 					filename: 'foo.txt',
 					query: 'baz=true',
 					method: xhr.method.GET
-				}).then(dfd.callback((e: xhrInterface.BlobResponse) => {
+				}).then(dfd.callback((e: xhr.BlobResponse) => {
 					assert.isTrue(e.response.size > 0);
 				}));
 

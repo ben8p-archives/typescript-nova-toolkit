@@ -2,10 +2,7 @@
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
  */
-export interface Interface {
-}
-
-export class Class implements Interface {
+class Base {
 	/** execute all constructor form all mixins */
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
@@ -28,6 +25,13 @@ export class Class implements Interface {
 
 	/** hook executed after all constructors */
 	protected postConstructor() {}
+
+	public isInstanceOf(object: any): boolean {
+		var superclasses: any[] = (<any> this.constructor).__meta__.linearized;
+		return superclasses.some((superclass: any) => {
+			return superclass === object;
+		});
+	}
 
 	/**
 	 * call the superclass method
@@ -63,3 +67,4 @@ export class Class implements Interface {
 		}
 	}
 }
+export = Base;

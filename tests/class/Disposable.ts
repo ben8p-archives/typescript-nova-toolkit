@@ -14,7 +14,7 @@ registerSuite(function () {
 
 		'.dispose': function() {
 			var dfd = this.async(250);
-			var disposable = new Disposable.Class();
+			var disposable = new Disposable();
 			var results: any[] = [];
 			var expected: any[] = ['test1', 'test2']; //test3 and test4 should not be there because we stop the timeout/interval
 			var test1: any = {

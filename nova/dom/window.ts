@@ -15,7 +15,7 @@ interface IViewportElement {
  * provide a debounced resize event
  * as well as the current viewport size
  */
-class WindowClass extends SingletonBase.Class implements SingletonBase.Interface {
+class WindowClass extends SingletonBase {
 	/** map Evented method to allow the use of nova/core/event */
 	removeEventListener: (type: string, listener: EventListener) => void;
 	/** map Evented method to allow the use of nova/core/event */
@@ -41,6 +41,6 @@ class WindowClass extends SingletonBase.Class implements SingletonBase.Interface
 		};
 	}
 }
-extendsClass(WindowClass, [Evented.Class]);
+extendsClass(WindowClass, [Evented]);
 
 export = new WindowClass();

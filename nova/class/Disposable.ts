@@ -1,13 +1,10 @@
+import Interface = require('./Disposable.d');
 /**
  * Disposable class is an helper for cleaning up memory
  * It act as a store, collect all items that you want to destroy
  * And clean then when you call dispose()
  */
-export interface Interface {
-	own?(...items: any[]): void;
-	dispose?(): boolean;
-}
-export class Class implements Interface {
+class Disposable implements Interface {
 	private disposable: any[] = [];
 
 	/** add items to the disposable array */
@@ -48,3 +45,4 @@ export class Class implements Interface {
 		return disposed;
 	}
 }
+export = Disposable;
