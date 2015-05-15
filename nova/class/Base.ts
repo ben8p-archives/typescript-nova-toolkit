@@ -27,6 +27,9 @@ class Base {
 	protected postConstructor() {}
 
 	public isInstanceOf(object: any): boolean {
+		if (object === this.constructor) {
+			return true;
+		}
 		var superclasses: any[] = (<any> this.constructor).__meta__.linearized;
 		return superclasses.some((superclass: any) => {
 			return superclass === object;

@@ -121,10 +121,12 @@ registerSuite(function () {
 			},
 			'instanceof': function() {
 				var baz1 = new Baz1();
+				assert.isTrue(baz1.isInstanceOf(Baz1));
 				assert.isTrue(baz1.isInstanceOf(Foo));
 				assert.isTrue(baz1.isInstanceOf(Bar));
 				assert.isFalse(baz1.isInstanceOf(Baz2));
 				var baz5 = new Baz5();
+				assert.isTrue(baz5.isInstanceOf(Baz5));
 				assert.isTrue(baz5.isInstanceOf(Baz1));
 				assert.isTrue(baz5.isInstanceOf(Bar));
 				assert.isTrue(baz5.isInstanceOf(Foo));
