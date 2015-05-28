@@ -19,6 +19,7 @@ var tests = {
 		'tests/dom/remove',
 		'tests/dom/style',
 		'tests/dom/window',
+		'tests/function/inject',
 		'tests/promise/Deferred',
 		'tests/promise/Promise',
 		'tests/storage/cookie',

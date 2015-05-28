@@ -4,7 +4,7 @@ import Interface = require('./Disposable.d');
  * It act as a store, collect all items that you want to destroy
  * And clean then when you call dispose()
  */
-class Disposable implements Interface {
+class Disposable implements Interface.DisposableClass {
 	private disposable: any[] = [];
 
 	/** add items to the disposable array */
