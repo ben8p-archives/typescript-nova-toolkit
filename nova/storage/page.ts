@@ -4,7 +4,6 @@
  * Support any type of value
  */
 
-
 import StorageApi = require('./api/Storage');
 
 var ObjectConstructor = (<any> window.top).Object || Object;
