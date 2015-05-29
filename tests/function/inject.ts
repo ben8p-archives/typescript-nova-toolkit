@@ -37,6 +37,52 @@ registerSuite(function () {
 				object.foo();
 				assert.deepEqual(result, expected);
 			},
+			'remove': function() {
+				var result: String[] = [];
+				var expected: String[] = ['foo'];
+				var object: any = {
+					foo: function() {
+						result.push('foo');
+					}
+				};
+				function bar1() {
+					result.push('bar1');
+				}
+				function bar2() {
+					result.push('bar2');
+				}
+				function baz1() {
+					result.push('baz1');
+				}
+				function baz2() {
+					result.push('baz2');
+				}
+				var handle1 = inject.before(bar1, object, 'foo');
+				var handle2 = inject.before(bar2, object, 'foo');
+				var handle3 = inject.after(baz1, object, 'foo');
+				var handle4 = inject.after(baz2, object, 'foo');
+
+				handle1.remove();
+				handle2.remove();
+				handle3.remove();
+				handle4.remove();
+
+				object.foo();
+				assert.deepEqual(result, expected);
+
+				result = [];
+				expected = ['bar2', 'foo', 'baz2'];
+				handle1 = inject.before(bar1, object, 'foo');
+				inject.before(bar2, object, 'foo');
+				handle2 = inject.after(baz1, object, 'foo');
+				inject.after(baz2, object, 'foo');
+
+				handle1.remove();
+				handle2.remove();
+
+				object.foo();
+				assert.deepEqual(result, expected);
+			},
 			'return value': function() {
 				var object: any = {
 					foo: function(x: number): number {

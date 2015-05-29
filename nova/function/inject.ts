@@ -71,7 +71,7 @@ export function after(method: Function, inContext: any, after: string): Displosa
 		remove: function() {
 			runner.after.some((afterMethod, index) => {
 				if (afterMethod === method) {
-					delete runner.before[index];
+					delete runner.after[index];
 					return true;
 				}
 				return false;
