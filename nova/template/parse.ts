@@ -5,7 +5,7 @@ const SPACES = /\s+/g;
 
 interface IParse {
 	documentFragment: DocumentFragment
-	anchors: {[anchorName: string]: Node}
+	anchors: {[anchorName: string]: HTMLElement}
 }
 
 /**

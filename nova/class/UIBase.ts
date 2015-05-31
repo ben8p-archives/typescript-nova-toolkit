@@ -9,14 +9,14 @@ enum EPosition {FIRST, LAST, BEFORE, AFTER}
  * Provide helpers for creating templates and placing in the dom
  */
 class UIBase extends Base {
-	protected domNode: Node
+	protected domNode: HTMLElement
 	protected templateString: string
-	protected nodeAnchors: { [anchorName: string]: Node};
+	protected nodeAnchors: { [anchorName: string]: HTMLElement};
 
 	protected postConstructor() {
 		this.super(arguments);
 		var template = templateParser(this.templateString);
-		this.domNode = template.documentFragment;
+		this.domNode = <HTMLElement> template.documentFragment.firstChild;
 		this.nodeAnchors = template.anchors;
 	}
 
