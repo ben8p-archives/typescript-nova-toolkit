@@ -1,5 +1,7 @@
 import c3mro = require('./c3mro');
 
+declare var global: any;
+
 /**
  * iterate over the passed argument and determine if a property is a function.
  * if yes, it add the name of the property to the 'functionName' property of the function
@@ -22,6 +24,9 @@ let computeMethodNames = function (target: any): void {
 this.__extends = function(base: any, mixin: any) {
 	extend(base, [mixin]);
 };
+//assign it to window AND NodeJs
+try { global.__extends = this.__extends; } catch (e) {}
+try { (<any> window).__extends = this.__extends; } catch (e) {}
 
 /**
  * linearize and combine all class and subclass in order to create one extended Class

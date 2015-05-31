@@ -1,3 +1,5 @@
+/// <amd-dependency path="./extends" />
+
 /**
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
@@ -7,17 +9,20 @@ class Base {
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
 		(<any> this.constructor)._running = true;
-		var bases = (<any> this.constructor).__meta__.linearized;
-		if (bases) {
-			let i: number;
-			let baseLength: number = bases.length;
-			//execute the constructors from bottom to top
-			for (i = baseLength - 1; i >= 0; --i) {
-				let objectConstructor: any = bases[i];
-				if (objectConstructor instanceof Function) {
-					objectConstructor.apply(this, arguments);
+		if ((<any> this.constructor).__meta__) {
+			var bases = (<any> this.constructor).__meta__.linearized;
+			if (bases) {
+				let i: number;
+				let baseLength: number = bases.length;
+				//execute the constructors from bottom to top
+				for (i = baseLength - 1; i >= 0; --i) {
+					let objectConstructor: any = bases[i];
+					if (objectConstructor instanceof Function) {
+						objectConstructor.apply(this, arguments);
+					}
 				}
 			}
+			this.constructor.apply(this, arguments); //rerun itself otherwise postConstructor runstoo early
 		}
 		delete (<any> this.constructor)._running;
 		this.postConstructor();

@@ -33,7 +33,7 @@ module.exports = (grunt) ->
                 background: false
     watch:
          default:
-             files: ['nova/**/*.ts', 'nova/**/*.html', 'tests/**/*.ts', 'tests/**/*.html']
+             files: ['nova/**/*.ts', 'nova/**/*.html', 'nova/**/*.css', 'tests/**/*.ts', 'tests/**/*.html', 'tests/**/*.css']
              tasks: ['ts']
              options:
                   spawn: false
