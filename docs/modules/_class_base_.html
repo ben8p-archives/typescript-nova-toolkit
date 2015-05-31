@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;core/promise/Deferred&quot; | nova-toolkit</title>
+	<title>&quot;class/Base&quot; | nova-toolkit</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_core_promise_deferred_.html">&quot;core/promise/Deferred&quot;</a>
+					<a href="_class_base_.html">&quot;class/Base&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;core/promise/Deferred&quot;</h1>
+			<h1>External module &quot;class/Base&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -74,16 +74,54 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-kind-icon">Deferred</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_class_base_.base.html" class="tsd-kind-icon">Base</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Interfaces</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/_core_promise_deferred_.promiseinterface.html" class="tsd-kind-icon">Promise<wbr>Interface</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_class_base_.html#computemethodnames" class="tsd-kind-icon">compute<wbr>Method<wbr>Names</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="computemethodnames" class="tsd-anchor"></a>
+					<h3>compute<wbr>Method<wbr>Names</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Method<wbr>Names<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L9">class/Base.ts:9</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>iterate over the passed argument and determine if a property is a function.
+										if yes, it add the name of the property to the &#39;functionName&#39; property of the function
+									so we can later on know what is the name of some anonymous function</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>target: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>anything inheriting from ObjectConstructor</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -93,72 +131,18 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_base_.html">"core/class/<wbr>Base"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_evented_.html">"core/class/<wbr>Evented"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_c3mro_.html">"core/class/c3mro"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_declare_.html">"core/class/declare"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_.html">"core/event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_customevent_.html">"core/event/<wbr>Custom<wbr>Event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_has_.html">"core/has"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_object_.html">"core/object"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_core_promise_deferred_.html">"core/promise/<wbr>Deferred"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_promise_.html">"core/promise/<wbr>Promise"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_string_.html">"core/string"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_xhr_.html">"core/xhr"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_attribute_.html">"dom/attribute"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_class_.html">"dom/class"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_create_.html">"dom/create"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_insert_.html">"dom/insert"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_ready_.html">"dom/ready"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_style_.html">"dom/style"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_template_parse_.html">"template/parse"</a>
+						<a href="_class_base_.html">"class/<wbr>Base"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-kind-icon">Deferred</a>
+						<a href="../classes/_class_base_.base.html" class="tsd-kind-icon">Base</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../interfaces/_core_promise_deferred_.promiseinterface.html" class="tsd-kind-icon">Promise<wbr>Interface</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_class_base_.html#computemethodnames" class="tsd-kind-icon">compute<wbr>Method<wbr>Names</a>
 					</li>
 				</ul>
 			</nav>

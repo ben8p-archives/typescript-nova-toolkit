@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;core/class/c3mro&quot; | nova-toolkit</title>
+	<title>&quot;class/CustomEvent&quot; | nova-toolkit</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_core_class_c3mro_.html">&quot;core/class/c3mro&quot;</a>
+					<a href="_class_customevent_.html">&quot;class/CustomEvent&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;core/class/c3mro&quot;</h1>
+			<h1>External module &quot;class/CustomEvent&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -71,16 +71,22 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_class_customevent_.customeventpolyfill.html" class="tsd-kind-icon">Custom<wbr>Event<wbr>Polyfill</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/_class_customevent_.eventproperties.html" class="tsd-kind-icon">Event<wbr>Properties</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_core_class_c3mro_.html#counter" class="tsd-kind-icon">counter</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Functions</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_class_c3mro_.html#linearize" class="tsd-kind-icon">linearize</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_class_customevent_.html#browsercustomevent" class="tsd-kind-icon">Browser<wbr>Custom<wbr>Event</a></li>
 							</ul>
 						</section>
 					</div>
@@ -89,50 +95,14 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="counter" class="tsd-anchor"></a>
-					<h3>counter</h3>
-					<div class="tsd-signature tsd-kind-icon">counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="browsercustomevent" class="tsd-anchor"></a>
+					<h3>Browser<wbr>Custom<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">Browser<wbr>Custom<wbr>Event<span class="tsd-signature-symbol">:</span> <a href="../classes/_class_customevent_.customeventpolyfill.html" class="tsd-signature-type">CustomEventPolyfill</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/class/c3mro.ts#L1">core/class/c3mro.ts:1</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/CustomEvent.ts#L80">class/CustomEvent.ts:80</a></li>
 						</ul>
 					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="linearize" class="tsd-anchor"></a>
-					<h3>linearize</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">linearize<span class="tsd-signature-symbol">(</span>bases<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/class/c3mro.ts#L10">core/class/c3mro.ts:10</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>C3 Method Resolution Order (see http: //www.python.org/download/releases/2.3/mro/)
-									code from dojo toolkit</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>bases: <span class="tsd-signature-type">any[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>an array of class (may contain subclasses)</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any[]</span></h4>
-							<p>an array containing linearized classes</p>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -142,72 +112,21 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_base_.html">"core/class/<wbr>Base"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_evented_.html">"core/class/<wbr>Evented"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_core_class_c3mro_.html">"core/class/c3mro"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_declare_.html">"core/class/declare"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_.html">"core/event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_customevent_.html">"core/event/<wbr>Custom<wbr>Event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_has_.html">"core/has"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_object_.html">"core/object"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_deferred_.html">"core/promise/<wbr>Deferred"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_promise_.html">"core/promise/<wbr>Promise"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_string_.html">"core/string"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_xhr_.html">"core/xhr"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_attribute_.html">"dom/attribute"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_class_.html">"dom/class"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_create_.html">"dom/create"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_insert_.html">"dom/insert"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_ready_.html">"dom/ready"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_style_.html">"dom/style"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_template_parse_.html">"template/parse"</a>
+						<a href="_class_customevent_.html">"class/<wbr>Custom<wbr>Event"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_core_class_c3mro_.html#counter" class="tsd-kind-icon">counter</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_class_customevent_.customeventpolyfill.html" class="tsd-kind-icon">Custom<wbr>Event<wbr>Polyfill</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_core_class_c3mro_.html#linearize" class="tsd-kind-icon">linearize</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/_class_customevent_.eventproperties.html" class="tsd-kind-icon">Event<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_class_customevent_.html#browsercustomevent" class="tsd-kind-icon">Browser<wbr>Custom<wbr>Event</a>
 					</li>
 				</ul>
 			</nav>

@@ -95,6 +95,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_event_.html#dispatchevent" class="tsd-kind-icon">dispatch<wbr>Event</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_event_.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_event_.html#stop" class="tsd-kind-icon">stop</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_core_event_.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_event_.html#when" class="tsd-kind-icon">when</a></li>
 							</ul>
@@ -107,7 +108,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="eventbus" class="tsd-anchor"></a>
 					<h3>event<wbr>Bus</h3>
-					<div class="tsd-signature tsd-kind-icon">event<wbr>Bus<span class="tsd-signature-symbol">:</span> <a href="../classes/_core_class_evented_.evented.html" class="tsd-signature-type">Evented</a></div>
+					<div class="tsd-signature tsd-kind-icon">event<wbr>Bus<span class="tsd-signature-symbol">:</span> <a href="../classes/_class_evented_.evented.html" class="tsd-signature-type">Evented</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L93">core/event.ts:93</a></li>
@@ -246,6 +247,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="stop" class="tsd-anchor"></a>
+					<h3>stop</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L175">core/event.ts:175</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>stop an event</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">Event</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="subscribe" class="tsd-anchor"></a>
 					<h3>subscribe</h3>
@@ -360,62 +389,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_base_.html">"core/class/<wbr>Base"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_evented_.html">"core/class/<wbr>Evented"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_c3mro_.html">"core/class/c3mro"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_declare_.html">"core/class/declare"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_core_event_.html">"core/event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_customevent_.html">"core/event/<wbr>Custom<wbr>Event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_has_.html">"core/has"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_object_.html">"core/object"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_deferred_.html">"core/promise/<wbr>Deferred"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_promise_.html">"core/promise/<wbr>Promise"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_string_.html">"core/string"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_xhr_.html">"core/xhr"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_attribute_.html">"dom/attribute"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_class_.html">"dom/class"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_create_.html">"dom/create"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_insert_.html">"dom/insert"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_ready_.html">"dom/ready"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_style_.html">"dom/style"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_template_parse_.html">"template/parse"</a>
 					</li>
 				</ul>
 			</nav>
@@ -438,6 +413,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_core_event_.html#once" class="tsd-kind-icon">once</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_core_event_.html#stop" class="tsd-kind-icon">stop</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_core_event_.html#subscribe" class="tsd-kind-icon">subscribe</a>

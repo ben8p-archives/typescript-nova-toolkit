@@ -75,20 +75,27 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_core_xhr_.handleas.html" class="tsd-kind-icon">handle<wbr>As</a></li>
-								<li class="tsd-kind-enum tsd-parent-kind-external-module tsd-is-not-exported"><a href="../enums/_core_xhr_.method.html" class="tsd-kind-icon">method</a></li>
+								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_core_xhr_.method.html" class="tsd-kind-icon">method</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.blobresponse.html" class="tsd-kind-icon">Blob<wbr>Response</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.jsonresponse.html" class="tsd-kind-icon">Json<wbr>Response</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.textresponse.html" class="tsd-kind-icon">Text<wbr>Response</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/_core_xhr_.xhrbaseoptions.html" class="tsd-kind-icon">Xhr<wbr>Base<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.xhrdownloadoptions.html" class="tsd-kind-icon">Xhr<wbr>Download<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/_core_xhr_.xhrfinaloptions.html" class="tsd-kind-icon">Xhr<wbr>Final<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-kind-icon">Xhr<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_core_xhr_.xmlresponse.html" class="tsd-kind-icon">Xml<wbr>Response</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_xhr_.html#del" class="tsd-kind-icon">del</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_xhr_.html#download" class="tsd-kind-icon">download</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_xhr_.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_core_xhr_.html#isnativeobject" class="tsd-kind-icon">is<wbr>Native<wbr>Object</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_core_xhr_.html#post" class="tsd-kind-icon">post</a></li>
@@ -106,13 +113,13 @@
 					<a name="del" class="tsd-anchor"></a>
 					<h3>del</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">del<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+						<li class="tsd-signature tsd-kind-icon">del<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L170">core/xhr.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L209">core/xhr.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -129,7 +136,39 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<p>promise resolved when the query is done</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="download" class="tsd-anchor"></a>
+					<h3>download</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">download<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhrdownloadoptions.html" class="tsd-signature-type">XhrDownloadOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L227">core/xhr.ts:227</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>trigger a file download</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../interfaces/_core_xhr_.xhrdownloadoptions.html" class="tsd-signature-type">XhrDownloadOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>xhr options, see interface</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
 							<p>promise resolved when the query is done</p>
 						</li>
 					</ul>
@@ -138,13 +177,13 @@
 					<a name="get" class="tsd-anchor"></a>
 					<h3>get</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L152">core/xhr.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L191">core/xhr.ts:191</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -161,7 +200,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
 							<p>promise resolved when the query is done</p>
 						</li>
 					</ul>
@@ -176,12 +215,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L29">core/xhr.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L60">core/xhr.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>return true is the value is an object</p>
+									<p>return true if the value is an object</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -202,13 +241,13 @@
 					<a name="post" class="tsd-anchor"></a>
 					<h3>post</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">post<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+						<li class="tsd-signature tsd-kind-icon">post<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L161">core/xhr.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L200">core/xhr.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,7 +264,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
 							<p>promise resolved when the query is done</p>
 						</li>
 					</ul>
@@ -234,13 +273,13 @@
 					<a name="put" class="tsd-anchor"></a>
 					<h3>put</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">put<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+						<li class="tsd-signature tsd-kind-icon">put<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-signature-type">XhrOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L179">core/xhr.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L218">core/xhr.ts:218</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -257,7 +296,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
 							<p>promise resolved when the query is done</p>
 						</li>
 					</ul>
@@ -272,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L117">core/xhr.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L156">core/xhr.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -295,13 +334,13 @@
 					<a name="xhr" class="tsd-anchor"></a>
 					<h3>xhr</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">xhr<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhrfinaloptions.html" class="tsd-signature-type">XhrFinalOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
+						<li class="tsd-signature tsd-kind-icon">xhr<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_xhr_.xhrfinaloptions.html" class="tsd-signature-type">XhrFinalOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L41">core/xhr.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/xhr.ts#L72">core/xhr.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,7 +357,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_core_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_promise_deferred_.deferred.html" class="tsd-signature-type">Deferred</a></h4>
 							<p>Deferred</p>
 						</li>
 					</ul>
@@ -331,62 +370,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_base_.html">"core/class/<wbr>Base"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_evented_.html">"core/class/<wbr>Evented"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_c3mro_.html">"core/class/c3mro"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_class_declare_.html">"core/class/declare"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_.html">"core/event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_event_customevent_.html">"core/event/<wbr>Custom<wbr>Event"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_has_.html">"core/has"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_object_.html">"core/object"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_deferred_.html">"core/promise/<wbr>Deferred"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_promise_promise_.html">"core/promise/<wbr>Promise"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_string_.html">"core/string"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_core_xhr_.html">"core/xhr"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_attribute_.html">"dom/attribute"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_class_.html">"dom/class"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_create_.html">"dom/create"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_insert_.html">"dom/insert"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_ready_.html">"dom/ready"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dom_style_.html">"dom/style"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_template_parse_.html">"template/parse"</a>
 					</li>
 				</ul>
 			</nav>
@@ -395,8 +380,23 @@
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_core_xhr_.handleas.html" class="tsd-kind-icon">handle<wbr>As</a>
 					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_core_xhr_.method.html" class="tsd-kind-icon">method</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_core_xhr_.blobresponse.html" class="tsd-kind-icon">Blob<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_core_xhr_.jsonresponse.html" class="tsd-kind-icon">Json<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_core_xhr_.textresponse.html" class="tsd-kind-icon">Text<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/_core_xhr_.xhrbaseoptions.html" class="tsd-kind-icon">Xhr<wbr>Base<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_core_xhr_.xhrdownloadoptions.html" class="tsd-kind-icon">Xhr<wbr>Download<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../interfaces/_core_xhr_.xhrfinaloptions.html" class="tsd-kind-icon">Xhr<wbr>Final<wbr>Options</a>
@@ -404,8 +404,14 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_core_xhr_.xhroptions.html" class="tsd-kind-icon">Xhr<wbr>Options</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_core_xhr_.xmlresponse.html" class="tsd-kind-icon">Xml<wbr>Response</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_core_xhr_.html#del" class="tsd-kind-icon">del</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_core_xhr_.html#download" class="tsd-kind-icon">download</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_core_xhr_.html#get" class="tsd-kind-icon">get</a>
