@@ -23,6 +23,7 @@ let computeMethodNames = function (target: any): void {
  * Provides this.super() method to call superclass
  */
 class Base {
+	protected constructed = false;
 	/** execute all constructor form all mixins */
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
@@ -47,7 +48,9 @@ class Base {
 	}
 
 	/** hook executed after all constructors */
-	protected postConstructor() {}
+	protected postConstructor() {
+		this.constructed = true;
+	}
 
 	public isInstanceOf(object: any): boolean {
 		if (object === this.constructor) {

@@ -1,8 +1,10 @@
 var tests = {
 	suites: [
 		'tests/class/c3mro',
+		'tests/class/Base',
 		'tests/class/extends',
 		'tests/class/Stateful',
+		'tests/class/UIBase',
 		'tests/core/has',
 		'tests/core/debounce',
 		'tests/core/event',

@@ -7,6 +7,7 @@ module.exports = (grunt) ->
             target: 'es5'
             module: 'amd'
             noImplicitAny: true
+            suppressImplicitAnyIndexErrors: true
             sourceMap: false
             htmlModuleTemplate: 'static.<%= filename %>'
             htmlVarTemplate: 'data'
