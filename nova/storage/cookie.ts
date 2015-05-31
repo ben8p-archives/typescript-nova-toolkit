@@ -83,5 +83,5 @@ class CookieStorage extends StorageApi.AbtractStorage {
 		return this;
 	}
 }
-
-export = new CookieStorage();
+var storage = new CookieStorage();
+export = storage;

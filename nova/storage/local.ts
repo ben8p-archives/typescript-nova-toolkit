@@ -16,5 +16,5 @@ class Local extends StorageApi.AbtractStorage {
 		return window.top.localStorage;
 	}
 }
-
-export = has('cookie') ? new Local() : page;
+var local = has('cookie') ? new Local() : page;
+export = local;

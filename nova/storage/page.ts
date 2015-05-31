@@ -81,5 +81,5 @@ class PageStorage extends StorageApi.AbtractStorage {
 		return this;
 	}
 }
-
-export = new PageStorage();
+var page = new PageStorage();
+export = page;

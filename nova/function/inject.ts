@@ -1,8 +1,8 @@
 import DisplosableInterface = require('../class/Disposable.d');
 interface Runner extends Function {
-	(): any;
-	before: Function[],
-	after: Function[],
+	(): any
+	before: Function[]
+	after: Function[]
 	original: Function
 };
 

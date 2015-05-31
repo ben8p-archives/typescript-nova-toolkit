@@ -10,5 +10,5 @@ class Session extends StorageApi.AbtractStorage {
 		return window.top.sessionStorage;
 	}
 }
-
-export = new Session();
+var session = new Session();
+export = session;

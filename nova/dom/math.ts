@@ -18,25 +18,25 @@ interface IBoxElement {
 		right: number
 		top: number
 		bottom: number
-	},
+	}
 	padding: {
 		left: number
 		right: number
 		top: number
 		bottom: number
-	},
+	}
 	border: {
 		left: number
 		right: number
 		top: number
 		bottom: number
-	},
+	}
 	content: {
 		availableWidth: number
 		availableHeight: number
 		width: number
 		height: number
-	},
+	}
 	model: string
 }
 

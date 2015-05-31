@@ -42,5 +42,5 @@ class WindowClass extends SingletonBase {
 	}
 }
 extendsClass(WindowClass, [Evented]);
-
-export = new WindowClass();
+var win = new WindowClass();
+export = win;
