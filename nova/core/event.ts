@@ -170,3 +170,14 @@ export function dispatchEvent(target: Event|EventTarget, event?: Event): boolean
 	(<EventTarget> target).dispatchEvent(event);
 	return true;
 }
+
+/** stop an event */
+export function stop(event: Event) {
+	if (event.preventDefault) {
+		event.preventDefault();
+	}
+	if (event.stopPropagation) {
+		event.stopPropagation();
+	}
+	return false;
+}

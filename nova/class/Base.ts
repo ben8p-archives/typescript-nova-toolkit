@@ -1,6 +1,24 @@
 /// <amd-dependency path="./extends" />
 
 /**
+ * iterate over the passed argument and determine if a property is a function.
+ * if yes, it add the name of the property to the 'functionName' property of the function
+ * so we can later on know what is the name of some anonymous function
+ * @param	target	anything inheriting from ObjectConstructor
+ */
+let computeMethodNames = function (target: any): void {
+	let name: string;
+
+	for (name in target) {
+		let property: any = target[name];
+		if (property instanceof Function) {
+			property.functionName = name;
+		}
+	}
+
+};
+
+/**
  * Base class for every class using linearized inheritance
  * Provides this.super() method to call superclass
  */
@@ -9,19 +27,19 @@ class Base {
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
 		(<any> this.constructor)._running = true;
-		if ((<any> this.constructor).__meta__) {
-			var bases = (<any> this.constructor).__meta__.linearized;
-			if (bases) {
-				let i: number;
-				let baseLength: number = bases.length;
-				//execute the constructors from bottom to top
-				for (i = baseLength - 1; i >= 0; --i) {
-					let objectConstructor: any = bases[i];
-					if (objectConstructor instanceof Function) {
-						objectConstructor.apply(this, arguments);
-					}
+		var bases = (<any> this.constructor).__meta__.linearized.reverse();
+		if (bases) {
+			let i: number;
+			let baseLength: number = bases.length;
+			//execute the constructors from bottom to top
+			for (i = baseLength - 1; i >= 0; --i) {
+				let objectConstructor: any = bases[i];
+				if (objectConstructor instanceof Function) {
+					objectConstructor.apply(this, arguments);
+					computeMethodNames(objectConstructor.prototype);
 				}
 			}
+			computeMethodNames(this.constructor.prototype);
 			this.constructor.apply(this, arguments); //rerun itself otherwise postConstructor runstoo early
 		}
 		delete (<any> this.constructor)._running;

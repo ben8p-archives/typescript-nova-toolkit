@@ -2,29 +2,11 @@ import c3mro = require('./c3mro');
 
 declare var global: any;
 
-/**
- * iterate over the passed argument and determine if a property is a function.
- * if yes, it add the name of the property to the 'functionName' property of the function
- * so we can later on know what is the name of some anonymous function
- * @param	target	anything inheriting from ObjectConstructor
- */
-let computeMethodNames = function (target: any): void {
-	let name: string;
-
-	for (name in target) {
-		let property: any = target[name];
-		if (property instanceof Function) {
-			property.functionName = name;
-		}
-	}
-
-};
-
 /** provide a custom extend method for class (ES6 Class). See how typescript implement Class inheritance */
 this.__extends = function(base: any, mixin: any) {
 	extend(base, [mixin]);
 };
-//assign it to window AND NodeJs
+//give it to window AND NodeJs
 try { global.__extends = this.__extends; } catch (e) {}
 try { (<any> window).__extends = this.__extends; } catch (e) {}
 
@@ -36,6 +18,7 @@ try { (<any> window).__extends = this.__extends; } catch (e) {}
  */
 var extend = function  <T extends Object>(base: any, superclasses: any[]): void {
  	var superclassesList: any[] = [];
+	superclasses = superclasses.reverse();
 	if (base.prototype.constructor.__meta__) {
 		let meta = base.prototype.constructor.__meta__;
 		for (let name in base.prototype) {
@@ -52,7 +35,7 @@ var extend = function  <T extends Object>(base: any, superclasses: any[]): void 
 	var superclassesCount = linearizedSuperclasses.length;
 
 	//chain all mixins
-	function newSuperclass() { this.constructor = base; };
+	function newSuperclass() { this.constructor = base; }
 	while (--superclassesCount) {
 		var superclass: any = linearizedSuperclasses[superclassesCount];
 		if (superclass !== base) {
@@ -63,11 +46,11 @@ var extend = function  <T extends Object>(base: any, superclasses: any[]): void 
 			if (!newSuperclass.prototype[name]) {
 				newSuperclass.prototype[name] = superclass.prototype[name];
 			}
-		};
-		computeMethodNames(superclass.prototype);
+		}
+		//computeMethodNames(superclass.prototype);
 	}
 
-	computeMethodNames(newSuperclass.prototype);
+	//computeMethodNames(newSuperclass.prototype);
 	base.prototype = new (<any> newSuperclass)();
 
 	base.prototype.constructor.__meta__ = base.prototype.constructor.__meta__ || {};

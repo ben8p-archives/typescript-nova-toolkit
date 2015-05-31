@@ -70,9 +70,27 @@ class Baz5 extends Foo implements IFoo, IBar {
 }
 extendsClass(Baz1, [ Foo, Bar ]);
 extendsClass(Baz2, [ Bar, Foo ]);
-extendsClass(Baz3, [ Bar ]); //Baz3 -> Foo -> Bar
+extendsClass(Baz3, [ Bar ]); //Baz3 -> Bar -> Foo
 extendsClass(Baz4, [ Bar ]); //Baz4 -> Foo -> Bar -> Baz3
 extendsClass(Baz5, [ Baz1 ]);
+
+class BarBaz1 extends Base implements IBar {
+	log(): void {
+		results.push('BarBaz1');
+	}
+}
+class BarBaz2 extends BarBaz1 implements IBar {
+	log(): void {
+		this.super(arguments);
+		results.push('BarBaz2');
+	}
+}
+class BarBaz3 extends BarBaz2 implements IBar {
+	log(): void {
+		this.super(arguments);
+		results.push('BarBaz3');
+	}
+}
 
 registerSuite(function () {
 	return {
@@ -82,6 +100,13 @@ registerSuite(function () {
 		},
 
 		'.inheritance': {
+			'standard extends': function() {
+				results = [];
+				var barbaz = new BarBaz3();
+				barbaz.log();
+				var expected = ['BarBaz1', 'BarBaz2', 'BarBaz3'];
+				assert.deepEqual(expected, results);
+			},
 			'valid linearization + BaseClass super call': function() {
 				var baz1 = new Baz1();
 				results = [];
@@ -100,21 +125,21 @@ registerSuite(function () {
 				var baz3 = new Baz3();
 				results = [];
 				baz3.log();
-				expected = ['baz3', 'foo', 'bar', 'foo2'];
+				expected = ['baz3', 'bar', 'foo', 'foo2'];
 				assert.deepEqual(expected, results);
 				assert.isTrue((<any> baz3).foo);
 				assert.isTrue((<any> baz3).baz3);
 				var baz4 = new Baz4();
 				results = [];
 				baz4.log();
-				expected = ['baz4', 'foo', 'bar', 'baz3', 'foo2'];
+				expected = ['baz4', 'baz3', 'bar', 'foo', 'foo2'];
 				assert.deepEqual(expected, results);
 				assert.isTrue((<any> baz4).foo);
 				assert.isTrue((<any> baz4).baz4);
 				var baz5 = new Baz5();
 				results = [];
 				baz5.log();
-				expected = ['baz5', 'bar', 'foo', 'baz', 'foo2'];
+				expected = ['baz5', 'baz', 'bar', 'foo', 'foo2'];
 				assert.deepEqual(expected, results);
 				assert.isTrue((<any> baz5).foo);
 				assert.isTrue((<any> baz5).baz5);
