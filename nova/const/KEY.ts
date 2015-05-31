@@ -62,4 +62,4 @@ var KEYS: {[key: string]: number} = {
 	LEFT_DPAD: 177,
 	RIGHT_DPAD: 178
 };
-exports = KEYS;
+export = KEYS;

@@ -23,7 +23,7 @@ module.exports = (grunt) ->
                 target: 'es6'
             src: ['nova/**/*.ts']
     express:
-        default:
+        watch:
             options:
                 script: './tests/test-server.js'
                 background: true
@@ -38,7 +38,7 @@ module.exports = (grunt) ->
              options:
                   spawn: false
     open:
-        default:
+        watch:
             path: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
         nowatch:
             path: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
@@ -62,11 +62,15 @@ module.exports = (grunt) ->
                 src: ['nova/**/*.ts', 'tests/**/*.ts']
 
   grunt.event.on 'watch', (action, filepath) ->
-    if !!~ filepath.indexOf ".html"
+    if ends(filepath, ".html") || ends(filepath, ".css")
         grunt.config.set('ts.default.src', [])
         grunt.config.set('ts.default.html', filepath)
     else
         grunt.config.set('ts.default.src', filepath)
+
+  ends = (string, literal, back) ->
+     len = literal.length
+     literal is string.substr string.length - len - (back or 0), len
 
   requireJsTarget = 'release'
   if grunt.option('build-config')?
@@ -85,6 +89,6 @@ module.exports = (grunt) ->
   grunt.registerTask 'doc', ['typedoc']
   grunt.registerTask 'lint', ['tslint']
   grunt.registerTask 'transpile', ['clean', 'tslint', 'ts']
-  grunt.registerTask 'dev', ['clean', 'ts', 'express', 'open', 'watch']
+  grunt.registerTask 'dev', ['clean', 'ts', 'express:watch', 'open:watch', 'watch']
   grunt.registerTask 'dev:nowatch', ['clean', 'ts', 'open:nowatch', 'express:nowatch']
   grunt.registerTask 'release', ['clean', 'tslint', 'ts', 'requirejs:' + requireJsTarget]
