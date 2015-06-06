@@ -12,10 +12,11 @@ class UIBase extends Base {
 	protected domNode: HTMLElement
 	protected templateString: string
 	protected nodeAnchors: { [anchorName: string]: HTMLElement};
+	protected templatePlaceHolders: { [name: string]: string};
 
 	protected postConstructor() {
 		this.super(arguments);
-		var template = templateParser(this.templateString);
+		var template = templateParser(this.templateString, this.templatePlaceHolders);
 		this.domNode = <HTMLElement> template.documentFragment.firstChild;
 		this.nodeAnchors = template.anchors;
 	}
