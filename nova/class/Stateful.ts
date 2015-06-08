@@ -3,8 +3,9 @@ const SETTER_GETTER_SEARCH = /(s|g)et([A-Z])([a-zA-Z0-9]+)/;
 /**
  * Stateful class links getters and setters to properties
  */
-class Statefull extends Base {
+class Stateful extends Base {
 	protected postConstructor() {
+		this.super(arguments);
 		var key: string;
 		var instance: {[key: string]: any} = <any> this;
 
@@ -37,4 +38,4 @@ class Statefull extends Base {
 		}
 	}
 }
-export = Statefull;
+export = Stateful;
