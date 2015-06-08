@@ -1,12 +1,12 @@
 /// <reference path="../../node_modules/intern/typings/intern/intern.d.ts" />
 import registerSuite = require('intern!object');
 import assert = require('intern/chai!assert');
-import Store = require('nova/data/store');
+import Store = require('nova/data/Store');
 
 registerSuite(function () {
 	var data: {[key: string]: any; }[] = [],
 		suite = {
-			name: 'nova/data/store',
+			name: 'nova/data/Store',
 
 			beforeEach: function () {
 				data = [

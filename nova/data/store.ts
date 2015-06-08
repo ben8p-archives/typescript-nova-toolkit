@@ -18,10 +18,10 @@ class Store extends Stateful {
 	data: {[key: string]: any; }[]; //for interface
 	private _data: {[key: string]: any; }[] = null; //real data handler
 
-	setData(data: {[key: string]: any; }[]): void {
+	protected setData(data: {[key: string]: any; }[]): void {
 		this._data = data;
 	}
-	getData(): {[key: string]: any; }[] {
+	protected getData(): {[key: string]: any; }[] {
 		return this._data;
 	}
 	sort(compareFunction?: (itemA: {[key: string]: any; }, itemB: {[key: string]: any; }) => number): {[key: string]: any}[] {
