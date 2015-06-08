@@ -23,7 +23,7 @@ const CAMEL_CASE_REGEXP = /^.|-.| ./g;
  */
 export function interpolate(text: string, content: {[index: string]: any}): string {
 	let substitute = function (placeHolder: string, attribute: string): string {
-		return content[attribute] || placeHolder;
+		return (content[attribute] !== undefined && content[attribute] !== null) ? content[attribute] : placeHolder;
 	};
 	return text.replace(TEMPLATE_TOKEN, substitute);
 }
