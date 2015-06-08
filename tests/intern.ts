@@ -12,7 +12,7 @@ var tests = {
 		'tests/core/string',
 		'tests/core/throttle',
 		'tests/core/xhr',
-		'tests/data/store',
+		'tests/data/Store',
 		'tests/dom/attribute',
 		'tests/dom/class',
 		'tests/dom/create',
