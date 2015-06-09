@@ -75,7 +75,7 @@
         "./tests/core/throttle.ts",
         "./tests/core/userAgent.ts",
         "./tests/core/xhr.ts",
-        "./tests/data/Sstore.ts",
+        "./tests/data/Store.ts",
         "./tests/dom/attribute.ts",
         "./tests/dom/class.ts",
         "./tests/dom/create.ts",
