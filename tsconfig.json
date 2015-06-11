@@ -80,6 +80,7 @@
         "./tests/dom/class.ts",
         "./tests/dom/create.ts",
         "./tests/dom/insert.ts",
+        "./tests/dom/match.ts",
         "./tests/dom/math.ts",
         "./tests/dom/ready.ts",
         "./tests/dom/remove.ts",

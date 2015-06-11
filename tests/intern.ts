@@ -17,6 +17,7 @@ var tests = {
 		'tests/dom/class',
 		'tests/dom/create',
 		'tests/dom/insert',
+		'tests/dom/match',
 		'tests/dom/math',
 		'tests/dom/ready',
 		'tests/dom/remove',
