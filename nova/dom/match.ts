@@ -1,6 +1,6 @@
 /** check if a selector match a given Node element */
 export function matches(element: HTMLElement, selector: string): boolean {
-	var matches = (<any> element).matches || element.webkitMatchesSelector || element.msMatchesSelector || (<any> element).mozMatchesSelector || (<any> element).oMatchesSelector;
+	var matches = (<any> element).matches || (<any> element).webkitMatchesSelector || element.msMatchesSelector || (<any> element).mozMatchesSelector || (<any> element).oMatchesSelector;
 	matches = matches.bind(element);
 	return matches(selector);
 }
