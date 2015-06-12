@@ -4,40 +4,40 @@
 
 interface IPositionElement {
 	inViewport: {
-		left: number
-		top: number
-	}
+		left: number;
+		top: number;
+	};
 	inDocument: {
-		left: number
-		top: number
-	}
+		left: number;
+		top: number;
+	};
 }
 interface IBoxElement {
 	margin: {
-		left: number
-		right: number
-		top: number
-		bottom: number
-	}
+		left: number;
+		right: number;
+		top: number;
+		bottom: number;
+	};
 	padding: {
-		left: number
-		right: number
-		top: number
-		bottom: number
-	}
+		left: number;
+		right: number;
+		top: number;
+		bottom: number;
+	};
 	border: {
-		left: number
-		right: number
-		top: number
-		bottom: number
-	}
+		left: number;
+		right: number;
+		top: number;
+		bottom: number;
+	};
 	content: {
 		availableWidth: number
 		availableHeight: number
 		width: number
 		height: number
-	}
-	model: string
+	};
+	model: string;
 }
 
 /** return the margin/padding/border size as well as the content size */

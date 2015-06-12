@@ -3,7 +3,7 @@
  */
 
 interface IStyleElement {
-	[key: string]: string|number
+	[key: string]: string|number;
 }
 
 // const JS_ATTRIBUTE_REGEXP = /([A-Z])/g;

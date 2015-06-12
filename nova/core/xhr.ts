@@ -46,7 +46,7 @@ export interface XhrOptions extends XhrBaseOptions {
 }
 /** interface used to defined how options should look like when including xhr method */
 interface XhrFinalOptions extends XhrOptions {
-	method?: method
+	method?: method;
 }
 
 /** enum of supported protocols */

@@ -1,9 +1,9 @@
 import DisplosableInterface = require('../class/Disposable.d');
 interface Runner extends Function {
-	(): any
-	before: Function[]
-	after: Function[]
-	original: Function
+	(): any;
+	before: Function[];
+	after: Function[];
+	original: Function;
 };
 
 /** inject a method before or after another one */

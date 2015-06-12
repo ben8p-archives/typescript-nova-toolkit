@@ -6,8 +6,8 @@ import extendsClass = require('../class/extends');
 import CustomEvent = require('../class/CustomEvent');
 
 interface IViewportElement {
-	width: number
-	height: number
+	width: number;
+	height: number;
 }
 
 /**

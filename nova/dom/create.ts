@@ -4,10 +4,10 @@
 import style = require('./style');
 
 interface IHTMLElement {
-	[key: string]: any
-	innerHTML?: string
-	className?: string[]|string
-	style?: {[key: string]: string|number}
+	[key: string]: any;
+	innerHTML?: string;
+	className?: string[]|string;
+	style?: {[key: string]: string|number};
 }
 
 var attributeMap: {[key: string]: string} = {

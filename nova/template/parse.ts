@@ -28,8 +28,8 @@ for (var key in WRAPPERS) {
 const FIND_TAGS = /<\s*([\w\:]+)/;
 
 interface IParse {
-	documentFragment: DocumentFragment
-	anchors: {[anchorName: string]: HTMLElement}
+	documentFragment: DocumentFragment;
+	anchors: {[anchorName: string]: HTMLElement};
 }
 
 /**

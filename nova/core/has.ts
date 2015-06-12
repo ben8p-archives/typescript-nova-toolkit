@@ -17,8 +17,8 @@ function getFromCache(className: string): RegExp {
 interface Has {
 	(name: string): any;
 	add(key: string, value: boolean|string|number, force?: boolean): void;
-	load(moduleName: string, parentRequire: Function, onLoad: (value?: any) => void): void
-	normalize(moduleName: string, normalize: (moduleName: string) => string): string
+	load(moduleName: string, parentRequire: Function, onLoad: (value?: any) => void): void;
+	normalize(moduleName: string, normalize: (moduleName: string) => string): string;
 }
 
 /**
