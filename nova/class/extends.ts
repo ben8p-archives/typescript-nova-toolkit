@@ -43,7 +43,7 @@ var extend = function  <T extends Object>(base: any, superclasses: any[]): void 
 		}
 
 		for (let name in superclass.prototype) {
-			if (!newSuperclass.prototype[name]) {
+			if (!newSuperclass.prototype[name] && superclass.prototype.hasOwnProperty(name)) {
 				newSuperclass.prototype[name] = superclass.prototype[name];
 			}
 		}

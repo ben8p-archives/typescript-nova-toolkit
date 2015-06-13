@@ -92,6 +92,27 @@ class BarBaz3 extends BarBaz2 implements IBar {
 	}
 }
 
+class PostConstructorBase extends Base {
+	protected postConstructor(): void {
+		results.push('PostConstructorBase');
+		this.super(arguments);
+	}
+}
+class PostConstructorMixin extends Base {
+	protected postConstructor(): void {
+		results.push('PostConstructorMixin');
+		this.super(arguments);
+	}
+}
+class PostConstructorTest1 extends PostConstructorBase {
+	protected postConstructor(): void {
+		this.super(arguments);
+	}
+}
+class PostConstructorTest2 extends PostConstructorBase {}
+extendsClass(PostConstructorTest1, [ PostConstructorMixin ]);
+extendsClass(PostConstructorTest2, [ PostConstructorMixin ]);
+
 registerSuite(function () {
 	return {
 		name: 'nova/class/extends',
@@ -105,6 +126,17 @@ registerSuite(function () {
 				var barbaz = new BarBaz3();
 				barbaz.log();
 				var expected = ['BarBaz1', 'BarBaz2', 'BarBaz3'];
+				assert.deepEqual(expected, results);
+			},
+			'postConstructor': function() {
+				var expected = ['PostConstructorMixin', 'PostConstructorBase'];
+
+				results = [];
+				new PostConstructorTest1();
+				assert.deepEqual(expected, results);
+
+				results = [];
+				new PostConstructorTest2();
 				assert.deepEqual(expected, results);
 			},
 			'valid linearization + BaseClass super call': function() {
