@@ -1,5 +1,5 @@
 import style = require('./style');
-import attribute = require('./attribute');
+import novaAttr = require('./attribute');
 
 /** internal interface representing attribute available when creating a domnode */
 interface IHTMLElement {
@@ -19,7 +19,7 @@ var create = function(type: string, attributes?: IHTMLElement): HTMLElement {
 	var element = document.createElement(type);
 	if (!attributes) { return element; }
 	for (var attribute in attributes) {
-		var value: any = attributes[attribute];
+		let value: any = attributes[attribute];
 		if (attribute === 'className' && value instanceof Array) {
 			value = value.join(' ');
 		} else if (attribute === 'style') {
@@ -29,7 +29,9 @@ var create = function(type: string, attributes?: IHTMLElement): HTMLElement {
 			element.innerHTML = value;
 			continue;
 		}
-		attribute.set(element, attribute, value);
+		let attributeObject: {[name: string]: any} = {};
+		attributeObject[attribute] = value;
+		novaAttr.set(element, attributeObject);
 	}
 	return element;
 };
