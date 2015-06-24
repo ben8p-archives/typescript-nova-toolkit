@@ -1,4 +1,7 @@
-/** A Promise as defined in Ecma standards */
+/**
+ * A Promise as defined in Ecma standards
+ * see https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise
+ */
 class PromisePolyfill {
 	private fail: any[] = [];
 	private success: any[] = [];
@@ -11,7 +14,6 @@ class PromisePolyfill {
 	/**
 	 * create the promise and bind the resolver and rejecter
 	 * @param	resolver	a function which will be called with the resolver and the rejecter as argumnets
-	 * @constructor
 	 */
 	constructor(resolver: Function) {
 		resolver(this.resolve.bind(this), this.reject.bind(this));
@@ -150,7 +152,7 @@ class PromisePolyfill {
 	 * Add a callback for when the promise will be resolve or rejected
 	 * @param	successCallback	callback executed when the promise is resolved
 	 * @param	failCallback	callback executed when the promise is rejected
-	 * @return	a promise
+	 * @return					a promise
 	 */
 	then(successCallback: Function, failCallback?: Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});
@@ -177,7 +179,7 @@ class PromisePolyfill {
 	/**
 	 * Add a callback for when the promise will be rejected
 	 * @param	failCallback	callback executed when the promise is rejected
-	 * @return	a promise
+	 * @return					a promise
 	 */
 	catch(failCallback: Function): PromisePolyfill {
 		let promise = new PromisePolyfill(function() {});

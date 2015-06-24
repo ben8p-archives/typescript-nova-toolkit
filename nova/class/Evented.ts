@@ -1,14 +1,15 @@
 import Interface = require('./Evented.d');
 /**
- * represent an evented class
+ * represent an evented class (a class which can emit event and inform listeners about these)
+ * See https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
  * implements EventTarget interface
  */
 class Evented implements EventTarget, Interface {
 	private events: any = {};
 	/**
-	 * detach a handler from an event type in the event bus
-	 * @param	type		the type event to attach
-	 * @param	listener	the handler to attach
+	 * detach an EventListener from an event type
+	 * @param	type		the type event where the listener is attached to
+	 * @param	listener	the handler to detach
 	 */
 	removeEventListener(type: string, listener: EventListener): void {
 		var handlers = <EventListener[]> this.events[type];
@@ -21,7 +22,7 @@ class Evented implements EventTarget, Interface {
 		});
 	}
 	/**
-	 * attach a handler to an event type in the event bus
+	 * attach an EventListener to an event type
 	 * @param	type		the type event to attach
 	 * @param	listener	the handler to attach
 	 */
@@ -30,10 +31,10 @@ class Evented implements EventTarget, Interface {
 		this.events[type].push(listener);
 	}
 	/**
-	 * dispatch a event to the event bus
-	 * does not execute other handlers if preventDefault() is called on the event
+	 * dispatch an event
+	 * does not execute other listeners if preventDefault() is called on the event
 	 * @param	event	the event to dispatch
-	 * @return	boolean
+	 * @return	boolean		so far, always true
 	 */
 	dispatchEvent(event: Event): boolean {
 		var handlers = <Function[]> this.events[event.type];

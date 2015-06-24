@@ -1,55 +1,68 @@
 import Evented = require('../class/Evented');
 
-/** interface for events returned when() and once() */
+/** interface for events returned by when() and once() */
 interface IRootEvent {
-	then(successCallback: Function): ISubEvent;
+	then(eventCallback: Function): ISubEvent;
 }
 /** interface for events returned by then() */
 interface ISubEvent {
-	then(successCallback: Function): ISubEvent;
+	then(eventCallback: Function): ISubEvent;
 	remove(): void;
 }
 
-/** represent an event, it can be attached to a target or the the event bus */
+/** internal representation of an event, it can be attached to any kind of target */
 class InternalEvent {
-	private eventName: string;
+	/** the event type */
+	private eventType: string;
+	/** when true, listener is detached after the first exection */
 	private autoRemove: boolean;
-	private success: Function[] = [];
-
+	/** list of listener to execute when an event is fired */
+	private eventCallbacks: Function[] = [];
+	/** element on which the listener will be attached */
 	private target: EventTarget;
+	/** amount of event currently attached to the target */
 	private attachedEvent: number = 0;
+	/** listener to attach to the target */
 	private eventListener: EventListener;
 	/**
 	 * construct the event
-	 * @constructor
+	 * @param	eventType	the type of the event
+	 * @param	autoRemove	when true, listener is detached after the first exection
+	 * @param	target		the target on which the listener will be attached
 	 */
-	constructor(eventName: string, autoRemove: boolean, target?: EventTarget) {
-		this.eventName = eventName;
+	constructor(eventType: string, autoRemove: boolean, target?: EventTarget) {
+		this.eventType = eventType;
 		this.autoRemove = autoRemove;
 		this.target = target;
 
 		this.eventListener = this.execute.bind(this);
 	}
-	/** executed when the first event handler is attached to this class */
+	/**
+	 * executed when the first event listener is attached to this class.
+	 * this method is reponsible for attaching this class to the target (and this class will fire all listeners)
+	 */
 	private onFirstAddEvent() {
 		if (this.target) {
-			this.target.addEventListener(this.eventName, this.eventListener);
-		}
-	}
-	/** executed when the last event handler is detached from this class */
-	private onLastRemoveEvent() {
-		if (this.target) {
-			this.target.removeEventListener(this.eventName, this.eventListener);
+			this.target.addEventListener(this.eventType, this.eventListener);
 		}
 	}
 	/**
-	 * attach a handler to an event. Return a ISubEvent object
-	 * @param	successCallback	callback executed when the event is fired
-	 * @return	ISubEvent
+	 * executed when the last event listener is detached from this class
+	 * this method is reponsible for detaching this class to the target
 	 */
-	then(successCallback: Function): ISubEvent {
-		let handlerIndex = this.success.length;
-		this.success.push(successCallback);
+	private onLastRemoveEvent() {
+		if (this.target) {
+			this.target.removeEventListener(this.eventType, this.eventListener);
+		}
+	}
+	/**
+	 * attach a listener to an event. Return a ISubEvent object
+	 * @param	eventCallback	listener executed when the event is fired
+	 * @return					a removabale object
+	 */
+	then(eventCallback: Function): ISubEvent {
+		let handlerIndex = this.eventCallbacks.length;
+		this.eventCallbacks.push(eventCallback);
 
 		if (this.attachedEvent === 0) {
 			this.onFirstAddEvent();
@@ -59,7 +72,7 @@ class InternalEvent {
 		return {
 			then: this.then.bind(this),
 			remove: () => {
-				this.success[handlerIndex] = null;
+				this.eventCallbacks[handlerIndex] = null;
 				this.attachedEvent--;
 
 				if (this.attachedEvent === 0) {
@@ -74,7 +87,7 @@ class InternalEvent {
 	 * @param	values	any arguments the listener are suposed to receive
 	 */
 	execute(...values: any[]): void {
-		this.success.forEach((callback: Function, index: number) => {
+		this.eventCallbacks.forEach((callback: Function, index: number) => {
 			var event = <CustomEvent> values[0];
 			if (event && event.defaultPrevented) {
 				return;
@@ -83,82 +96,89 @@ class InternalEvent {
 				callback.apply(null, values);
 			}
 			if (this.autoRemove) {
-				this.success[index] = null;
+				this.eventCallbacks[index] = null;
 			}
 		});
 	}
 }
 
-/** implementation of the bus for publish/subscribe pattern */
+/**
+ * implementation of the bus for publish/subscribe pattern
+ * This behaves as a global target.
+ * if when() or once() are not receiving any taget, then this global object is used as target.
+ * See https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
+ */
 let eventBus = new Evented();
 
 /**
- * prepare an event to receive handlers
+ * internal method prepare an event to receive handlers
  * @param	target		an EventTarget to attach the event to
- * @param	eventName	type of the event
+ * @param	eventType	type of the event
  * @param	autoRemove	if true, the handler will be disconnected after being fired
- * @return	IRootEvent
+ * @return				A thenable object
  */
-function subscribe(target: EventTarget, eventName: string, autoRemove: boolean): IRootEvent {
-	let event: InternalEvent = new InternalEvent(eventName, autoRemove, target);
+function subscribe(target: EventTarget, eventType: string, autoRemove: boolean): IRootEvent {
+	let event: InternalEvent = new InternalEvent(eventType, autoRemove, target);
 	return {
 		then: event.then.bind(event)
 	};
 }
 
 /**
- * return a thenable object reacting when @eventName is fired by the event bus
- * @param	eventName	type of the event
- * @return	IRootEvent
+ * return a thenable object reacting when @eventType is fired by the event bus (publish/subscribe pattern)
+ * @param	eventType	type of the event
+ * @return				A thenable object
  */
-export function when(eventName: string): IRootEvent;
+export function when(eventType: string): IRootEvent;
 /**
- * return a thenable object reacting when @target fire @eventName
+ * return a thenable object reacting when @target fire @eventType
  * @param	target		target firing the vent
- * @param	eventName	type of the event
- * @return	IRootEvent
+ * @param	eventType	type of the event
+ * @return				A thenable object
  */
-export function when(target: EventTarget, eventName: string): IRootEvent;
+export function when(target: EventTarget, eventType: string): IRootEvent;
 /** overload for managing the different method signature */
-export function when(target: EventTarget|string, eventName?: string): IRootEvent {
+export function when(target: EventTarget|string, eventType?: string): IRootEvent {
 	if (typeof target === 'string') {
-		eventName = <string> target;
+		eventType = <string> target;
 		target = eventBus;
 	}
-	return subscribe(<EventTarget> target, eventName, false);
+	return subscribe(<EventTarget> target, eventType, false);
 }
 /**
- * return a thenable object reacting when @eventName is fired by the event bus
+ * return a thenable object reacting when @eventType is fired by the event bus (publish/subscribe pattern)
  * the handler will be disconnected after being executed.
- * @param	eventName	type of the event
- * @return	IRootEvent
+ * @param	eventType	type of the event
+ * @return				A thenable object
  */
-export function once(eventName: string): IRootEvent;
+export function once(eventType: string): IRootEvent;
 /**
- * return a thenable object reacting when @target fire @eventName
+ * return a thenable object reacting when @target fire @eventType
  * the handler will be disconnected after being executed.
  * @param	target		target firing the vent
- * @param	eventName	type of the event
- * @return	IRootEvent
+ * @param	eventType	type of the event
+ * @return				A thenable object
  */
-export function once(target: EventTarget, eventName: string): IRootEvent;
+export function once(target: EventTarget, eventType: string): IRootEvent;
 /** overload for managing the different method signature */
-export function once(target: EventTarget|string, eventName?: string): IRootEvent {
+export function once(target: EventTarget|string, eventType?: string): IRootEvent {
 	if (typeof target === 'string') {
-		eventName = <string> target;
+		eventType = <string> target;
 		target = eventBus;
 	}
-	return subscribe(<EventTarget> target, eventName, true);
+	return subscribe(<EventTarget> target, eventType, true);
 }
 /**
- * dispatch @eventName from the event bus
+ * dispatch @eventType from the event bus (publish/subscribe pattern)
  * @param	event		the event itself containing anything that should be fired with it
+ * @return				a booelan (so far, always true)
  */
 export function dispatchEvent(event: Event): boolean;
 /**
- * dispatch @eventName from @target
+ * dispatch @eventType from @target
  * @param	target		the event dispatcher
  * @param	event		the event itself containing anything that should be fired with it
+ * @return				a booelan (so far, always true)
  */
 export function dispatchEvent(target: EventTarget, event: Event): boolean;
 /** overload for managing the different method signature */

@@ -1,7 +1,4 @@
-/**
- * helper for dom calculations
- */
-
+/** internal interface representing the position of a node */
 interface IPositionElement {
 	inViewport: {
 		left: number;
@@ -12,6 +9,7 @@ interface IPositionElement {
 		top: number;
 	};
 }
+/** internal interface representing the boxes surrounding a node */
 interface IBoxElement {
 	margin: {
 		left: number;
@@ -40,7 +38,11 @@ interface IBoxElement {
 	model: string;
 }
 
-/** return the margin/padding/border size as well as the content size */
+/**
+ * Compute all box sizes of a node
+ * @param	element	node to compute the size of
+ * @return			the margin/padding/border size as well as the content size
+ */
 export function getBoxSize(element: HTMLElement): IBoxElement {
 	var computedStyle = window.getComputedStyle(element);
 	var model = computedStyle.boxSizing;
@@ -86,7 +88,12 @@ export function getBoxSize(element: HTMLElement): IBoxElement {
 	return box;
 }
 
-/** Return the position of the element relative to the viewport and to the document root (does include the scroll). */
+/**
+ * Compute the position of a node
+ * @param	element			node to compute the size of
+ * @param	includeScroll	if true, take the page scroll into account
+ * @return					the position of the element relative to the viewport and to the document root (does include the scroll).
+ */
 export function getPosition(element: HTMLElement, includeScroll?: boolean): IPositionElement {
 	var boudingRect = element.getBoundingClientRect();
 	var box: IPositionElement = {

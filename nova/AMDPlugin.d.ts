@@ -1,5 +1,6 @@
 /**
- * Interface for writing an AMD plugin
+ * Interface for creating AMD plugin
+ * see http://requirejs.org/docs/plugins.html
  */
 interface AMDPlugin {
 	load?: (moduleName: string, parentRequire: Function, onLoad: (value?: any) => void, config?: Object) => void;

@@ -1,8 +1,8 @@
 /**
- * Class for manipulating domnode positions
+ * remove a node from the dom
+ * @param	element	the node to removed
+ * @return			the removed node
  */
-
-/** helper to remove a node from the dom */
 var remove = function (element: Node): HTMLElement {
 	if (!element.parentNode) {
 		throw 'element must have a parentNode';

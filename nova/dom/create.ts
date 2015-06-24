@@ -1,8 +1,7 @@
-/**
- * helper for creating dom nodes
- */
 import style = require('./style');
+import attribute = require('./attribute');
 
+/** internal interface representing attribute available when creating a domnode */
 interface IHTMLElement {
 	[key: string]: any;
 	innerHTML?: string;
@@ -10,12 +9,11 @@ interface IHTMLElement {
 	style?: {[key: string]: string|number};
 }
 
-var attributeMap: {[key: string]: string} = {
-	className: 'class'
-};
-
 /**
  * create a dom node and add given attributes
+ * @param	type		type of the node to create (for instance, 'div')
+ * @param	attributes	set of attributes to add to the new node
+ * @return				a new domnode
  */
 var create = function(type: string, attributes?: IHTMLElement): HTMLElement {
 	var element = document.createElement(type);
@@ -31,7 +29,7 @@ var create = function(type: string, attributes?: IHTMLElement): HTMLElement {
 			element.innerHTML = value;
 			continue;
 		}
-		element.setAttribute(attributeMap[attribute] || attribute, value);
+		attribute.set(element, attribute, value);
 	}
 	return element;
 };

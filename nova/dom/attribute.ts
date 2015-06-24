@@ -1,6 +1,4 @@
-/**
- * helper for updating dom nodes attributes
- */
+/** internal mapping between JS and DOM */
 const DOM_PROPERTIES: {[name: string]: boolean|string} = {
 	className: 'class',
 	tabIndex: 'tabindex',
@@ -9,7 +7,11 @@ const DOM_PROPERTIES: {[name: string]: boolean|string} = {
 	textContent: true,
 	value: true
 };
-
+/**
+ * return the dom attribute name from a js name
+ * @param	name	js attribute name
+ * @return			the attribute name usable in dom
+ */
 function getRealAttribute(name: string): string {
 	if (typeof DOM_PROPERTIES[name] === 'string') {
 		return (<string> DOM_PROPERTIES[name]);
@@ -19,6 +21,9 @@ function getRealAttribute(name: string): string {
 
 /**
  * set attributes of a domNode
+ * @param	element		the node to update
+ * @param	attributes	an object representing attributes to add
+ * @return				the updated node
  */
 export function set(element: HTMLElement, attributes: {[name: string]: any}): HTMLElement {
 	for (var name in attributes) {
@@ -41,6 +46,9 @@ export function set(element: HTMLElement, attributes: {[name: string]: any}): HT
 
 /**
  * remove attributes of a domNode
+ * @param	element		the node to update
+ * @param	attributes	an object representing attributes to remove. Can also be a string, if only 1 attribute needs to be removed
+ * @return				the updated node
  */
 export function remove(element: HTMLElement, attributes: string[]|string): HTMLElement {
 	if (!((<any> attributes) instanceof Array)) {
@@ -60,6 +68,9 @@ export function remove(element: HTMLElement, attributes: string[]|string): HTMLE
 
 /**
  * get a dom attribute
+ * @param	element		the node to read
+ * @param	attribute	the attribute to read
+ * @return				the attribute value
  */
 export function get(element: HTMLElement, attribute: string): any {
 	attribute = getRealAttribute(attribute);
@@ -71,7 +82,10 @@ export function get(element: HTMLElement, attribute: string): any {
 };
 
 /**
- * return true if a dom attribute is present
+ * Check wether or not a node as an attribute
+ * @param	element		the node to read
+ * @param	attribute	the attribute to read
+ * @return 				true if a dom attribute is present
  */
 export function has(element: HTMLElement, attribute: string): boolean {
 	attribute = getRealAttribute(attribute);

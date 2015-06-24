@@ -11,12 +11,16 @@ class SingletonBase extends Base implements DisposableInterface.DisposableClass 
 	/** map Disposable method */
 	dispose: () => boolean;
 
+	/** attach the dispose method to any unload event */
 	protected postConstructor() {
+		this.super(arguments);
 		this.own(
 			event.when('unload').then(this.dispose.bind(this)),
 			event.when('beforeunload').then(this.dispose.bind(this))
 		);
 	}
 }
+
+//Extend the class with a Disposable Mixin
 extendsClass(SingletonBase, [Disposable]);
 export = SingletonBase;

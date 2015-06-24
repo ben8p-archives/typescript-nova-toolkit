@@ -3,6 +3,10 @@
  * from last execution when called repeatedly. Useful for preventing excessive
  * calculations in rapidly firing events, such as window.resize, node.mousemove
  * and so on.
+ * Ensure that tail call is always executed
+ * @param	callback	the method to execute when throttle fires
+ * @param	wait		how long (in ms) the throttle will wait before fireing
+ * @return				a throttled function
  */
 function throttle(callback: Function, wait? : number): Function {
 	var canRun: boolean = true,

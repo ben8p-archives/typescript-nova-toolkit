@@ -1,19 +1,22 @@
+import StorageApi = require('./api/Storage');
+
+/** default object constructor (to prevent IE security issue) */
+var ObjectConstructor = (<any> window.top).Object || Object;
+/** default array constructor (to prevent IE security issue) */
+var ArrayConstructor = (<any> window.top).Array || Array;
+
 /**
  * Implement a page storage
  * Storage content lives as long as the page lives.
  * Support any type of value
  */
-
-import StorageApi = require('./api/Storage');
-
-var ObjectConstructor = (<any> window.top).Object || Object;
-var ArrayConstructor = (<any> window.top).Array || Array;
-
-/** this defines a storage object with same API as browsers storage */
 class PageStorage extends StorageApi.AbtractStorage {
+	/** storage placeholder */
 	private topPageStorage: any;
+	/** number of items in the storage */
 	length: number;
 
+	/** construct the class, create the storage and map the .length property */
 	constructor() {
 		super();
 		this.createStorageObject();
@@ -24,27 +27,25 @@ class PageStorage extends StorageApi.AbtractStorage {
 		});
 	}
 
+	/** create a storage space on the top window */
 	private createStorageObject() {
 		this.topPageStorage = (<any> window.top).pageStorage = (<any> window.top).pageStorage || new ArrayConstructor();
 		this.topPageStorage.__hash__ = this.topPageStorage.__hash__ || new ObjectConstructor();
 	}
 
+	/** see nova/storage/api/Storage */
 	key(index: number): string {
-		/** see api/apiStorage */
-
 		var item = this.topPageStorage[index];
 		return item ? item.key : null;
 	}
+	/** see nova/storage/api/Storage */
 	getItem(key: string): any {
-		/** see api/apiStorage */
-
 		var index = this.topPageStorage.__hash__[key];
 		if (!key || index === undefined || !this.topPageStorage[index]) { return null; }
 		return this.topPageStorage[index].value;
 	}
+	/** see nova/storage/api/Storage */
 	setItem(key: string, value: any): void {
-		/** see api/apiStorage */
-
 		if (!key) { return; }
 
 		var index = this.topPageStorage.__hash__[key],
@@ -57,10 +58,8 @@ class PageStorage extends StorageApi.AbtractStorage {
 		}
 		this.topPageStorage[index].value = value;
 	}
+	/** see nova/storage/api/Storage */
 	removeItem(key: string): void {
-		/**
-		 * see api/apiStorage
-		 */
 		var index = this.topPageStorage.__hash__[key];
 		if (!key || index === undefined || !this.topPageStorage[index]) { return; }
 		this.topPageStorage.splice(index, 1);
@@ -70,13 +69,12 @@ class PageStorage extends StorageApi.AbtractStorage {
 			this.topPageStorage.__hash__[item.key] = index;
 		});
 	}
+	/** see nova/storage/api/Storage */
 	clear(): void {
-		/**
-		 * see api/apiStorage
-		 */
 		(<any> window.top).pageStorage = null;
 		this.createStorageObject();
 	}
+	/** see nova/storage/api/Storage */
 	getStorage(): StorageApi.StorageObject {
 		return this;
 	}

@@ -1,5 +1,6 @@
 import has = require('../core/has');
-/** interface for event properties */
+
+/** interface used internally to define event properties (properties passed to the constructor of CustomEvent) */
 interface EventProperties {
 	bubbles?: boolean;
 	cancelable?: boolean;
@@ -7,7 +8,8 @@ interface EventProperties {
 }
 /**
  * a polyfill for CustomEvent implemetation. Allow to create a dispatchable event
- * in Node, support only preventDefault()
+ * See: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent
+ * Note: in Node, support only preventDefault()
  */
 class CustomEventPolyfill implements CustomEvent {
 	detail: any;
@@ -42,8 +44,7 @@ class CustomEventPolyfill implements CustomEvent {
 	/**
 	 * construct and init a custom event
 	 * @param	type		the  type of the event
-	 * @param	properties	sme extra properties, respecting the interface EventProperties
-	 * @constructor
+	 * @param	properties	some extra properties, respecting the interface EventProperties
 	 */
 	constructor(type: string, properties?: EventProperties) {
 		if (has('node-host')) {
@@ -59,7 +60,7 @@ class CustomEventPolyfill implements CustomEvent {
 			properties = properties || <EventProperties> {};
 			customEvent.initCustomEvent(type, properties.bubbles, properties.cancelable, properties.detail);
 
-			//fix for ie
+			//fix for ie to make cancelable and defaultPrevented property not readonly
 			var preventDefaultNative = customEvent.preventDefault.bind(customEvent);
 			customEvent.preventDefault = function() {
 				preventDefaultNative();
@@ -76,9 +77,9 @@ class CustomEventPolyfill implements CustomEvent {
 	}
 }
 
-//CustomEventPolyfill.prototype = <any> Event.prototype;
 var BrowserCustomEvent = CustomEventPolyfill;
 if (!has('node-host') && typeof CustomEvent === 'function') {
+	//use the polyfill only if the browser does not support native CustomEvent constructor
 	has.add('browser-custom-event', true);
 	BrowserCustomEvent = <any> CustomEvent;
 }

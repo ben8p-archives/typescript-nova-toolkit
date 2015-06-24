@@ -20,11 +20,15 @@ let computeMethodNames = function (target: any): void {
 
 /**
  * Base class for every class using linearized inheritance
- * Provides this.super() method to call superclass
+ * It roles is to be the ground for multiple inheritance (specially for accessing superscallas)
  */
 class Base {
+	/** Set to true when all constructor have run */
 	protected constructed = false;
-	/** execute all constructor form all mixins */
+	/**
+	 * execute all constructor form all mixins
+	 * Note: constructors might be executed twice because of _super call added by TypeScript during transpilation
+	 */
 	constructor() {
 		if ((<any> this.constructor)._running) { return; }
 		(<any> this.constructor)._running = true;
@@ -41,18 +45,23 @@ class Base {
 				}
 			}
 			computeMethodNames(this.constructor.prototype);
-			this.constructor.apply(this, arguments); //rerun itself otherwise postConstructor runstoo early
+			this.constructor.apply(this, arguments); //rerun itself otherwise postConstructor runs too early
 		}
 		delete (<any> this.constructor)._running;
 		this.postConstructor();
 	}
 
-	/** hook executed after all constructors */
+	/** hook executed when all constructors have ran */
 	protected postConstructor() {
 		this.constructed = true;
 	}
 
-	public isInstanceOf(object: any): boolean {
+	/**
+	 * determine if a given object inhetis from this class or not
+	 * @param	object	anything inheriting from ObjectConstructor
+	 * @return			true if the given arguments inherits from this class
+	 */
+	isInstanceOf(object: any): boolean {
 		if (object === this.constructor) {
 			return true;
 		}
@@ -63,11 +72,14 @@ class Base {
 	}
 
 	/**
-	 * call the superclass method
+	 * try to guess the superclass method and execute it (if found)
+	 * Note: this use arguments.callee thus it does not work in strict mode
 	 * @param	args	the arguments object received by the current method
+	 * @return			anything returned by the superclass method
 	 */
 	protected super(args: IArguments): any {
 		let inheritedFunction: Function;
+		//FIXME: find a way to not use callee
 		let callee: any = <any> args.callee;
 
 		let bases: Function[] = (<any> this.constructor).__meta__.linearized;

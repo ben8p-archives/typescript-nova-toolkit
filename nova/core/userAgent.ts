@@ -1,13 +1,15 @@
-/**
- * loading this module will populate the html tag with browser version
- * it will also all browser sniffing using has
- * this module export has() method
- */
+
 import has = require('./has');
 
-//regular expresions copied from https://github.com/ded/bowser
-
+/**
+ * populate the html tag with browser version
+ * it will also provide browser sniffing using has
+ * this module export has() method
+ * @param	ua	user agent string
+ */
 function grabInfo(ua: string) {
+	//Note: regular expresions copied from https://github.com/ded/bowser
+
 	/** return the version of the browser */
 	var versionIdentifier = getVersion(/version\/(\d+(\.\d+)?)/i);
 	if (versionIdentifier === true) {
@@ -110,6 +112,7 @@ function grabInfo(ua: string) {
 	}
 }
 
+/** internal interface used toextend the functionnality (for debugging purpose) */
 interface UserAgentParser {
 	(name: string): any;
 	process(ua: string): void;

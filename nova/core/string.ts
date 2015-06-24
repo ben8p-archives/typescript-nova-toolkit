@@ -1,4 +1,6 @@
+/** internal regexp to match token replacement */
 const TEMPLATE_TOKEN = /\$\{([a-z0-9_-]+)\}/gi;
+/** internal regexp for string escaping */
 const ESCAPE_CODE_POINTS: {[index: number]: any} = {
 	0: false, // nul; most browsers truncate because they use c strings under the covers.
 	10: '\n', // new line
@@ -12,14 +14,18 @@ const ESCAPE_CODE_POINTS: {[index: number]: any} = {
 	8232: true, // line separator
 	8233: true // paragraph separator
 };
+/** internal regexp to unescape a string */
 const ESCAPED_REGEXP = /&#[0-9]+;/g;
+/** internal regexp to cleanup escaped tokken (and keep only the numeric part) */
 const ESCAPED_NOISE = /&|#|;/g;
+/** internal regexp for camelCase convertion */
 const CAMEL_CASE_REGEXP = /^.|-.| ./g;
+
 /**
  * replace token ${} in a string
  * @param	text	the string to update
  * @param	content	an objet representing {placeholder:value}
- * @return			the new string
+ * @return			the new interpolated string
  */
 export function interpolate(text: string, content: {[index: string]: any}): string {
 	let substitute = function (placeHolder: string, attribute: string): string {
@@ -28,7 +34,11 @@ export function interpolate(text: string, content: {[index: string]: any}): stri
 	return text.replace(TEMPLATE_TOKEN, substitute);
 }
 
-/** escape a string */
+/**
+ * escape a string
+ * @param	value		the string to escape
+ * @return				the escaped string
+ */
 export function escape(value: string): string {
 	if (!value) {
 		return value;
@@ -50,7 +60,11 @@ export function escape(value: string): string {
 	return out.join('');
 }
 
-/** unescape a string */
+/**
+ * unescape a string
+ * @param	value	the string to unescape
+ * @return			the string without escaped characters
+ */
 export function unescape(value: string): string {
 	if (!value) {
 		return value;
@@ -65,14 +79,23 @@ export function unescape(value: string): string {
 	}
 	return value;
 }
-/** convert to camel case */
+/**
+ * convert to camel case
+ * @param	value				the string to update
+ * @param	capitalizeFirstChar	if true, first letter will be upper case
+ * @return						a camelCase string
+ */
 export function toCamelCase(value: string, capitalizeFirstChar?: boolean): string {
 	return value.replace(CAMEL_CASE_REGEXP, function(letter: string, index: number): string {
 		return index === 0 ? (capitalizeFirstChar ? letter.toUpperCase() : letter.toLowerCase()) : letter.substring(1).toUpperCase();
 	});
 }
-/** escape a string to be used in a regexp */
-export function escapeForRegExp(value: string) {
+/**
+ * escape a string to be used safely in a regexp
+ * @param	value	string to escape
+ * @return			escaped string
+*/
+export function escapeForRegExp(value: string): string {
 	return value
 		.replace(/\\/g, '\\\\') // the order here is very important!!
 		.replace(/\//g, '\\/') // the order here is very important!!
@@ -91,7 +114,12 @@ export function escapeForRegExp(value: string) {
 		.replace(/\^/g, '\\^');
 }
 
-/** repeat a string multiple times */
+/**
+ * repeat a string multiple times
+ * @param	value	string to repeat
+ * @param	count	amount of time to repeat it
+ * @return			a string containing n time the original string
+ */
 export function repeat(value: string, count: number): string {
 	if (value === null || value.length === 0 || count === 0) {
 		return '';
@@ -123,7 +151,14 @@ export function repeat(value: string, count: number): string {
 	return repeatedString;
 }
 
-/** pad a string (left or right padding) */
+/**
+ * pad a string (left or right padding)
+ * @param	value		string to pad
+ * @param	parChar		character to use for the padding
+ * @param	size		expected length of the final string
+ * @param	padRight	if true, pad or right, otherwise, pad on left
+ * @return				padded string
+ */
 export function pad(value: string, padChar: string, size: number, padRight?: boolean): string {
 	var count = Math.ceil((size - value.length) / padChar.length);
 	if (count <= 0) {

@@ -1,19 +1,15 @@
-/**
- * helper for updating dom nodes styles
- */
-
+/** internal interface for style attributes */
 interface IStyleElement {
 	[key: string]: string|number;
 }
 
-// const JS_ATTRIBUTE_REGEXP = /([A-Z])/g;
 const CSS_ATTRIBUTE_REGEXP = /(?:\-)([a-z0-9])/g;
 
-// /** convert a JS property into CSS property */
-// function toCssAttribute(property: string): string {
-// 	return property.replace(JS_ATTRIBUTE_REGEXP, '-$1').toLowerCase();
-// }
-/** convert a CSS property into a JS property */
+/**
+ * convert a CSS property into a JS property
+ * @param	property	the CSS property
+ * @return				a JS property
+ */
 function toJsAttribute(property: string): string {
 	return property.replace(CSS_ATTRIBUTE_REGEXP, function(match: string, value: string): string { return value.toUpperCase(); });
 }
@@ -21,6 +17,9 @@ function toJsAttribute(property: string): string {
 /**
  * set dom style attributes
  * No specific support for vendor prefix
+ * @param	element		node to update
+ * @param	attributes	styles to update
+ * @return				the updated node
  */
 export function set(element: HTMLElement, attributes: IStyleElement): HTMLElement {
 	for (var attribute in attributes) {
@@ -33,6 +32,9 @@ export function set(element: HTMLElement, attributes: IStyleElement): HTMLElemen
 /**
  * get any dom style attributes
  * No specific support for vendor prefix
+ * @param	element		node to read
+ * @param	attributes	array of styles to get
+ * @return				an object with all requested styles
  */
 export function get(element: HTMLElement, attributes: string[]|string): IStyleElement {
 	if (typeof attributes === 'string') {

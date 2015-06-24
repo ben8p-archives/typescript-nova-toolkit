@@ -1,6 +1,6 @@
 import Promise = require('./Promise');
 
-/** interface used for defining objects returned by a Deferred */
+/** internal interface used for defining objects returned by a Deferred */
 interface PromiseInterface {
 	then(successCallback: Function, failCallback?: Function): PromiseInterface;
 	catch(failCallback: Function): PromiseInterface;
@@ -19,7 +19,6 @@ class Deferred {
 	private rejected: Boolean = false;
 	/**
 	 * create a promise and connect the resolver/rejecter
-	 * @constructor
 	 */
 	constructor() {
 		this.promise = new Promise((promiseResolve: Function, promiseReject: Function) => {
@@ -28,22 +27,22 @@ class Deferred {
 		});
 	}
 	/**
-	 * return true if the promise is already resolved or rejected
-	 * @return
+	 * check if a promise is resolved or rejected
+	 * @return	true if the promise is already resolved or rejected
 	 */
 	isFulfilled(): Boolean {
 		return this.resolved || this.rejected;
 	}
 	/**
-	 * return true if the promise is already resolved
-	 * @return
+	 * check if a promise is resolved
+	 * @return	true if the promise is already resolved
 	 */
 	isResolved(): Boolean {
 		return this.resolved;
 	}
 	/**
-	 * return true if the promise is already rejected
-	 * @return
+	 * check if a promise is rejected
+	 * @return	true if the promise is already rejected
 	 */
 	isRejected(): Boolean {
 		return this.rejected;
@@ -58,7 +57,7 @@ class Deferred {
 	}
 	/**
 	 * reject the promise
-	 * @param	value	anything to pass to the promise when rejecting it
+	 * @param	reason	anything to pass to the promise when rejecting it
 	 */
 	reject(reason?: any): void {
 		this.promiseReject(reason);

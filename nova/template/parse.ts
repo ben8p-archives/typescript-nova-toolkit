@@ -1,8 +1,11 @@
 import stringUtil = require('../core/string');
 
+/** internal node used as place holder for templates */
 const PLACE_HOLDER = document.createElement('div');
+/** internal regexp to match any white space character */
 const SPACES = /\s+/g;
 
+/** list of tags which needs wrappers in order to get them correct */
 var WRAPPERS = {
 	option: ['select'],
 	tbody: ['table'],
@@ -24,17 +27,22 @@ for (var key in WRAPPERS) {
 		WRAPPERS[key].suffix = '</' + WRAPPERS[key].reverse().join('></') + '>';
 	}
 }
-
+/** an internal regexp to match tags in a string */
 const FIND_TAGS = /<\s*([\w\:]+)/;
 
+/** internal interface defining the return of parse() */
 interface IParse {
 	documentFragment: DocumentFragment;
 	anchors: {[anchorName: string]: HTMLElement};
 }
 
 /**
- * this module parse a string and convert it into nodes.
- * it return a documentFragment which can be attached to the main document.
+ * this parse a string and convert it into nodes.
+ * It can replace placeholders (defined by ${...}) and fill them with values
+ * Anchors can be definied using custom attribute data-anchor="NAME" and are a shortcut to access domNodes
+ * @param	string			the string containing the html
+ * @param	placeHolders	array of object used to fill-in place holders. Keys are placeholdername, values are values to replace with.
+ * @return					a documentFragment which can be attached to the main document and a list of anchors
  */
 function parse(template: string, placeHolders?: {[name: string]: any}): IParse {
 	var fragment = document.createDocumentFragment();

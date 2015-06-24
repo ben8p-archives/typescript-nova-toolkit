@@ -1,12 +1,11 @@
 /// <amd-dependency path="nova/dom/ready!" />
 
-/**
- * This module allow tyo inject css in the page
- */
-
+/** hook for style tag */
 var inlineStyleTag: HTMLStyleElement = null;
+/** internal regexp to match url() values */
 const URL = /url\((['']?)([^'')]+)(['']?)\)/g;
 
+/** create a style tag in the page and keep a reference to it */
 function _getInlineStyleTag() {
 	if (inlineStyleTag === null) {
 		inlineStyleTag = document.createElement('style');
@@ -21,7 +20,7 @@ function _getInlineStyleTag() {
  * @param	text		The CSS style string
  * @param	basePath	A base path to prepend to any url() style declarations within the css. Useful for image paths
  */
-export function inject(text: string, basePath?: string) {
+export function inject(text: string, basePath?: string): void {
 		var styleTag = _getInlineStyleTag(),
 			basePathReplace = function(globalMatch: string, border1: string, content: string) {
 				//if content is not containing HTTP

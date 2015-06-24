@@ -5,13 +5,7 @@ import debounce = require('../core/debounce');
 import extendsClass = require('../class/extends');
 import CustomEvent = require('../class/CustomEvent');
 
-interface IViewportElement {
-	width: number;
-	height: number;
-}
-
 /**
- * helper for the borser window.
  * provide a debounced resize event
  * as well as the current viewport size
  */
@@ -23,19 +17,24 @@ class WindowClass extends SingletonBase {
 	/** map Evented method */
 	dispatchEvent: (event: Event) => boolean;
 
+	/** attach to the window resize event */
 	protected postConstructor() {
 		this.own(
 			event.when(window, 'resize').then(debounce(this.onResize.bind(this)))
 		);
 	}
 
+	/** fired everytime the debounced resize fire */
 	private onResize(): void {
 		this.dispatchEvent(new CustomEvent('resize'));
 	}
 
-	/** return the viewport size */
-	getViewportSize(): IViewportElement {
-		return <IViewportElement> {
+	/**
+	 * get the viewport size
+	 * @return	an object with height and width
+	 */
+	getViewportSize(): {width: number; height: number; } {
+		return {
 			width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
 			height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 		};

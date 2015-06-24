@@ -1,19 +1,18 @@
-/**
- * Feature detection module.
- * Add a convenient way to populate available feature
- * Also populate HTML tag of the page
- */
-
 import AMDPlugin = require('../AMDPlugin.d');
-const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
-const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g;
-var cache: {[index: string]: RegExp} = {};
 
+/** internally used by the plugin to parse conditional module loading */
+const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
+/** internally used to remove every charactere not supported as ccss class name */
+const CLEANUP_REGEXP = /[^a-zA-Z_\-0-9]/g;
+/** internal cache for regular expression used to update css classname */
+var cache: {[index: string]: RegExp} = {};
+/** populate the internal cache */
 function getFromCache(className: string): RegExp {
 	cache[className] = cache[className] || new RegExp('\\b' + className + '\\b', 'g');
 	return cache[className];
 }
 
+/** internal interface describing the AMD plugin */
 interface Has {
 	(name: string): any;
 	add(key: string, value: boolean|string|number, force?: boolean): void;
@@ -23,16 +22,22 @@ interface Has {
 
 /**
  * feature detection plugin
- * usage:
+ * Add a convenient way to populate available feature
+ * Also populate HTML tag of the page with class according to available features
+ * possible usage:
  * has!the-test?when-true-module:when-false-module
  */
 class HasPlugin implements AMDPlugin {
+	/** cache of feature already added */
 	private hasCache: {[key: string]: any} = {};
-
+	/** html tag of the page */
 	private htmlTag: Node = document && document.querySelector('html');
 
 	/**
-	 * add the status of a feature to the plugin
+	 * add the status of a feature
+	 * @param	key		the name of the feature
+	 * @param	value	the value to set to the feature (a boolean, a string, a number)
+	 * @param	force	if true, previous value will be overridden, otherwise previous value is not changed
 	 */
 	add(key: string, value: boolean|string|number, force?: boolean): void {
 		if (!force && this.hasCache[key] && this.hasCache[key] !== undefined) { return; }
@@ -58,13 +63,16 @@ class HasPlugin implements AMDPlugin {
 
 	/**
 	 * return the status of a feature
+	 * @param	key		the name of the feature
+	 * @return			the value saved for that feature
 	 */
-	has(key: string): any {
+	has(key: string): boolean|string|number {
 		return this.hasCache[key];
 	}
 
 	/**
-	 * see requirejs documentation
+	 * Load the plugin
+	 * see http://requirejs.org/docs/plugins.html
 	 */
 	load(moduleName: string, parentRequire: Function, onLoad: (value?: any) => void): void {
 		if (moduleName) {
@@ -74,7 +82,8 @@ class HasPlugin implements AMDPlugin {
 		}
 	}
 	/**
-	 * see requirejs documentation
+	 * Normalise the module name
+	 * see http://requirejs.org/docs/plugins.html
 	 */
 	normalize(moduleName: string, normalize: (moduleName: string) => string): string {
 		// has!the-test?when-true-module:when-false-module
@@ -92,8 +101,8 @@ class HasPlugin implements AMDPlugin {
 	}
 }
 
+/** instance of the plugin singleton */
 var plugin = new HasPlugin();
-
 var has: Has = <Has> function(key: string): any {
 	return plugin.has(key);
 };
@@ -101,7 +110,7 @@ has.add = plugin.add.bind(plugin);
 has.load = plugin.load.bind(plugin);
 has.normalize = plugin.normalize.bind(plugin);
 
-/** add feature detection for the running environment */
+// add feature detection for the running environment
 has.add('browser-host', typeof this.window !== 'undefined' && typeof this.document !== 'undefined' && window.document === document);
 has.add('node-host', typeof this.process === 'object' && this.process.versions && this.process.versions.node);
 has.add('amd', !!(typeof this.window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));

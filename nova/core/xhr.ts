@@ -25,6 +25,7 @@ export interface BlobResponse {
 	response: Blob;
 }
 
+/** internal interface for xhr options */
 interface XhrBaseOptions {
 	url: string;
 	timeout?: number;
@@ -35,6 +36,7 @@ interface XhrBaseOptions {
 	password?: string;
 	headers?: string[];
 }
+/** interface used to defined how options should look like in case of a download call */
 export interface XhrDownloadOptions extends XhrBaseOptions {
 	filename: string;
 	method?: method;
@@ -53,9 +55,9 @@ interface XhrFinalOptions extends XhrOptions {
 export enum method {GET, POST, DELETE, PUT};
 
 /**
- * return true if the value is an object
+ * determine if the value is a native object or not
  * @param	value	anything to test
- * @return	a boolean
+ * @return			true if the value is an object
  */
 function isNativeObject(value: any): Boolean {
 	if (value && value.toString && value.toString() === '[object Object]') {
@@ -67,7 +69,7 @@ function isNativeObject(value: any): Boolean {
 /**
  * execute an xhr request
  * @param	options	represent the xhr options
- * @return	Deferred
+ * @return			a deferred resolved when the XHR is done
  */
 function xhr(options: XhrFinalOptions): Deferred {
 	let request = new XMLHttpRequest();
@@ -146,8 +148,9 @@ function xhr(options: XhrFinalOptions): Deferred {
 	return deferred;
 }
 
-/** types of data we will return */
+/** type of data the an XHR request can handle */
 export enum handleAs {JSON, XML, TEXT, BLOB};
+
 /**
  * convert an object into a query string
  * @param	object		will be the query
@@ -186,7 +189,7 @@ export function toQuery(value: any): string {
 /**
  * execute a get query
  * @param	options		xhr options, see interface
- * @return				promise resolved when the query is done
+ * @return				Deferred resolved when the query is done
  */
 export function get(options: XhrOptions): Deferred {
 	(<XhrFinalOptions> options).method = method.GET;
@@ -195,16 +198,16 @@ export function get(options: XhrOptions): Deferred {
 /**
  * execute a post query
  * @param	options		xhr options, see interface
- * @return				promise resolved when the query is done
+ * @return				Deferred resolved when the query is done
  */
 export function post(options: XhrOptions): Deferred {
 	(<XhrFinalOptions> options).method = method.POST;
 	return xhr(<XhrFinalOptions> options);
 }
 /**
- * execute a del query
+ * execute a delete query
  * @param	options		xhr options, see interface
- * @return				promise resolved when the query is done
+ * @return				Deferred resolved when the query is done
  */
 export function del(options: XhrOptions): Deferred {
 	(<XhrFinalOptions> options).method = method.DELETE;
@@ -213,7 +216,7 @@ export function del(options: XhrOptions): Deferred {
 /**
  * execute a put query
  * @param	options		xhr options, see interface
- * @return				promise resolved when the query is done
+ * @return				Deferred resolved when the query is done
  */
 export function put(options: XhrOptions): Deferred {
 	(<XhrFinalOptions> options).method = method.PUT;
@@ -222,7 +225,7 @@ export function put(options: XhrOptions): Deferred {
 /**
  * trigger a file download
  * @param	options		xhr options, see interface
- * @return				promise resolved when the query is done
+ * @return				Deferred resolved when the query is done
  */
 export function download(options: XhrDownloadOptions): Deferred {
 	options.method = options.method || method.GET;

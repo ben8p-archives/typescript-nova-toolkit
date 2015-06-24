@@ -1,3 +1,4 @@
+/** list of keycode returned by special keyboard keys */
 var KEYS: {[key: string]: number} = {
 	BACKSPACE: 8,
 	TAB: 9,

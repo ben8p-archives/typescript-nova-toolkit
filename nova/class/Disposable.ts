@@ -1,20 +1,24 @@
 import Interface = require('./Disposable.d');
 /**
- * Disposable class is an helper for cleaning up memory
- * It act as a store, collect all items that you want to destroy
- * And clean then when you call dispose()
+ * Disposable class is responsible for cleaning up memory
+ * It act as a store, collect all items the application needs to destroy
+ * And clean then when dispose() is called.
  */
 class Disposable implements Interface.DisposableClass {
+	/** array of disposable elements */
 	private disposable: any[] = [];
 
-	/** add items to the disposable array */
+	/**
+	 * add items to the disposable array
+	 * @param	items	as many disposable/removable objects as needed
+	 */
 	own(...items: any[]): void {
 		this.disposable = this.disposable.concat(items);
 	}
 
 	/**
-	 * clean up everything that can be cleaned
-	 * if fasle is returned, some element were not disposed
+	 * clean up everything
+	 * @return false is returned if some element were not correctly disposed
 	 */
 	dispose(): boolean {
 		var disposed = true;

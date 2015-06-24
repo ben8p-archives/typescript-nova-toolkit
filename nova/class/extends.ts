@@ -1,20 +1,22 @@
 import c3mro = require('./c3mro');
+import has = require('../core/has');
 
-declare var global: any;
-
-/** provide a custom extend method for class (ES6 Class). See how typescript implement Class inheritance */
+/** Override typescript __extends method with a custom one supporting multiple inheritance and ES6 Class. */
 this.__extends = function(base: any, mixin: any) {
 	extend(base, [mixin]);
 };
-//give it to window AND NodeJs
-try { global.__extends = this.__extends; } catch (e) {}
-try { (<any> window).__extends = this.__extends; } catch (e) {}
+if (has('node-host')) {
+	//export the custom __extends in global scope
+	(<any> global).__extends = this.__extends;
+} else if (has('browser-host')) {
+	//export the custom __extends in window scope
+	(<any> window).__extends = this.__extends;
+}
 
 /**
- * linearize and combine all class and subclass in order to create one extended Class
- * @param	base			The base class
+ * linearize (using c3mro) and combine all class and subclass in order to create one extended Class
+ * @param	base			The base class. Will be modified and receive all subclasses
  * @param	superclasses	an array of class mixins
- * @return					a class
  */
 var extend = function  <T extends Object>(base: any, superclasses: any[]): void {
  	var superclassesList: any[] = [];
@@ -47,10 +49,8 @@ var extend = function  <T extends Object>(base: any, superclasses: any[]): void 
 				newSuperclass.prototype[name] = superclass.prototype[name];
 			}
 		}
-		//computeMethodNames(superclass.prototype);
 	}
 
-	//computeMethodNames(newSuperclass.prototype);
 	base.prototype = new (<any> newSuperclass)();
 
 	base.prototype.constructor.__meta__ = base.prototype.constructor.__meta__ || {};

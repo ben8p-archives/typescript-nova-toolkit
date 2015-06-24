@@ -3,6 +3,7 @@ import Evented = require('../class/Evented');
 import CustomEvent = require('../class/CustomEvent');
 import object = require('../core/object');
 
+/** internal matcher to filter the store according to a query */
 function match(query: any, item: {[key: string]: any; }, key: string): boolean {
 	var value = item[key];
 	if (typeof query === 'string' || typeof query === 'number' || typeof query === 'boolean') {
@@ -15,11 +16,11 @@ function match(query: any, item: {[key: string]: any; }, key: string): boolean {
 	return false;
 }
 
-/** interface for events */
+/** internal interface for events returned by query() */
 interface QueryRootEvent {
 	then(queryCallback: (items: {[key: string]: any; }[]) => void): QuerySubEvent;
 }
-/** interface for events returned by then() */
+/** internal interface for events returned by then() */
 interface QuerySubEvent {
 	then(queryCallback: (items: {[key: string]: any; }[]) => void): QuerySubEvent;
 	remove(): void;
@@ -27,20 +28,31 @@ interface QuerySubEvent {
 
 /**
  * store for data managment.
- * .query() return an observable item
+ * Handle filtering, sorting, add, remove and return
+ * observable queries
  */
 class Store extends Stateful {
-	data: {[key: string]: any; }[]; //for interface
-	private _data: {[key: string]: any; }[] = null; //real data handler
+	/** used as attach point for getter/setter */
+	data: {[key: string]: any; }[];
+	/** real data object (see Stateful for details) */
+	private _data: {[key: string]: any; }[] = null;
 
+	/**
+	 * set the data
+	 * @param	data	array of objects
+	 */
 	protected setData(data: {[key: string]: any; }[]): void {
 		this._data = data;
 		this._dispatchEvent();
 	}
+	/**
+	 * return the data
+	 */
 	protected getData(): {[key: string]: any; }[] {
 		return this._data;
 	}
 
+	/** cache of all active queries */
 	private _eventCache: Evented[] = [];
 
 	/** update all queries */
@@ -50,7 +62,11 @@ class Store extends Stateful {
 		});
 	}
 
-	/** add data to the store */
+	/**
+	 * add data to the store
+	 * @param	item	object to add
+	 * @return			the added item
+	 */
 	add(item: {[key: string]: any; }): {[key: string]: any} {
 		if (this._data.indexOf(item) === -1) {
 			this._data.push(item);
@@ -59,7 +75,11 @@ class Store extends Stateful {
 		}
 		return null;
 	}
-	/** remove data from the store */
+	/**
+	 * remove data from the store
+	 * @param	item	object to add
+	 * @return			the removed item
+	 */
 	remove(item: {[key: string]: any; }): {[key: string]: any} {
 		var index = this._data.indexOf(item);
 		if (index >= 0) {
@@ -70,7 +90,12 @@ class Store extends Stateful {
 		return null;
 	}
 
-	/** filter the data using the query, sort them if requested */
+	/**
+	 * filter the data using the query, sort them if requested
+	 * @param	query			an optional object representing a way to filter the data (see match for implementation)
+	 * @param	compareFunction	should be provided if a sorting needs to be applied
+	 * @return					a thenable object
+	 */
 	query(query?: {[key: string]: string|number|boolean|RegExp|((value: any, key: string, item: {[key: string]: any; }) => boolean); },
 			compareFunction?: (itemA: {[key: string]: any; }, itemB: {[key: string]: any; }) => number): QueryRootEvent {
 
