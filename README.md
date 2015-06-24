@@ -30,6 +30,7 @@ With nova-toolkit we want to smooth your developer life so you can focus on your
 - enhancement for browser Storages
 - css injection
 - debouncing and throttling
+- observable data store
 - ...a lot more
 
 # development dependencies
@@ -51,7 +52,7 @@ With nova-toolkit we want to smooth your developer life so you can focus on your
 - [grunt-tslint](https://github.com/palantir/grunt-tslint), to lint the code from grunt
 
 # getting started
-- first of all, clone this git repository.
+- first of all, clone this git repository: ```git clone --recursive https://github.com/ben8p/nova-toolkit.git```
 - from the project directory run ```npm install```. This will install all required dependencies.
 - add intern TypeScript typings to the ```./node_modules/intern/``` folder (typings are not yet released with intern). You can get typings on [intern master branch](https://github.com/theintern/intern/tree/master/typings)
 - run ```./node_modules/.bin/grunt default``` to transpile .ts files into .js
