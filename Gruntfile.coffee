@@ -47,20 +47,33 @@ module.exports = (grunt) ->
                 delay: 500
     clean: ['nova/**/*.js', 'tests/**/*.js', 'nova/**/*.html.ts', 'tests/**/*.html.ts', 'nova/**/*.css.ts', 'tests/**/*.css.ts']
     requirejs:
-        release:
+        default:
             options:
-                appDir: './nova/'
-                dir: './release/'
-        custom:
-            options:
-                baseUrl: './'
-                out: './release/' + grunt.option('build-config') + '.js'
-                include: grunt.option('build-config')
+                appDir: "/nova"
+                baseUrl: ".."
+                dir: "release/"
+                modules: [
+                    {
+                        name: "release/nova/nova",
+                        create: true,
+                        include: do () ->
+                            releaseIncludes = []
+                            tsConfig = grunt.file.readJSON('tsconfig.json')
+                            for filepath in tsConfig.files
+                                if filepath.indexOf(".ts") isnt -1 && filepath.indexOf(".d.ts") is -1 && filepath.indexOf("nova/") isnt -1
+                                    releaseIncludes.push filepath.replace /(\.\/)|(\.ts)/g, ""
+                            return releaseIncludes
+                    }
+                ]
     tslint:
         options:
                 configuration: grunt.file.readJSON('tslint.json')
         default:
                 src: ['nova/**/*.ts', 'tests/**/*.ts']
+
+  ends = (string, literal, back) ->
+     len = literal.length
+     literal is string.substr string.length - len - (back or 0), len
 
   grunt.event.on 'watch', (action, filepath) ->
     if ends(filepath, ".html") || ends(filepath, ".css")
@@ -68,14 +81,6 @@ module.exports = (grunt) ->
         grunt.config.set('ts.default.html', filepath)
     else
         grunt.config.set('ts.default.src', filepath)
-
-  ends = (string, literal, back) ->
-     len = literal.length
-     literal is string.substr string.length - len - (back or 0), len
-
-  requireJsTarget = 'release'
-  if grunt.option('build-config')?
-      requireJsTarget = 'custom'
 
   grunt.loadNpmTasks 'grunt-tslint'
   grunt.loadNpmTasks 'grunt-ts'
@@ -92,4 +97,4 @@ module.exports = (grunt) ->
   grunt.registerTask 'transpile', ['clean', 'tslint', 'ts']
   grunt.registerTask 'dev', ['clean', 'ts', 'express:watch', 'open:watch', 'watch']
   grunt.registerTask 'dev:nowatch', ['clean', 'ts', 'open:nowatch', 'express:nowatch']
-  grunt.registerTask 'release', ['clean', 'tslint', 'ts', 'requirejs:' + requireJsTarget]
+  grunt.registerTask 'release', ['clean', 'tslint', 'ts', 'requirejs']
