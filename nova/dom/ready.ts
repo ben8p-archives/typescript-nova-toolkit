@@ -1,7 +1,8 @@
 import event = require('../core/event');
+import has = require('../core/has');
 
 /** will be set to true when dom is ready */
-var isReady = false;
+var isReady = !has('browser-host');
 /** array of callback to run when the dom is ready */
 var delayedLoad: Function[] = [];
 
