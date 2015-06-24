@@ -1,4 +1,4 @@
-/// <amd-dependency path="nova/dom/ready!" />
+/// <amd-dependency path="../dom/ready!" />
 
 /** hook for style tag */
 var inlineStyleTag: HTMLStyleElement = null;
