@@ -20,8 +20,12 @@ function onLoad() {
 	isReady = true;
 	processLoad();
 };
-event.once(document, 'DOMContentLoaded').then(onLoad);
-event.once(window, 'load').then(onLoad);
+if (typeof document !== 'undefined') {
+	event.once(document, 'DOMContentLoaded').then(onLoad);
+}
+if (typeof window !== 'undefined') {
+	event.once(window, 'load').then(onLoad);
+}
 
 /**
  * dom ready detection plugin

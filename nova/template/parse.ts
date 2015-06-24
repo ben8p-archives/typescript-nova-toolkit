@@ -1,7 +1,7 @@
 import stringUtil = require('../core/string');
 
 /** internal node used as place holder for templates */
-const PLACE_HOLDER = document.createElement('div');
+const PLACE_HOLDER = typeof document !== 'undefined' && document.createElement('div');
 /** internal regexp to match any white space character */
 const SPACES = /\s+/g;
 

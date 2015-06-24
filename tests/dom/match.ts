@@ -52,7 +52,7 @@ registerSuite(function () {
 	};
 	if (has('node-host')) {
 		delete suite.match;
-		console.warn('math test skipped because of NodeJs');
+		console.warn('match test skipped because of NodeJs');
 	}
 	return suite;
 });

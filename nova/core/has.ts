@@ -31,7 +31,7 @@ class HasPlugin implements AMDPlugin {
 	/** cache of feature already added */
 	private hasCache: {[key: string]: any} = {};
 	/** html tag of the page */
-	private htmlTag: Node = document && document.querySelector('html');
+	private htmlTag: Node = typeof document !== 'undefined' && document.querySelector('html');
 
 	/**
 	 * add the status of a feature
@@ -114,6 +114,6 @@ has.normalize = plugin.normalize.bind(plugin);
 has.add('browser-host', typeof this.window !== 'undefined' && typeof this.document !== 'undefined' && window.document === document);
 has.add('node-host', typeof this.process === 'object' && this.process.versions && this.process.versions.node);
 has.add('amd', !!(typeof this.window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));
-has.add('cookie', navigator.cookieEnabled);
+has.add('cookie', has('browser-host') && navigator.cookieEnabled);
 
 export = has;

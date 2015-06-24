@@ -65,7 +65,7 @@ registerSuite(function () {
 	};
 	if (has('node-host')) {
 		delete suite.class;
-		console.warn('clas test skipped because of NodeJs');
+		console.warn('class test skipped because of NodeJs');
 	}
 	return suite;
 });

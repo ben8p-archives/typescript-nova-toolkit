@@ -7,7 +7,7 @@ this.__extends = function(base: any, mixin: any) {
 };
 if (has('node-host')) {
 	//export the custom __extends in global scope
-	(<any> global).__extends = this.__extends;
+	(<any> this.global).__extends = this.__extends;
 } else if (has('browser-host')) {
 	//export the custom __extends in window scope
 	(<any> window).__extends = this.__extends;

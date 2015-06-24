@@ -100,7 +100,7 @@ registerSuite(function () {
 	};
 	if (has('node-host')) {
 		delete suite.atribute;
-		console.warn('atribute test skipped because of NodeJs');
+		console.warn('attribute test skipped because of NodeJs');
 	}
 	return suite;
 });
