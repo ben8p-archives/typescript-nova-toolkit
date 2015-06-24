@@ -70,6 +70,16 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>This is the abstract class for all storage
+							It cannot be used on its own
+							provide a convenient way to save/retrieve information in the browser scope
+						see <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage">https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage</a></p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -140,9 +150,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L20">storage/api/Storage.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L22">storage/api/Storage.ts:22</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>construct the class, map the .length property</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_storage_api_storage_.abtractstorage.html" class="tsd-signature-type">AbtractStorage</a></h4>
 						</li>
 					</ul>
@@ -156,9 +171,14 @@
 					<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L20">storage/api/Storage.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L22">storage/api/Storage.ts:22</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>number of items in the storage</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -173,9 +193,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L119">storage/api/Storage.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L128">storage/api/Storage.ts:128</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>empty the page storage</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -190,16 +215,26 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L36">storage/api/Storage.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L43">storage/api/Storage.ts:43</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The getItem(key) method must return the current value associated with the given key.
+									If the given key does not exist in the list associated with the object then this method must return null.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>storage&#39;s key</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>stored value</p>
 						</li>
 					</ul>
 				</section>
@@ -213,9 +248,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L30">storage/api/Storage.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L34">storage/api/Storage.ts:34</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>placeholder method. Must be overridden and should return the StorageObject</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_storage_api_storage_.storageobject.html" class="tsd-signature-type">StorageObject</a></h4>
 						</li>
 					</ul>
@@ -230,16 +270,28 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L68">storage/api/Storage.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L79">storage/api/Storage.ts:79</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The key(n) method must return the name of the nth key in the list (this is not necessarily the order in which items are added!).
+										The order of keys is user-agent defined, but must be consistent within an object so long as the number of keys doesn&#39;t change.
+										(Thus, adding or removing a key may change the order of the keys, but merely changing the value of an existing key must not.)
+									If n is greater than or equal to the number of key/value pairs in the object, then this method must return null.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>index: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the index of the key to get</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the key</p>
 						</li>
 					</ul>
 				</section>
@@ -253,13 +305,22 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L111">storage/api/Storage.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L122">storage/api/Storage.ts:122</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The removeItem(key) method must cause the key/value pair with the given key to be removed from the list associated with the object, if it exists.
+									If no item with that key exists, the method must do nothing.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the key to remove</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -276,16 +337,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L83">storage/api/Storage.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/storage/api/Storage.ts#L92">storage/api/Storage.ts:92</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The setItem(key, value) method must first check if a key/value pair with the given key already exists in the list associated with the object.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the key to set the item in</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the value to set</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

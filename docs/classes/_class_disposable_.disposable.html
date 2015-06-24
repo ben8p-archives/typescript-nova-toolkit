@@ -73,9 +73,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Disposable class is an helper for cleaning up memory
-							It act as a store, collect all items that you want to destroy
-						And clean then when you call dispose()</p>
+						<p>Disposable class is responsible for cleaning up memory
+							It act as a store, collect all items the application needs to destroy
+						And clean then when dispose() is called.</p>
 					</div>
 				</div>
 			</section>
@@ -118,12 +118,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="disposable" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> disposable</h3>
-					<div class="tsd-signature tsd-kind-icon">disposable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">disposable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L8">class/Disposable.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L9">class/Disposable.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>array of disposable elements</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -138,16 +143,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L19">class/Disposable.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L23">class/Disposable.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>clean up everything that can be cleaned
-									if fasle is returned, some element were not disposed</p>
+									<p>clean up everything</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>false is returned if some element were not correctly disposed</p>
 						</li>
 					</ul>
 				</section>
@@ -155,13 +160,13 @@
 					<a name="own" class="tsd-anchor"></a>
 					<h3>own</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">own<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">own<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L11">class/Disposable.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Disposable.ts#L15">class/Disposable.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -172,7 +177,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>items: <span class="tsd-signature-type">any[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>items: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>as many disposable/removable objects as needed</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

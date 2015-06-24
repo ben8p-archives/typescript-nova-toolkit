@@ -111,12 +111,15 @@
 					<div class="tsd-signature tsd-kind-icon">event<wbr>Bus<span class="tsd-signature-symbol">:</span> <a href="../classes/_class_evented_.evented.html" class="tsd-signature-type">Evented</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L93">core/event.ts:93</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L111">core/event.ts:111</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>implementation of the bus for publish/subscribe pattern</p>
+							<p>implementation of the bus for publish/subscribe pattern
+								This behaves as a global target.
+								if when() or once() are not receiving any taget, then this global object is used as target.
+							See <a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern</a></p>
 						</div>
 					</div>
 				</section>
@@ -134,12 +137,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L157">core/event.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L176">core/event.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>dispatch @eventName from the event bus</p>
+									<p>dispatch @eventType from the event bus (publish/subscribe pattern)</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -152,16 +155,17 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>a booelan (so far, always true)</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L163">core/event.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L183">core/event.ts:183</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>dispatch @eventName from @target</p>
+									<p>dispatch @eventType from @target</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -180,6 +184,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>a booelan (so far, always true)</p>
 						</li>
 					</ul>
 				</section>
@@ -187,43 +192,43 @@
 					<a name="once" class="tsd-anchor"></a>
 					<h3>once</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
-						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
+						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
+						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L136">core/event.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L154">core/event.ts:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>return a thenable object reacting when @eventName is fired by the event bus
+									<p>return a thenable object reacting when @eventType is fired by the event bus (publish/subscribe pattern)
 									the handler will be disconnected after being executed.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>type of the event</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></h4>
-							<p>IRootEvent</p>
+							<p>A thenable object</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L144">core/event.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L162">core/event.ts:162</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>return a thenable object reacting when @target fire @eventName
+									<p>return a thenable object reacting when @target fire @eventType
 									the handler will be disconnected after being executed.</p>
 								</div>
 							</div>
@@ -236,14 +241,14 @@
 									</div>
 								</li>
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>type of the event</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></h4>
-							<p>IRootEvent</p>
+							<p>A thenable object</p>
 						</li>
 					</ul>
 				</section>
@@ -257,7 +262,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L175">core/event.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L195">core/event.ts:195</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -279,18 +284,18 @@
 					<a name="subscribe" class="tsd-anchor"></a>
 					<h3>subscribe</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, autoRemove<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, autoRemove<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L102">core/event.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L120">core/event.ts:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>prepare an event to receive handlers</p>
+									<p>internal method prepare an event to receive handlers</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -302,7 +307,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>type of the event</p>
 									</div>
@@ -315,7 +320,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></h4>
-							<p>IRootEvent</p>
+							<p>A thenable object</p>
 						</li>
 					</ul>
 				</section>
@@ -323,42 +328,42 @@
 					<a name="when" class="tsd-anchor"></a>
 					<h3>when</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
-						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
+						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
+						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventTarget</span>, eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L114">core/event.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L132">core/event.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>return a thenable object reacting when @eventName is fired by the event bus</p>
+									<p>return a thenable object reacting when @eventType is fired by the event bus (publish/subscribe pattern)</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>type of the event</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></h4>
-							<p>IRootEvent</p>
+							<p>A thenable object</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L121">core/event.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/core/event.ts#L139">core/event.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>return a thenable object reacting when @target fire @eventName</p>
+									<p>return a thenable object reacting when @target fire @eventType</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -370,14 +375,14 @@
 									</div>
 								</li>
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>type of the event</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_event_.irootevent.html" class="tsd-signature-type">IRootEvent</a></h4>
-							<p>IRootEvent</p>
+							<p>A thenable object</p>
 						</li>
 					</ul>
 				</section>

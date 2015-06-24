@@ -108,9 +108,14 @@
 					<div class="tsd-signature tsd-kind-icon">FIND_<wbr>TAGS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L28">template/parse.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L31">template/parse.ts:31</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>an internal regexp to match tags in a string</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="place_holder" class="tsd-anchor"></a>
@@ -118,9 +123,14 @@
 					<div class="tsd-signature tsd-kind-icon">PLACE_<wbr>HOLDER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLDivElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L3">template/parse.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L4">template/parse.ts:4</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>internal node used as place holder for templates</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="spaces" class="tsd-anchor"></a>
@@ -128,9 +138,14 @@
 					<div class="tsd-signature tsd-kind-icon">SPACES<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L4">template/parse.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L6">template/parse.ts:6</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>internal regexp to match any white space character</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -145,13 +160,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L39">template/parse.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L47">template/parse.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>this module parse a string and convert it into nodes.
-									it return a documentFragment which can be attached to the main document.</p>
+									<p>this parse a string and convert it into nodes.
+										It can replace placeholders (defined by ${...}) and fill them with values
+									Anchors can be definied using custom attribute data-anchor=&quot;NAME&quot; and are a shortcut to access domNodes</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,6 +177,9 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> placeHolders: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>array of object used to fill-in place holders. Keys are placeholdername, values are values to replace with.</p>
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
 											<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
@@ -169,6 +188,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_template_parse_.iparse.html" class="tsd-signature-type">IParse</a></h4>
+							<p>a documentFragment which can be attached to the main document and a list of anchors</p>
 						</li>
 					</ul>
 				</section>
@@ -181,16 +201,21 @@
 					<div class="tsd-signature tsd-kind-icon">WRAPPERS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L6">template/parse.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L9">template/parse.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>list of tags which needs wrappers in order to get them correct</p>
+						</div>
+					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
 						<a name="wrappers.caption" class="tsd-anchor"></a>
 						<h3>caption</h3>
 						<div class="tsd-signature tsd-kind-icon">caption<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L15">template/parse.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L18">template/parse.ts:18</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -200,7 +225,7 @@
 						<div class="tsd-signature tsd-kind-icon">col<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L17">template/parse.ts:17</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L20">template/parse.ts:20</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -210,7 +235,7 @@
 						<div class="tsd-signature tsd-kind-icon">colgroup<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L16">template/parse.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L19">template/parse.ts:19</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -220,7 +245,7 @@
 						<div class="tsd-signature tsd-kind-icon">legend<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L14">template/parse.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L17">template/parse.ts:17</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -230,7 +255,7 @@
 						<div class="tsd-signature tsd-kind-icon">li<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L18">template/parse.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L21">template/parse.ts:21</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -240,7 +265,7 @@
 						<div class="tsd-signature tsd-kind-icon">option<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L7">template/parse.ts:7</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L10">template/parse.ts:10</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -250,7 +275,7 @@
 						<div class="tsd-signature tsd-kind-icon">tbody<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L8">template/parse.ts:8</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L11">template/parse.ts:11</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -260,7 +285,7 @@
 						<div class="tsd-signature tsd-kind-icon">td<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L12">template/parse.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L15">template/parse.ts:15</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -270,7 +295,7 @@
 						<div class="tsd-signature tsd-kind-icon">tfoot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L10">template/parse.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L13">template/parse.ts:13</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -280,7 +305,7 @@
 						<div class="tsd-signature tsd-kind-icon">th<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L13">template/parse.ts:13</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L16">template/parse.ts:16</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -290,7 +315,7 @@
 						<div class="tsd-signature tsd-kind-icon">thead<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L9">template/parse.ts:9</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L12">template/parse.ts:12</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -300,7 +325,7 @@
 						<div class="tsd-signature tsd-kind-icon">tr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L11">template/parse.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/template/parse.ts#L14">template/parse.ts:14</a></li>
 							</ul>
 						</aside>
 					</section>

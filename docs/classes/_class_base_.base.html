@@ -74,7 +74,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>Base class for every class using linearized inheritance
-						Provides this.super() method to call superclass</p>
+						It roles is to be the ground for multiple inheritance (specially for accessing superscallas)</p>
 					</div>
 				</div>
 			</section>
@@ -136,12 +136,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L26">class/Base.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L27">class/Base.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>execute all constructor form all mixins</p>
+									<p>execute all constructor form all mixins
+									Note: constructors might be executed twice because of _super call added by TypeScript during transpilation</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_class_base_.base.html" class="tsd-signature-type">Base</a></h4>
@@ -157,9 +158,14 @@
 					<div class="tsd-signature tsd-kind-icon">constructed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L26">class/Base.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L27">class/Base.ts:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Set to true when all constructor have run</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -174,16 +180,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L55">class/Base.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L64">class/Base.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>determine if a given object inhetis from this class or not</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>anything inheriting from ObjectConstructor</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if the given arguments inherits from this class</p>
 						</li>
 					</ul>
 				</section>
@@ -197,12 +212,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L51">class/Base.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L55">class/Base.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>hook executed after all constructors</p>
+									<p>hook executed when all constructors have ran</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -219,12 +234,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L69">class/Base.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L80">class/Base.ts:80</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>call the superclass method</p>
+									<p>try to guess the superclass method and execute it (if found)
+									Note: this use arguments.callee thus it does not work in strict mode</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -237,6 +253,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>anything returned by the superclass method</p>
 						</li>
 					</ul>
 				</section>

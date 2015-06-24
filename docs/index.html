@@ -95,6 +95,7 @@
 					<li>enhancement for browser Storages</li>
 					<li>css injection</li>
 					<li>debouncing and throttling</li>
+					<li>observable data store</li>
 					<li>...a lot more</li>
 				</ul>
 				<h1 id="development-dependencies">development dependencies</h1>
@@ -118,7 +119,7 @@
 				</ul>
 				<h1 id="getting-started">getting started</h1>
 				<ul>
-					<li>first of all, clone this git repository.</li>
+					<li>first of all, clone this git repository: <code>git clone --recursive https://github.com/ben8p/nova-toolkit.git</code></li>
 					<li>from the project directory run <code>npm install</code>. This will install all required dependencies.</li>
 					<li>add intern TypeScript typings to the <code>./node_modules/intern/</code> folder (typings are not yet released with intern). You can get typings on <a href="https://github.com/theintern/intern/tree/master/typings">intern master branch</a></li>
 					<li>run <code>./node_modules/.bin/grunt default</code> to transpile .ts files into .js</li>
@@ -135,6 +136,10 @@
 				<ul>
 					<li><code>node_modules\.bin\grunt.cmd XXX</code>  </li>
 					<li><code>node_modules\.bin\intern-client.cmd XXX</code></li>
+				</ul>
+				<h1 id="demos">demos</h1>
+				<ul>
+					<li><a href="http://gitlab.idotech.info/ben8p/nova-demo-csv-parser/tree/master">http://gitlab.idotech.info/ben8p/nova-demo-csv-parser/tree/master</a></li>
 				</ul>
 				<h1 id="releasing">releasing</h1>
 				<p>You can release the full toolkit by running the task <code>./node_modules/.bin/grunt release</code><br>This will produce a compressed version of each files.<br>You may want to produce a single javascript containing only the modules you need in your application.<br>This can be achieved by add options to the command line: <code>node_modules/.bin/grunt release --build-config=module/to/build</code><br>For instance, if the main loader of your application is &quot;./my/own/application.js&quot; the task should be : <code>node_modules/.bin/grunt release --build-config=my/own/application</code>

@@ -73,8 +73,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>base for all UI componeents.
-						Provide helpers for creating templates and placing in the dom</p>
+						<p>Base for all UI componeents.
+							It will create a domNode according to a template
+							It can also populate the template and attach anchor to the class
+						See nova/template/parse</p>
 					</div>
 				</div>
 			</section>
@@ -136,12 +138,13 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_class_base_.base.html">Base</a>.<a href="_class_base_.base.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L26">class/Base.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L27">class/Base.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>execute all constructor form all mixins</p>
+									<p>execute all constructor form all mixins
+									Note: constructors might be executed twice because of _super call added by TypeScript during transpilation</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_class_uibase_.uibase.html" class="tsd-signature-type">UIBase</a></h4>
@@ -158,9 +161,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_class_base_.base.html">Base</a>.<a href="_class_base_.base.html#constructed">constructed</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L26">class/Base.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L27">class/Base.ts:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Set to true when all constructor have run</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="domnode" class="tsd-anchor"></a>
@@ -168,9 +176,14 @@
 					<div class="tsd-signature tsd-kind-icon">dom<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L12">class/UIBase.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L16">class/UIBase.ts:16</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>represent the main domNode of the class</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="nodeanchors" class="tsd-anchor"></a>
@@ -178,9 +191,14 @@
 					<div class="tsd-signature tsd-kind-icon">node<wbr>Anchors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L14">class/UIBase.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L20">class/UIBase.ts:20</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>a list of anchors fetched from the template (to allow easy dom access)</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -196,9 +214,14 @@
 					<div class="tsd-signature tsd-kind-icon">template<wbr>Place<wbr>Holders<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L15">class/UIBase.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L22">class/UIBase.ts:22</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>list placeholders to replace in the template</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -214,9 +237,14 @@
 					<div class="tsd-signature tsd-kind-icon">template<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L13">class/UIBase.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L18">class/UIBase.ts:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>represent the template used to create the main domNode</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -231,16 +259,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L24">class/UIBase.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L37">class/UIBase.ts:37</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>insert the domNode into a parent at the specified position</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>parentNode: <span class="tsd-signature-type">Node</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the parent domNode</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> position: <a href="../enums/_class_uibase_.eposition.html" class="tsd-signature-type">EPosition</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The posistion where to insert the node. default is LAST</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -258,16 +297,25 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_class_base_.base.html">Base</a>.<a href="_class_base_.base.html#isinstanceof">isInstanceOf</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L55">class/Base.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L64">class/Base.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>determine if a given object inhetis from this class or not</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>anything inheriting from ObjectConstructor</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if the given arguments inherits from this class</p>
 						</li>
 					</ul>
 				</section>
@@ -282,9 +330,14 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="_class_base_.base.html">Base</a>.<a href="_class_base_.base.html#postconstructor">postConstructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L17">class/UIBase.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/UIBase.ts#L25">class/UIBase.ts:25</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>parse the template, get the main node and grab the anchors</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -300,12 +353,13 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_class_base_.base.html">Base</a>.<a href="_class_base_.base.html#super">super</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L69">class/Base.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ben8p/nova-toolkit/blob/master/nova/class/Base.ts#L80">class/Base.ts:80</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>call the superclass method</p>
+									<p>try to guess the superclass method and execute it (if found)
+									Note: this use arguments.callee thus it does not work in strict mode</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -318,6 +372,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>anything returned by the superclass method</p>
 						</li>
 					</ul>
 				</section>
