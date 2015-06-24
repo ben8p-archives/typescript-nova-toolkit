@@ -94,7 +94,7 @@ export function toCamelCase(value: string, capitalizeFirstChar?: boolean): strin
  * escape a string to be used safely in a regexp
  * @param	value	string to escape
  * @return			escaped string
-*/
+ */
 export function escapeForRegExp(value: string): string {
 	return value
 		.replace(/\\/g, '\\\\') // the order here is very important!!
