@@ -75,11 +75,7 @@ You will have to add ".cmd" to every command:
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
-This will produce a compressed version of each files.  
-You may want to produce a single javascript containing only the modules you need in your application.  
-This can be achieved by add options to the command line: ```node_modules/.bin/grunt release --build-config=module/to/build```  
-For instance, if the main loader of your application is "./my/own/application.js" the task should be : ```node_modules/.bin/grunt release --build-config=my/own/application```
-This will follow all dependencies of "application.js" and produce a single javascript file containing everything needed to run your application.
+This will produce a single javascript file (~41kb) containing all nova modules.
 
 # online documentation
 Documentation can be found on GitHub page: http://ben8p.github.io/nova-toolkit/
