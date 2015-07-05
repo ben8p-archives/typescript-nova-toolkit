@@ -35,7 +35,7 @@ class Store extends Stateful {
 	/** used as attach point for getter/setter */
 	data: {[key: string]: any; }[];
 	/** real data object (see Stateful for details) */
-	private _data: {[key: string]: any; }[] = null;
+	private _data: {[key: string]: any; }[] = [];
 
 	/**
 	 * set the data

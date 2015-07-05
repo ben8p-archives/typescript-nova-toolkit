@@ -111,7 +111,7 @@ has.load = plugin.load.bind(plugin);
 has.normalize = plugin.normalize.bind(plugin);
 
 // add feature detection for the running environment
-has.add('browser-host', typeof this.window !== 'undefined' && typeof this.document !== 'undefined' && window.document === document);
+has.add('browser-host', typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document);
 has.add('node-host', typeof this.process === 'object' && this.process.versions && this.process.versions.node);
 has.add('amd', !!(typeof this.window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));
 has.add('cookie', has('browser-host') && navigator.cookieEnabled);
