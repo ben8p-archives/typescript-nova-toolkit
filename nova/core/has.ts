@@ -1,5 +1,9 @@
 import AMDPlugin = require('../AMDPlugin.d');
 
+declare var process: any;
+declare var window: any;
+declare var document: any;
+
 /** internally used by the plugin to parse conditional module loading */
 const TOKEN_REGEXP = /([^?]+)\?([^:]+):(.*)/g;
 /** internally used to remove every charactere not supported as ccss class name */
@@ -112,8 +116,8 @@ has.normalize = plugin.normalize.bind(plugin);
 
 // add feature detection for the running environment
 has.add('browser-host', typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document);
-has.add('node-host', typeof this.process === 'object' && this.process.versions && this.process.versions.node);
-has.add('amd', !!(typeof this.window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));
+has.add('node-host', typeof process === 'object' && process.versions && process.versions.node);
+has.add('amd', !!(typeof window !== 'undefined' && typeof (<any> window).define === 'function' && typeof (<any> window).define.amd === 'object' && (<any> window).define.amd));
 has.add('cookie', has('browser-host') && navigator.cookieEnabled);
 
 export = has;
