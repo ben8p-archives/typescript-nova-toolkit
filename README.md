@@ -72,6 +72,7 @@ You will have to add ".cmd" to every command:
 
 # demos
 - http://gitlab.idotech.info/ben8p/nova-demo-csv-parser/tree/master
+- http://gitlab.idotech.info/ben8p/business-world-game/tree/master
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
