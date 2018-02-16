@@ -70,9 +70,9 @@ You will have to add ".cmd" to every command:
 - ```node_modules\.bin\grunt.cmd XXX```  
 - ```node_modules\.bin\intern-client.cmd XXX```
 
-# demos
-- http://gitlab.idotech.info/ben8p/nova-demo-csv-parser/tree/master
-- http://gitlab.idotech.info/ben8p/business-world-game/tree/master
+
+r
+
 
 # releasing
 You can release the full toolkit by running the task ```./node_modules/.bin/grunt release```  
