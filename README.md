@@ -71,7 +71,7 @@ You will have to add ".cmd" to every command:
 - ```node_modules\.bin\intern-client.cmd XXX```
 
 
-r
+
 
 
 # releasing
